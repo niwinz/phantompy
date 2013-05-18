@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from ._library import library as lib
+from .api import library as lib
 from . import context
 
 
