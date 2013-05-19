@@ -3,8 +3,8 @@
 Page::Page(QObject *parent):QObject(parent) {
     connect(&m_page, SIGNAL(loadFinished(bool)), this, SLOT(loadFinished(bool)));
 
-    loaded = false;
-    error = false;
+    m_loaded = false;
+    m_error = false;
 }
 
 Page::~Page() {}
@@ -26,47 +26,17 @@ void Page::setViewSize(int x, int y) {
 
 void Page::loadFinished(bool ok) {
     m_event_loop.quit();
-    error = ok;
+    m_error = ok;
 }
 
 bool Page::isLoaded() {
-    return loaded;
+    return m_loaded;
 }
 
 bool Page::hasLoadErrors() {
-    return error;
+    return m_error;
 }
 
-QByteArray Page::toHtml() {
-    return m_page.mainFrame()->toHtml().toUtf8();
-}
-
-QByteArray Page::captureImage(const char *format, int quality) {
-    m_page.setViewportSize(m_page.mainFrame()->contentsSize());
-
-    QImage image(m_page.viewportSize(), QImage::Format_ARGB32_Premultiplied);
-    image.fill(Qt::transparent);
-
-    QBuffer buffer;
-    buffer.open(QIODevice::ReadWrite);
-
-    QPainter painter(&image);
-    painter.setRenderHint(QPainter::Antialiasing, true);
-    painter.setRenderHint(QPainter::TextAntialiasing, true);
-    painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
-
-    m_page.mainFrame()->render(&painter);
-    painter.end();
-
-    image.save(&buffer, "PNG");
-    return buffer.buffer();
-}
-
-QByteArray Page::evaluateJavaScript(const QString &js) {
-    QVariant result = m_page.mainFrame()->evaluateJavaScript(js);
-    return result.toString().toUtf8();
-}
-
-QWebElement Page::findFirstElement(const QString &selector) {
-    return m_page.mainFrame()->findFirstElement(selector);
+QWebFrame* Page::mainFrame() {
+    return m_page.mainFrame();
 }

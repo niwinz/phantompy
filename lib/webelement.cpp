@@ -22,8 +22,8 @@ QByteArray WebElement::toText() {
     return m_web_element.toPlainText().toUtf8();
 }
 
-QByteArray WebElement::evaluateJavaScript(const QByteArray &data) {
-    QVariant result = m_web_element.evaluateJavaScript(QString::fromUtf8(data));
+QByteArray WebElement::evaluateJavaScript(const QString &data) {
+    QVariant result = m_web_element.evaluateJavaScript(data);
     return result.toString().toUtf8();
 }
 
@@ -35,14 +35,30 @@ QByteArray WebElement::getAttributes() {
     return m_web_element.attributeNames().join(" ").toUtf8();
 }
 
-bool WebElement::hasClass(const QByteArray &classname) {
-    return m_web_element.hasClass(QString::fromUtf8(classname));
+bool WebElement::hasClass(const QString &classname) {
+    return m_web_element.hasClass(classname);
 }
 
-bool WebElement::hasAttribute(const QByteArray &attrname) {
-    return m_web_element.hasAttribute(QString::fromUtf8(attrname));
+bool WebElement::hasAttribute(const QString &attrname) {
+    return m_web_element.hasAttribute(attrname);
 }
 
 bool WebElement::hasAttributes() {
     return m_web_element.hasAttributes();
+}
+
+void WebElement::removeClass(const QString &classname) {
+    m_web_element.removeClass(classname);
+}
+
+void WebElement::removeAttribute(const QString &attrname) {
+    m_web_element.removeAttribute(attrname);
+}
+
+void WebElement::setText(const QString &text) {
+    m_web_element.setPlainText(text);
+}
+
+void WebElement::setHtml(const QString &html) {
+    m_web_element.setInnerXml(html);
 }

@@ -18,20 +18,20 @@ public:
     QByteArray toHtml();
     QByteArray toText();
 
-    QByteArray evaluateJavaScript(const QByteArray &data);
+    QByteArray evaluateJavaScript(const QString &data);
     QByteArray getClasses();
     QByteArray getAttributes();
 
-    bool hasClass(const QByteArray &classname);
+    bool hasClass(const QString &classname);
 
-    bool hasAttribute(const QByteArray &attrname);
+    bool hasAttribute(const QString &attrname);
     bool hasAttributes();
 
-    //void removeClass(const QByteArray &classname);
-    //void removeAttribute(const QByteArray &attrname);
+    void removeClass(const QString &classname);
+    void removeAttribute(const QString &attrname);
 
-    //void setHtml(const QByteArray &html);
-    //void setText(const QByteArray &text);
+    void setHtml(const QString &html);
+    void setText(const QString &text);
 private:
     QWebElement m_web_element;
 };

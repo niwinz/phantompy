@@ -35,15 +35,23 @@ try:
     library.ph_page_is_loaded.argtypes = [ctypes.c_void_p]
     library.ph_page_is_loaded.restype = ctypes.c_int
 
-    library.ph_page_to_html.argtypes = [ctypes.c_void_p]
-    library.ph_page_to_html.restype = ctypes.c_char_p
+    # Frame methods
 
-    library.ph_page_evaluate_javascript.argtypes = [ctypes.c_void_p, ctypes.c_char_p]
-    library.ph_page_evaluate_javascript.restype = ctypes.c_char_p
+    library.ph_page_main_frame.argtypes = [ctypes.c_void_p]
+    library.ph_page_main_frame.restype = ctypes.c_void_p
+
+    library.ph_frame_free.argtypes = [ctypes.c_void_p]
+    library.ph_frame_free.restype = None
+
+    library.ph_frame_to_html.argtypes = [ctypes.c_void_p]
+    library.ph_frame_to_html.restype = ctypes.c_char_p
+
+    library.ph_frame_evaluate_javascript.argtypes = [ctypes.c_void_p, ctypes.c_char_p]
+    library.ph_frame_evaluate_javascript.restype = ctypes.c_char_p
 
     # Image methods
-    library.ph_page_capture_image.argtypes = [ctypes.c_void_p, ctypes.c_char_p, ctypes.c_int]
-    library.ph_page_capture_image.restype = ctypes.c_void_p
+    library.ph_frame_capture_image.argtypes = [ctypes.c_void_p, ctypes.c_char_p, ctypes.c_int]
+    library.ph_frame_capture_image.restype = ctypes.c_void_p
 
     library.ph_image_get_size.argtypes = [ctypes.c_void_p]
     library.ph_image_get_size.restype = ctypes.c_longlong
@@ -58,8 +66,8 @@ try:
     library.ph_image_get_bytes.restype = None
 
     # Web Element methods
-    library.ph_page_find_first.argtypes = [ctypes.c_void_p, ctypes.c_char_p]
-    library.ph_page_find_first.restype = ctypes.c_void_p
+    library.ph_frame_find_first.argtypes = [ctypes.c_void_p, ctypes.c_char_p]
+    library.ph_frame_find_first.restype = ctypes.c_void_p
 
     library.ph_webelement_free.argtypes = [ctypes.c_void_p]
     library.ph_webelement_free.restype = None

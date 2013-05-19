@@ -1,7 +1,7 @@
 #include "image.hpp"
 
-Image::Image(Page *page, QObject *parent): QObject(parent) {
-    p_page = page;
+Image::Image(Frame *frame, QObject *parent): QObject(parent) {
+    p_frame = frame;
 }
 
 Image::~Image() {}

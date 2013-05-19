@@ -1,13 +1,13 @@
 #ifndef PHANTOMPY_IMAGE_HPP
 #define PHANTOMPY_IMAGE_HPP
 
-#include "page.hpp"
+#include "frame.hpp"
 
 class Image: public QObject {
     Q_OBJECT
 
 public:
-    Image(Page *page, QObject *parent=0);
+    Image(Frame *frame, QObject *parent=0);
     ~Image();
 
     qint64 size();
@@ -20,7 +20,7 @@ public:
     void setData(const QByteArray &data);
 
 private:
-    Page *p_page;
+    Frame *p_frame;
 
     QByteArray m_image;
     QByteArray m_format;

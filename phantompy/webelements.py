@@ -5,9 +5,9 @@ from .api import ctypes
 
 
 class WebElement(object):
-    def __init__(self, el_ptr, page):
+    def __init__(self, el_ptr, frame):
         self._el_ptr = el_ptr
-        self._page = page
+        self._frame = frame
         self._closed = False
 
         # Setup tagname
@@ -19,7 +19,6 @@ class WebElement(object):
 
     @property
     def ptr(self):
-        assert not self._page.is_closed(), "Page closed"
         return self._el_ptr
 
     def __del__(self):

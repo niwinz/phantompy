@@ -4,44 +4,44 @@ import unittest
 import io
 import time
 
-from phantompy import page
+import phantompy as ph
 
 
 class WebPageTests(unittest.TestCase):
     def test_load_page(self):
-        p = page.open("http://127.0.0.1/test.html")
-        html_data = p.to_html()
+        frame = ph.open("http://127.0.0.1/test.html")
+        html_data = frame.to_html()
         self.assertNotEqual(len(html_data), 0)
 
     def test_evaluate_js(self):
-        p = page.open("http://127.0.0.1/test.html")
-        result = p.evaluate('document.getElementsByTagName("h1")[0].innerHTML')
+        frame = ph.open("http://127.0.0.1/test.html")
+        result = frame.evaluate('document.getElementsByTagName("h1")[0].innerHTML')
         self.assertEqual(result, "Title")
 
 
 class WebElementTests(unittest.TestCase):
     def test_get_title_element(self):
-        p = page.open("http://127.0.0.1/test.html")
+        p = ph.open("http://127.0.0.1/test.html")
 
         element = p.cssselect("title")
         self.assertEqual(element.name, "TITLE")
         self.assertEqual(element.inner_html(), "simple title")
 
     def test_get_null_element(self):
-        p = page.open("http://127.0.0.1/test.html")
+        p = ph.open("http://127.0.0.1/test.html")
 
         element = p.cssselect("foo")
         self.assertTrue(element.is_none())
 
     def test_get_inner_html(self):
-        p = page.open("http://127.0.0.1/test.html")
+        p = ph.open("http://127.0.0.1/test.html")
 
         element = p.cssselect("#footer")
         html = element.inner_html()
         self.assertEqual(html.strip(), "<span>some footer</span>")
 
     def test_get_inner_text(self):
-        p = page.open("http://127.0.0.1/test.html")
+        p = ph.open("http://127.0.0.1/test.html")
 
         element = p.cssselect("#footer")
         text = element.inner_text()
@@ -50,7 +50,7 @@ class WebElementTests(unittest.TestCase):
 
 class WebPageImageTests(unittest.TestCase):
     def test_capture_page(self):
-        p = page.open("http://127.0.0.1/test.html")
+        p = ph.open("http://127.0.0.1/test.html")
         img = p.to_image()
         blob = img.to_blob()
 

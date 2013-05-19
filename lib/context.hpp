@@ -2,6 +2,7 @@
 #define PHANTOMPY_CONTEXT_HPP
 
 #include <QtCore>
+#include <QtWidgets>
 
 //! Initial point for all engine execution.
 /*! Some Qt features requires one `QCoreApplication` global instance.

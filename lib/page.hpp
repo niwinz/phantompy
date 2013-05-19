@@ -17,17 +17,16 @@ public:
     void load(const QString &url);
     void setViewSize(int x, int y);
 
-    QByteArray toHtml();
-    QByteArray evaluateJavaScript(const QString &js);
-    QByteArray captureImage(const char *format, int quality);
-    QWebElement findFirstElement(const QString &selector);
-
     bool isLoaded();
     bool hasLoadErrors();
 
+    QWebFrame* mainFrame();
+
 private:
-    bool loaded;
-    bool error;
+
+
+    bool m_loaded;
+    bool m_error;
 
     QEventLoop m_event_loop;
     QWebPage m_page;

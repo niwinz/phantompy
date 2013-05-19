@@ -1,5 +1,9 @@
 #include <stdint.h>
+#include <cstring>
+
+#include "context.hpp"
 #include "page.hpp"
+#include "frame.hpp"
 #include "image.hpp"
 #include "webelement.hpp"
 
@@ -16,18 +20,22 @@ extern "C" {
     int32_t ph_page_load(void *page, char *url);
     int32_t ph_page_is_loaded(void *page);
 
-    char* ph_page_to_html(void *page);
-    char* ph_page_evaluate_javascript(void *page, char* js);
+    // Frame
+    void* ph_page_main_frame(void *page);
+    void ph_frame_free(void *frame);
+
+    char* ph_frame_to_html(void *frame);
+    char* ph_frame_evaluate_javascript(void *frame, char* js);
 
     // Image Methods
-    void* ph_page_capture_image(void *page, const char *format, int quality);
+    void* ph_frame_capture_image(void *frame, const char *format, int quality);
     void ph_image_free(void *image);
     int64_t ph_image_get_size(void* image);
     const char* ph_image_get_format(void* image);
     void ph_image_get_bytes(void *image, void *buffer, int64_t size);
 
     // Web element methods
-    void* ph_page_find_first(void *page, const char *selector);
+    void* ph_frame_find_first(void *frame, const char *selector);
     void ph_webelement_free(void *el);
 
     char* ph_webelement_tag_name(void *el);
