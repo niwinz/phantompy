@@ -21,10 +21,9 @@ public:
     bool hasLoadErrors();
 
     QWebFrame* mainFrame();
+    QByteArray cookies();
 
 private:
-
-
     bool m_loaded;
     bool m_error;
 

@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+import json
+
 from .api import library as lib
 from .api import ctypes
 
@@ -110,6 +112,11 @@ class Page(object):
     def frame(self):
         frame_ptr = lib.ph_page_main_frame(self.ptr)
         return Frame(frame_ptr, self)
+
+    def cookies(self):
+        assert self._loaded, "Page not loaded"
+        cookies_raw_data = lib.ph_page_cookies(self.ptr)
+        return json.loads(cookies_raw_data.decode("utf-8"))
 
     @property
     def ptr(self):

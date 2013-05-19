@@ -1,3 +1,4 @@
+#include <QtNetwork>
 #include "page.hpp"
 
 Page::Page(QObject *parent):QObject(parent) {
@@ -39,4 +40,18 @@ bool Page::hasLoadErrors() {
 
 QWebFrame* Page::mainFrame() {
     return m_page.mainFrame();
+}
+
+QByteArray Page::cookies() {
+    QNetworkAccessManager *nm = m_page.networkAccessManager();
+    QNetworkCookieJar *cj = nm->cookieJar();
+    QUrl url = m_page.mainFrame()->url();
+
+    QJsonObject cookies;
+    foreach(QNetworkCookie c, cj->cookiesForUrl(url)) {
+        QJsonValue value(QString::fromUtf8(c.value()));
+        cookies.insert(QString::fromUtf8(c.name()), value);
+    }
+
+    return QJsonDocument(cookies).toJson();
 }

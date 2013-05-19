@@ -20,6 +20,8 @@ extern "C" {
     int32_t ph_page_load(void *page, char *url);
     int32_t ph_page_is_loaded(void *page);
 
+    char* ph_page_cookies(void *page);
+
     // Frame
     void* ph_page_main_frame(void *page);
     void ph_frame_free(void *frame);

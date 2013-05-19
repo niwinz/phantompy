@@ -35,6 +35,9 @@ try:
     library.ph_page_is_loaded.argtypes = [ctypes.c_void_p]
     library.ph_page_is_loaded.restype = ctypes.c_int
 
+    library.ph_page_cookies.argtypes = [ctypes.c_void_p]
+    library.ph_page_cookies.restype = ctypes.c_char_p
+
     # Frame methods
 
     library.ph_page_main_frame.argtypes = [ctypes.c_void_p]

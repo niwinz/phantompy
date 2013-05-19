@@ -18,6 +18,11 @@ class WebPageTests(unittest.TestCase):
         result = frame.evaluate('document.getElementsByTagName("h1")[0].innerHTML')
         self.assertEqual(result, "Title")
 
+    def test_page_cookies(self):
+        frame = ph.open("http://www.facebook.com")
+        cookies = frame.page.cookies()
+        self.assertIsInstance(cookies, dict)
+
 
 class WebElementTests(unittest.TestCase):
     def test_get_title_element(self):

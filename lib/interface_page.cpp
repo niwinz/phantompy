@@ -36,4 +36,14 @@ int ph_page_is_loaded(void *page) {
     }
 }
 
+char* ph_page_cookies(void *page) {
+    Page *p = (Page*)page;
+    QByteArray cookies = p->cookies();
+
+    char *result_data = new char[cookies.size() + 1];
+    qstrncpy(result_data, cookies.data(), cookies.size() + 1);
+
+    return result_data;
+}
+
 }
