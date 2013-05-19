@@ -15,7 +15,7 @@ class WebElement(object):
         self._tag_name = tagname.decode("utf-8")
 
     def __repr__(self):
-        return "<WebElement <{0}>".format(self.name)
+        return "<WebElement <{0}> >".format(self.name)
 
     @property
     def ptr(self):
@@ -31,6 +31,10 @@ class WebElement(object):
 
     def inner_html(self):
         result = lib.ph_webelement_inner_html(self.ptr)
+        return result.decode("utf-8")
+
+    def inner_text(self):
+        result = lib.ph_webelement_inner_text(self.ptr)
         return result.decode("utf-8")
 
     def is_none(self):
