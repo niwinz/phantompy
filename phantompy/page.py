@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from .api import library as lib
+from .api import ctypes
 
 from . import context
 from . import image
@@ -67,8 +68,11 @@ class Page(object):
         else:
             _format = format
 
-        blob = lib.ph_page_to_image_bytes(self.ptr, _format, quality)
-        return image.Image(self, blob, format)
+        size = lib.ph_page_capture_image(self.ptr, _format, quality)
+
+        blob = ctypes.create_string_buffer(size)
+        lib.ph_page_captured_image_bytes(self.ptr, ctypes.byref(blob), size)
+        return image.Image(self, blob.raw, format)
 
     def evaluate(self, js):
         if hasattr(js, "encode"):

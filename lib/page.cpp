@@ -41,33 +41,37 @@ QByteArray Page::toHtml() {
     return m_page.mainFrame()->toHtml().toUtf8();
 }
 
-std::shared_ptr<QBuffer> Page::toImageBytes(char *format, int quality) {
+qint64 Page::captureImage(char *format, int quality) {
+    m_image_type = QString::fromUtf8(format);
+    m_image_quality = quality;
+
     m_page.setViewportSize(m_page.mainFrame()->contentsSize());
 
     QImage image(m_page.viewportSize(), QImage::Format_ARGB32_Premultiplied);
     image.fill(Qt::transparent);
 
-    std::shared_ptr<QBuffer> buffer(new QBuffer());
-    buffer->open(QIODevice::ReadWrite);
-
     if (image.isNull()) {
-        qDebug() << "IMAGE is NULL";
-        return buffer;
-    } else {
-        qDebug() << "SIZE" << m_page.viewportSize();
-
-        QPainter painter(&image);
-        painter.setRenderHint(QPainter::Antialiasing, true);
-        painter.setRenderHint(QPainter::TextAntialiasing, true);
-        painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
-
-        m_page.mainFrame()->render(&painter);
-        painter.end();
-
-        image.save(buffer.get(), "PNG");
-        image.save("/tmp/foo.png");
-        return buffer;
+        qDebug() << "IMAGE IS NULL";
+        return -1;
     }
+
+    QBuffer buffer(&m_image_data);
+    buffer.open(QIODevice::ReadWrite);
+
+    QPainter painter(&image);
+    painter.setRenderHint(QPainter::Antialiasing, true);
+    painter.setRenderHint(QPainter::TextAntialiasing, true);
+    painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
+
+    m_page.mainFrame()->render(&painter);
+    painter.end();
+
+    image.save(&buffer, "PNG");
+    return buffer.size();
+}
+
+const QByteArray& Page::toImageBytes() {
+    return m_image_data;
 }
 
 QByteArray Page::evaluateJavaScript(const QString &js) {

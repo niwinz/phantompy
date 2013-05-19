@@ -21,12 +21,8 @@ class WebPageImageTests(unittest.TestCase):
     def test_capture_page(self):
         p = page.open("http://www.niwi.be")
         img = p.to_image()
-        self.assertNotEqual(len(img.blob), 0)
 
-        print("KKKKPYTHON", len(img.blob))
-
-        with io.open("/tmp/image.png", "wb") as f:
-            f.write(img.blob)
+        self.assertEqual(len(img.blob), 273764)
 
 
 if __name__ == "__main__":

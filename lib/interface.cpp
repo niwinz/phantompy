@@ -57,20 +57,6 @@ char* ph_page_to_html(void *page) {
     return result_data;
 }
 
-char* ph_page_to_image_bytes(void *page, char *format, int quality) {
-    Page *p = (Page*)page;
-    std::shared_ptr<QBuffer> buffer = p->toImageBytes(format, quality);
-
-    qDebug() << "BUFFER size" << buffer->size();
-    qDebug() << "BUFFER size" << buffer->data().size();
-
-    QByteArray buffer_ba = buffer->data();
-
-    char *result_data = new char[buffer_ba.size()];
-    std::memcpy(result_data, buffer_ba.constData(), buffer_ba.size());
-
-    return result_data;
-}
 
 char* ph_page_evaluate_javascript(void *page, char *javascript) {
     Page *p = (Page*)page;
@@ -81,6 +67,17 @@ char* ph_page_evaluate_javascript(void *page, char *javascript) {
     char *result_data = new char[data.size() + 1];
     qstrncpy(result_data, data.data(), data.size() + 1);
     return result_data;
+}
+
+int64_t ph_page_capture_image(void *page, char *format, int quality) {
+    Page *p = (Page*)page;
+    return p->captureImage(format, quality);
+}
+
+void ph_page_captured_image_bytes(void *page, void *buffer, int64_t size) {
+    Page *p = (Page*)page;
+    QByteArray image_data = p->toImageBytes();
+    std::memcpy(buffer, image_data.constData(), size);
 }
 
 }

@@ -36,8 +36,11 @@ try:
     library.ph_page_to_html.argtypes = [ctypes.c_void_p]
     library.ph_page_to_html.restype = ctypes.c_char_p
 
-    library.ph_page_to_image_bytes.argtypes = [ctypes.c_void_p, ctypes.c_char_p, ctypes.c_int]
-    library.ph_page_to_image_bytes.restype = ctypes.c_char_p
+    library.ph_page_capture_image.argtypes = [ctypes.c_void_p, ctypes.c_char_p, ctypes.c_int]
+    library.ph_page_capture_image.restype = ctypes.c_longlong
+
+    library.ph_page_captured_image_bytes.argtypes = [ctypes.c_void_p, ctypes.c_void_p, ctypes.c_longlong]
+    library.ph_page_captured_image_bytes.restype = None
 
     library.ph_page_evaluate_javascript.argtypes = [ctypes.c_void_p, ctypes.c_char_p]
     library.ph_page_evaluate_javascript.restype = ctypes.c_char_p
