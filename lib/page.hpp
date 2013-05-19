@@ -1,10 +1,10 @@
 #ifndef PHANTOMPY_PAGE_HPP
 #define PHANTOMPY_PAGE_HPP
 
-#include <memory>
 #include <QtCore>
 #include <QtWebKit>
 #include <QtWebKitWidgets>
+#include <QtNetwork>
 
 
 class Page: public QObject {
@@ -33,6 +33,7 @@ private:
 
 private slots:
     void loadFinished(bool ok);
+    void replyReceived(QNetworkReply *reply);
 };
 
 #endif

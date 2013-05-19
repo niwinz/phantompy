@@ -23,6 +23,8 @@ class WebPageTests(unittest.TestCase):
         cookies = frame.page.cookies()
         self.assertIsInstance(cookies, dict)
 
+    def test_page_all_requests(self):
+        frame = ph.open("https://twitter.com/")
 
 class WebElementTests(unittest.TestCase):
     def test_get_title_element(self):

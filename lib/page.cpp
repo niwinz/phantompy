@@ -1,8 +1,9 @@
-#include <QtNetwork>
 #include "page.hpp"
 
 Page::Page(QObject *parent):QObject(parent) {
     connect(&m_page, SIGNAL(loadFinished(bool)), this, SLOT(loadFinished(bool)));
+    connect(m_page.networkAccessManager(), SIGNAL(finished(QNetworkReply*)),
+                this, SLOT(replyReceived(QNetworkReply*)));
 
     m_loaded = false;
     m_error = false;
@@ -55,3 +56,5 @@ QByteArray Page::cookies() {
 
     return QJsonDocument(cookies).toJson();
 }
+
+void Page::replyReceived(QNetworkReply *reply) {}
