@@ -1,6 +1,7 @@
 #ifndef PHANTOMPY_PAGE_HPP
 #define PHANTOMPY_PAGE_HPP
 
+#include <memory>
 #include <QtCore>
 #include <QtWebKit>
 #include <QtWebKitWidgets>
@@ -15,7 +16,10 @@ public:
 
     void load(const QString &url);
     void setViewSize(int x, int y);
-    QString toHtml();
+
+    QByteArray toHtml();
+    QByteArray evaluateJavaScript(const QString &js);
+    std::shared_ptr<QBuffer> toImageBytes(char *format, int quality);
 
     bool isLoaded();
     bool hasLoadErrors();
@@ -26,6 +30,7 @@ private:
 
     QEventLoop m_event_loop;
     QWebPage m_page;
+    QSize m_view_size;
 
 private slots:
     void loadFinished(bool ok);

@@ -11,5 +11,8 @@ extern "C" {
     void ph_page_free(void *page);
     int ph_page_load(void *page, char *url);
     int ph_page_is_loaded(void *page);
+
     char* ph_page_to_html(void *page);
+    char* ph_page_to_image_bytes(void *page, char *format, int quality);
+    char* ph_page_evaluate_javascript(void *page, char* js);
 }

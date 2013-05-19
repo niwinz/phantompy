@@ -36,6 +36,12 @@ try:
     library.ph_page_to_html.argtypes = [ctypes.c_void_p]
     library.ph_page_to_html.restype = ctypes.c_char_p
 
+    library.ph_page_to_image_bytes.argtypes = [ctypes.c_void_p, ctypes.c_char_p, ctypes.c_int]
+    library.ph_page_to_image_bytes.restype = ctypes.c_char_p
+
+    library.ph_page_evaluate_javascript.argtypes = [ctypes.c_void_p, ctypes.c_char_p]
+    library.ph_page_evaluate_javascript.restype = ctypes.c_char_p
+
 except AttributeError:
     raise ImportError('shared library not found or incompatible')
 except (OSError, IOError):
