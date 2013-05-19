@@ -69,15 +69,72 @@ char* ph_page_evaluate_javascript(void *page, char *javascript) {
     return result_data;
 }
 
-int64_t ph_page_capture_image(void *page, char *format, int quality) {
+void* ph_page_capture_image(void *page, const char *format, int quality) {
     Page *p = (Page*)page;
-    return p->captureImage(format, quality);
+    QByteArray image_data = p->captureImage(format, quality);
+
+    Image *image = new Image(p);
+    image->setFormat(format);
+    image->setQuality(quality);
+    image->setData(image_data);
+
+    return image;
 }
 
-void ph_page_captured_image_bytes(void *page, void *buffer, int64_t size) {
+int64_t ph_image_get_size(void *image) {
+    Image *img = (Image*)image;
+    return img->size();
+}
+
+const char * ph_image_get_format(void *image) {
+    Image *img = (Image*)image;
+    return img->format().data();
+}
+
+void ph_image_get_bytes(void *image, void *buffer, int64_t size) {
+    Image *img = (Image*)image;
+    std::memcpy(buffer, img->data(), size);
+}
+
+void ph_image_free(void *image) {
+    Image *img = (Image*)image;
+    delete img;
+}
+
+void* ph_page_find_first(void *page, const char *selector) {
     Page *p = (Page*)page;
-    QByteArray image_data = p->toImageBytes();
-    std::memcpy(buffer, image_data.constData(), size);
+    QWebElement element = p->findFirstElement(QString::fromUtf8(selector));
+    WebElement *elm = new WebElement(element);
+    return elm;
+}
+
+void ph_webelement_free(void *element) {
+    WebElement *el = (WebElement*)element;
+    delete el;
+}
+
+char* ph_webelement_tag_name(void *element) {
+    WebElement *el = (WebElement*)element;
+    return el->tagName().data();
+}
+
+char* ph_webelement_inner_html(void *element) {
+    WebElement *el = (WebElement*)element;
+    return el->toHtml().data();
+}
+
+char* ph_webelement_inner_text(void *element) {
+    WebElement *el = (WebElement*)element;
+    return el->toText().data();
+}
+
+int32_t ph_webelement_is_null(void *element) {
+    WebElement *el = (WebElement*)element;
+    if (el->isNull()) {
+        return 0;
+    } else {
+        return -1;
+    }
 }
 
 }

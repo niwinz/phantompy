@@ -55,6 +55,8 @@ ENDIF()
 SET(SOURCES
     lib/interface.cpp
     lib/page.cpp
+    lib/image.cpp
+    lib/webelement.cpp
 )
 
 ADD_LIBRARY(phantompy ${SOURCES})

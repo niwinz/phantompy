@@ -5,6 +5,7 @@ from .api import ctypes
 
 from . import context
 from . import image
+from . import webelements
 
 
 def open(url, size=(1280, 768), ctx=None):
@@ -49,6 +50,9 @@ class Page(object):
 
         self._closed = True
 
+    def is_closed(self):
+        return self._closed
+
     def load(self):
         assert not self._loaded, "Page already loaded"
 
@@ -68,11 +72,9 @@ class Page(object):
         else:
             _format = format
 
-        size = lib.ph_page_capture_image(self.ptr, _format, quality)
-
-        blob = ctypes.create_string_buffer(size)
-        lib.ph_page_captured_image_bytes(self.ptr, ctypes.byref(blob), size)
-        return image.Image(self, blob.raw, format)
+        # Obtain image object pointer
+        image_ptr = lib.ph_page_capture_image(self.ptr, _format, quality)
+        return image.Image(image_ptr, format, quality, self)
 
     def evaluate(self, js):
         if hasattr(js, "encode"):
@@ -85,3 +87,10 @@ class Page(object):
     def ptr(self):
         assert not self._closed, "Page closed"
         return self._page_ptr
+
+    def cssselect(self, selector):
+        if hasattr(selector, "encode"):
+            selector = selector.encode('utf-8')
+
+        el_ptr = lib.ph_page_find_first(self.ptr, selector)
+        return webelements.WebElement(el_ptr, self)

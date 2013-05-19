@@ -17,12 +17,24 @@ class WebPageTests(unittest.TestCase):
         self.assertEqual(result, "Articles:")
 
 
+class WebElementTests(unittest.TestCase):
+    def test_get_title_element(self):
+        p = page.open("http://www.niwi.be")
+
+        element = p.cssselect("title")
+
+        self.assertEqual(element.name, "TITLE")
+        self.assertEqual(element.inner_html(), "Niwi.Be")
+
+
 class WebPageImageTests(unittest.TestCase):
     def test_capture_page(self):
         p = page.open("http://www.niwi.be")
         img = p.to_image()
+        import pdb; pdb.set_trace()
+        blob = img.to_blob()
 
-        self.assertEqual(len(img.blob), 273764)
+        self.assertEqual(len(blob), 273764)
 
 
 if __name__ == "__main__":

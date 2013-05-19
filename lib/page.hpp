@@ -19,9 +19,8 @@ public:
 
     QByteArray toHtml();
     QByteArray evaluateJavaScript(const QString &js);
-
-    qint64 captureImage(char *format, int quality);
-    const QByteArray& toImageBytes();
+    QByteArray captureImage(const char *format, int quality);
+    QWebElement findFirstElement(const QString &selector);
 
     bool isLoaded();
     bool hasLoadErrors();
@@ -33,11 +32,6 @@ private:
     QEventLoop m_event_loop;
     QWebPage m_page;
     QSize m_view_size;
-
-    // Image
-    QByteArray m_image_data;
-    QString m_image_type;
-    qint32  m_image_quality;
 
 private slots:
     void loadFinished(bool ok);
