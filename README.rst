@@ -12,7 +12,9 @@ Components
 The package has two components:
 
 * C++/C library what exposes a ondemand api to Qt5/QtWebkit (libphantompy)
-* Python3 app build on top of the **libphantompy** with ctypes
+* Python app build on top of the **libphantompy** with ctypes
+
+Tested with python: cpython-3.3, cpython-2.7 and pypy-2.0.1
 
 
 Documentation
