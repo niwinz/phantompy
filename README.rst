@@ -4,7 +4,7 @@ Headless WebKit engine for Python
 
 Phantompy is a headless WebKit engine scriptable with a clean pythonic api.
 
-Note: Currently in earlier state of development. Use it for experiment only.
+**Note:** Currently in earlier stage of development. Use it for experiment only.
 
 Components
 ----------
