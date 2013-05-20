@@ -6,6 +6,13 @@
 #include <QtWebKit>
 #include <QtWebKitWidgets>
 
+#include "networkmanagerproxy.hpp"
+
+typedef QPair<QByteArray, QByteArray> HeaderPair;
+typedef QList<HeaderPair> HeaderPairs;
+typedef QHash<QString, HeaderPairs> HeadersCache;
+typedef QHash<QString, QByteArray> ResponsesCache;
+
 
 class Page: public QObject {
     Q_OBJECT
@@ -22,7 +29,12 @@ public:
 
     QWebFrame* mainFrame();
     QByteArray cookies();
+
+    // Methods for get information about
+    // background requests.
     QByteArray requestedUrls();
+    QByteArray requestData(const QString &url);
+    QByteArray requestHeaders(const QString &url);
 
 private:
     bool m_loaded;
@@ -33,7 +45,12 @@ private:
     QWebPage m_page;
     QSize m_viewSize;
 
-    QList<QString> m_requestedUrls;
+    SyncNetworkManagerProxy m_nmProxy;
+
+    QSet<QString> m_requestedUrls;
+    HeadersCache m_headersCache;
+    ResponsesCache m_responsesCache;
+
     QNetworkAccessManager m_networkManager;
 
 private slots:

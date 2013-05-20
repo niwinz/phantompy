@@ -2,6 +2,8 @@
 
 Page::Page(QObject *parent):QObject(parent) {
     m_page.setNetworkAccessManager(&m_networkManager);
+    m_nmProxy.setNetworkAccessManager(&m_networkManager);
+
     m_page.settings()->setAttribute(QWebSettings::LocalContentCanAccessFileUrls, true);
     m_page.settings()->setAttribute(QWebSettings::LocalContentCanAccessRemoteUrls, true);
     //m_page.settings()->setAttribute(QWebSettings::PrivateBrowsingEnabled, true);
@@ -49,8 +51,7 @@ QWebFrame* Page::mainFrame() {
 }
 
 QByteArray Page::cookies() {
-    QNetworkAccessManager *nm = m_page.networkAccessManager();
-    QNetworkCookieJar *cj = nm->cookieJar();
+    QNetworkCookieJar *cj = m_networkManager.cookieJar();
     QUrl url = m_page.mainFrame()->url();
 
     QJsonObject cookies;
@@ -62,13 +63,6 @@ QByteArray Page::cookies() {
     return QJsonDocument(cookies).toJson();
 }
 
-void Page::replyReceived(QNetworkReply *reply) {
-    if (reply->url() != m_mainUrl) {
-        qDebug() << reply->url();
-        m_requestedUrls.append(reply->url().toString());
-    }
-}
-
 QByteArray Page::requestedUrls() {
     QJsonArray urls;
 
@@ -78,3 +72,59 @@ QByteArray Page::requestedUrls() {
 
     return QJsonDocument(urls).toJson();
 }
+
+QByteArray Page::requestData(const QString &url) {
+    if (m_responsesCache.contains(url)) {
+        return m_responsesCache.value(url);
+    }
+
+    QNetworkReply *reply = m_nmProxy.get(QUrl(url));
+
+    QByteArray data = reply->readAll();
+    HeaderPairs headers = reply->rawHeaderPairs();
+
+    reply->close();
+    delete reply;
+
+    m_responsesCache.insert(url, data);
+    m_headersCache.insert(url, headers);
+
+    return data;
+}
+
+QByteArray Page::requestHeaders(const QString &url) {
+    HeaderPairs headers;
+
+    if (m_headersCache.contains(url)) {
+        headers = m_headersCache.value(url);
+    } else {
+        QNetworkReply *reply = m_nmProxy.get(QUrl(url));
+
+        QByteArray data = reply->readAll();
+        headers = reply->rawHeaderPairs();
+
+        reply->close();
+        delete reply;
+
+        m_responsesCache.insert(url, data);
+        m_headersCache.insert(url, headers);
+    }
+
+    QJsonObject hobj;
+
+    for(auto i=headers.cbegin(); i != headers.cend(); ++i) {
+        QString key = QString::fromUtf8( (*i).first );
+        QString value = QString::fromUtf8( (*i).second );
+
+        hobj.insert(key, QJsonValue(value));
+    }
+
+    return QJsonDocument(hobj).toJson();
+}
+
+void Page::replyReceived(QNetworkReply *reply) {
+    if (reply->url() != m_mainUrl) {
+        m_requestedUrls.insert(reply->url().toString());
+    }
+}
+
