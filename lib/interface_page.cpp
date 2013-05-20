@@ -1,4 +1,5 @@
 #include "interface.hpp"
+#include "page.hpp"
 
 extern "C" {
 
@@ -40,10 +41,20 @@ char* ph_page_cookies(void *page) {
     Page *p = (Page*)page;
     QByteArray cookies = p->cookies();
 
-    char *result_data = new char[cookies.size() + 1];
-    qstrncpy(result_data, cookies.data(), cookies.size() + 1);
+    char *resultData = new char[cookies.size() + 1];
+    qstrncpy(resultData, cookies.data(), cookies.size() + 1);
 
-    return result_data;
+    return resultData;
+}
+
+char* ph_page_requested_urls(void *page) {
+    Page *p = (Page*)page;
+    QByteArray requestedUrls = p->requestedUrls();
+
+    char *resultData = new char[requestedUrls.size() + 1];
+    qstrncpy(resultData, requestedUrls.data(), requestedUrls.size() + 1);
+
+    return resultData;
 }
 
 }

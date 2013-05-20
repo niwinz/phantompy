@@ -34,5 +34,5 @@ class Image(object):
         return blob.raw
 
     def save(self, path):
-        with io.open(path, "wb") as f:
+        with open(path, "wb") as f:
             return f.write(self.to_blob())

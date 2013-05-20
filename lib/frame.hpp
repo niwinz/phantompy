@@ -1,7 +1,6 @@
 #ifndef PHANTOMPY_FRAME_HPP
 #define PHANTOMPY_FRAME_HPP
 
-#include <memory>
 #include <QtCore>
 #include <QtWebKit>
 #include <QtWebKitWidgets>

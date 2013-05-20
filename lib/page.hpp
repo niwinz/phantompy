@@ -2,9 +2,9 @@
 #define PHANTOMPY_PAGE_HPP
 
 #include <QtCore>
+#include <QtNetwork>
 #include <QtWebKit>
 #include <QtWebKitWidgets>
-#include <QtNetwork>
 
 
 class Page: public QObject {
@@ -22,14 +22,19 @@ public:
 
     QWebFrame* mainFrame();
     QByteArray cookies();
+    QByteArray requestedUrls();
 
 private:
     bool m_loaded;
     bool m_error;
 
-    QEventLoop m_event_loop;
+    QUrl m_mainUrl;
+    QEventLoop m_eventLoop;
     QWebPage m_page;
-    QSize m_view_size;
+    QSize m_viewSize;
+
+    QList<QString> m_requestedUrls;
+    QNetworkAccessManager m_networkManager;
 
 private slots:
     void loadFinished(bool ok);

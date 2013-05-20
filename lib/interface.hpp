@@ -1,11 +1,6 @@
 #include <stdint.h>
 #include <cstring>
 
-#include "context.hpp"
-#include "page.hpp"
-#include "frame.hpp"
-#include "image.hpp"
-#include "webelement.hpp"
 
 extern "C" {
     // Initialize methods
@@ -21,6 +16,7 @@ extern "C" {
     int32_t ph_page_is_loaded(void *page);
 
     char* ph_page_cookies(void *page);
+    char* ph_page_requested_urls(void *page);
 
     // Frame
     void* ph_page_main_frame(void *page);

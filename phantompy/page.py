@@ -88,6 +88,11 @@ class Page(object):
                                        self._size[0],
                                        self._size[1])
 
+    @property
+    def ptr(self):
+        assert not self._closed, "Page closed"
+        return self._page_ptr
+
     def close(self):
         assert not self._closed, "Page already closed"
         lib.ph_page_free(self.ptr)
@@ -118,7 +123,7 @@ class Page(object):
         cookies_raw_data = lib.ph_page_cookies(self.ptr)
         return json.loads(cookies_raw_data.decode("utf-8"))
 
-    @property
-    def ptr(self):
-        assert not self._closed, "Page closed"
-        return self._page_ptr
+    def requested_urls(self):
+        assert self._loaded, "Page not loaded"
+        requested_urls = lib.ph_page_requested_urls(self.ptr)
+        return json.loads(requested_urls.decode("utf-8"))

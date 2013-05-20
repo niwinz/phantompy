@@ -38,6 +38,9 @@ try:
     library.ph_page_cookies.argtypes = [ctypes.c_void_p]
     library.ph_page_cookies.restype = ctypes.c_char_p
 
+    library.ph_page_requested_urls.argtypes = [ctypes.c_void_p]
+    library.ph_page_requested_urls.restype = ctypes.c_char_p
+
     # Frame methods
 
     library.ph_page_main_frame.argtypes = [ctypes.c_void_p]

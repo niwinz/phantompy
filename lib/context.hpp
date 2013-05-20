@@ -2,6 +2,7 @@
 #define PHANTOMPY_CONTEXT_HPP
 
 #include <QtCore>
+#include <QtWebKit>
 #include <QtWidgets>
 
 //! Initial point for all engine execution.
@@ -17,6 +18,10 @@ public:
         int argc = 1;
 
         this->app = new QApplication(argc, &argv);
+
+        QWebSettings::setMaximumPagesInCache( 0 );
+        QWebSettings::setObjectCacheCapacities( 0, 0, 0 );
+        QWebSettings::clearMemoryCaches( );
     }
 
     ~Context() {

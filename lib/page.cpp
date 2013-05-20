@@ -1,6 +1,11 @@
 #include "page.hpp"
 
 Page::Page(QObject *parent):QObject(parent) {
+    m_page.setNetworkAccessManager(&m_networkManager);
+    m_page.settings()->setAttribute(QWebSettings::LocalContentCanAccessFileUrls, true);
+    m_page.settings()->setAttribute(QWebSettings::LocalContentCanAccessRemoteUrls, true);
+    //m_page.settings()->setAttribute(QWebSettings::PrivateBrowsingEnabled, true);
+
     connect(&m_page, SIGNAL(loadFinished(bool)), this, SLOT(loadFinished(bool)));
     connect(m_page.networkAccessManager(), SIGNAL(finished(QNetworkReply*)),
                 this, SLOT(replyReceived(QNetworkReply*)));
@@ -12,22 +17,22 @@ Page::Page(QObject *parent):QObject(parent) {
 Page::~Page() {}
 
 void Page::load(const QString &_url) {
-    QUrl url = QUrl::fromUserInput(_url);
+    m_mainUrl = QUrl::fromUserInput(_url);
 
-    m_page.mainFrame()->load(url);
+    m_page.mainFrame()->load(m_mainUrl);
     m_page.mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOff);
     m_page.mainFrame()->setScrollBarPolicy(Qt::Horizontal, Qt::ScrollBarAlwaysOff);
-    m_page.setViewportSize(m_view_size);
+    m_page.setViewportSize(m_viewSize);
 
-    m_event_loop.exec();
+    m_eventLoop.exec();
 }
 
 void Page::setViewSize(int x, int y) {
-    this->m_view_size = QSize(x, y);
+    this->m_viewSize = QSize(x, y);
 }
 
 void Page::loadFinished(bool ok) {
-    m_event_loop.quit();
+    m_eventLoop.quit();
     m_error = ok;
 }
 
@@ -57,4 +62,19 @@ QByteArray Page::cookies() {
     return QJsonDocument(cookies).toJson();
 }
 
-void Page::replyReceived(QNetworkReply *reply) {}
+void Page::replyReceived(QNetworkReply *reply) {
+    if (reply->url() != m_mainUrl) {
+        qDebug() << reply->url();
+        m_requestedUrls.append(reply->url().toString());
+    }
+}
+
+QByteArray Page::requestedUrls() {
+    QJsonArray urls;
+
+    for(auto i=m_requestedUrls.cbegin(); i != m_requestedUrls.cend(); ++i) {
+        urls.append(QJsonValue((*i)));
+    }
+
+    return QJsonDocument(urls).toJson();
+}

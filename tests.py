@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 import unittest
-import io
 import time
 
 import phantompy as ph
@@ -24,7 +23,11 @@ class WebPageTests(unittest.TestCase):
         self.assertIsInstance(cookies, dict)
 
     def test_page_all_requests(self):
-        frame = ph.open("https://twitter.com/")
+        frame = ph.open("http://127.0.0.1/test.html")
+        self.assertEqual(frame.page.requested_urls(),
+            ['http://code.jquery.com/jquery-1.9.1.min.js'])
+        self.assertEqual(len(frame.page.requested_urls()), 1)
+
 
 class WebElementTests(unittest.TestCase):
     def test_get_title_element(self):

@@ -1,4 +1,8 @@
 #include "interface.hpp"
+#include "page.hpp"
+#include "frame.hpp"
+#include "image.hpp"
+#include "webelement.hpp"
 
 extern "C" {
 
@@ -18,9 +22,9 @@ char* ph_frame_to_html(void *frame) {
     Frame *f = (Frame*)frame;
 
     QByteArray data = f->toHtml();
-    char *result_data = new char[data.size() + 1];
-    qstrncpy(result_data, data.data(), data.size() + 1);
-    return result_data;
+    char *resultData = new char[data.size() + 1];
+    qstrncpy(resultData, data.data(), data.size() + 1);
+    return resultData;
 }
 
 
@@ -30,9 +34,9 @@ char* ph_frame_evaluate_javascript(void *frame, char *javascript) {
     QString js(javascript);
     QByteArray data = f->evaluateJavaScript(js);
 
-    char *result_data = new char[data.size() + 1];
-    qstrncpy(result_data, data.data(), data.size() + 1);
-    return result_data;
+    char *resultData = new char[data.size() + 1];
+    qstrncpy(resultData, data.data(), data.size() + 1);
+    return resultData;
 }
 
 void* ph_frame_find_first(void *frame, const char *selector) {
