@@ -8,12 +8,11 @@
 extern "C" {
 
 void* ph_engine_init() {
-    return new ph::Context();
+    return ph::Context::instance();
 }
 
 void ph_engine_free(void *ctx) {
-    ph::Context *context = (ph::Context*)ctx;
-    delete context;
+    ph::Context::clerInstance();
 }
 
 void* ph_page_create() {

@@ -15,21 +15,13 @@ namespace ph {
 
 class Context: public QObject {
 public:
-    Context(QObject *parent=0): QObject(parent) {
-        char *argv;
-        int argc = 1;
+    Context(QObject *parent=0);
+    ~Context();
 
-        this->app = new QApplication(argc, &argv);
+    static Context* instance();
+    static void clerInstance();
 
-        QWebSettings::setMaximumPagesInCache( 0 );
-        QWebSettings::setObjectCacheCapacities( 0, 0, 0 );
-        QWebSettings::clearMemoryCaches( );
-    }
-
-    ~Context() {
-        delete this->app;
-    }
-
+private:
     QApplication *app;
 };
 

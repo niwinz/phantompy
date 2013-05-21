@@ -53,6 +53,7 @@ ENDIF()
 
 SET(SOURCES
     lib/phantompy.cpp
+    lib/private/context.cpp
     lib/private/page.cpp
     lib/private/frame.cpp
     lib/private/image.cpp
