@@ -5,7 +5,7 @@
 #include <QtWebKit>
 #include <QtWebKitWidgets>
 
-class Page;
+namespace ph {
 
 class Frame: public QObject {
     Q_OBJECT
@@ -23,5 +23,7 @@ public:
 private:
     QWebFrame *p_frame;
 };
+
+}
 
 #endif

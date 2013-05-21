@@ -4,6 +4,7 @@
 #include <QtCore>
 #include <QtNetwork>
 
+namespace ph {
 
 class SyncNetworkManagerProxy: public QObject {
     Q_OBJECT
@@ -24,5 +25,7 @@ private:
 private slots:
     void finished();
 };
+
+}
 
 #endif

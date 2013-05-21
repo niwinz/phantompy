@@ -5,6 +5,8 @@
 #include <QtWebKit>
 #include <QtWebKitWidgets>
 
+namespace ph {
+
 class WebElement: public QObject {
     Q_OBJECT
 
@@ -35,5 +37,7 @@ public:
 private:
     QWebElement m_web_element;
 };
+
+}
 
 #endif

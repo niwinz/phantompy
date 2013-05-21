@@ -1,5 +1,7 @@
 #include "image.hpp"
 
+namespace ph {
+
 Image::Image(Frame *frame, QObject *parent): QObject(parent) {
     p_frame = frame;
 }
@@ -33,4 +35,6 @@ QByteArray Image::format() {
 
 qint32 Image::quality() {
     return m_quality;
+}
+
 }

@@ -52,14 +52,12 @@ ELSE()
 ENDIF()
 
 SET(SOURCES
-    lib/interface.cpp
-    lib/interface_page.cpp
-    lib/interface_frame.cpp
-    lib/page.cpp
-    lib/frame.cpp
-    lib/image.cpp
-    lib/webelement.cpp
-    lib/networkmanagerproxy.cpp
+    lib/phantompy.cpp
+    lib/private/page.cpp
+    lib/private/frame.cpp
+    lib/private/image.cpp
+    lib/private/webelement.cpp
+    lib/private/networkmanagerproxy.cpp
 )
 
 ADD_LIBRARY(phantompy ${SOURCES})

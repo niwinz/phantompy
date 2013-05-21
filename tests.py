@@ -14,6 +14,7 @@ TEST_FILE_WITH_FRAMES = join(CURRENT_DIR, "misc", "test_with_frames.html")
 
 class WebPageTests(unittest.TestCase):
     def test_load_page(self):
+        #import pdb; pdb.set_trace()
         frame = ph.open(TEST_FILE)
         html_data = frame.to_html()
         self.assertNotEqual(len(html_data), 0)

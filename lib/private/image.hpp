@@ -3,6 +3,8 @@
 
 #include "frame.hpp"
 
+namespace ph {
+
 class Image: public QObject {
     Q_OBJECT
 
@@ -27,5 +29,6 @@ private:
     qint32 m_quality;
 };
 
+}
 
 #endif

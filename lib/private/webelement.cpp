@@ -1,5 +1,7 @@
 #include "webelement.hpp"
 
+namespace ph {
+
 WebElement::WebElement(const QWebElement &element, QObject *parent): QObject(parent) {
     m_web_element = element;
 }
@@ -61,4 +63,6 @@ void WebElement::setText(const QString &text) {
 
 void WebElement::setHtml(const QString &html) {
     m_web_element.setInnerXml(html);
+}
+
 }

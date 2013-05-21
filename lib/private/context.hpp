@@ -11,6 +11,8 @@
  *  global `QCoreApplication` instance. It should be used with smart
  *  pointers for correct resource managing. */
 
+namespace ph {
+
 class Context: public QObject {
 public:
     Context(QObject *parent=0): QObject(parent) {
@@ -30,5 +32,7 @@ public:
 
     QApplication *app;
 };
+
+}
 
 #endif

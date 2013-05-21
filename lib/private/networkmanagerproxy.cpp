@@ -1,5 +1,7 @@
 #include "networkmanagerproxy.hpp"
 
+namespace ph {
+
 SyncNetworkManagerProxy::SyncNetworkManagerProxy(QObject *parent): QObject(parent) {}
 SyncNetworkManagerProxy::~SyncNetworkManagerProxy() {}
 
@@ -24,4 +26,6 @@ QNetworkReply* SyncNetworkManagerProxy::get(const QNetworkRequest &request) {
 
 void SyncNetworkManagerProxy::finished() {
     m_eventLoop.quit();
+}
+
 }

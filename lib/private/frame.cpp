@@ -1,5 +1,7 @@
 #include "frame.hpp"
 
+namespace ph {
+
 Frame::Frame(QWebFrame *frame, QObject *parent): QObject(parent) {
     p_frame = frame;
 }
@@ -39,4 +41,6 @@ QByteArray Frame::evaluateJavaScript(const QString &js) {
 
 QWebElement Frame::findFirstElement(const QString &selector) {
     return p_frame->findFirstElement(selector);
+}
+
 }

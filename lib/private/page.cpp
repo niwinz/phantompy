@@ -1,5 +1,7 @@
 #include "page.hpp"
 
+namespace ph {
+
 Page::Page(QObject *parent):QObject(parent) {
     m_page.setNetworkAccessManager(&m_networkManager);
     m_nmProxy.setNetworkAccessManager(&m_networkManager);
@@ -50,27 +52,20 @@ QWebFrame* Page::mainFrame() {
     return m_page.mainFrame();
 }
 
-QByteArray Page::cookies() {
+Cookies Page::cookies() {
     QNetworkCookieJar *cj = m_networkManager.cookieJar();
     QUrl url = m_page.mainFrame()->url();
 
-    QJsonObject cookies;
+    Cookies cookies;
     foreach(QNetworkCookie c, cj->cookiesForUrl(url)) {
-        QJsonValue value(QString::fromUtf8(c.value()));
-        cookies.insert(QString::fromUtf8(c.name()), value);
+        cookies.insert(QString::fromUtf8(c.name()), QString::fromUtf8(c.value()));
     }
 
-    return QJsonDocument(cookies).toJson();
+    return cookies;
 }
 
-QByteArray Page::requestedUrls() {
-    QJsonArray urls;
-
-    for(auto i=m_requestedUrls.cbegin(); i != m_requestedUrls.cend(); ++i) {
-        urls.append(QJsonValue((*i)));
-    }
-
-    return QJsonDocument(urls).toJson();
+QSet<QString> Page::requestedUrls() {
+    return m_requestedUrls;
 }
 
 QByteArray Page::requestData(const QString &url) {
@@ -92,7 +87,7 @@ QByteArray Page::requestData(const QString &url) {
     return data;
 }
 
-QByteArray Page::requestHeaders(const QString &url) {
+HeaderPairs Page::requestHeaders(const QString &url) {
     HeaderPairs headers;
 
     if (m_headersCache.contains(url)) {
@@ -110,16 +105,8 @@ QByteArray Page::requestHeaders(const QString &url) {
         m_headersCache.insert(url, headers);
     }
 
-    QJsonObject hobj;
+    return headers;
 
-    for(auto i=headers.cbegin(); i != headers.cend(); ++i) {
-        QString key = QString::fromUtf8( (*i).first );
-        QString value = QString::fromUtf8( (*i).second );
-
-        hobj.insert(key, QJsonValue(value));
-    }
-
-    return QJsonDocument(hobj).toJson();
 }
 
 void Page::replyReceived(QNetworkReply *reply) {
@@ -128,3 +115,4 @@ void Page::replyReceived(QNetworkReply *reply) {
     }
 }
 
+}
