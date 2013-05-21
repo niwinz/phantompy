@@ -23,6 +23,9 @@ Documentation
 Currently there is no documentation available. You can see **tests.py** file for
 see some examples.
 
+A lot of features are proof of concept and need more work.
+
+
 
 Installation
 ^^^^^^^^^^^^
@@ -41,3 +44,28 @@ For install python module:
 .. code-block:: console
 
     python setup.py install
+
+
+FAQ
+---
+
+**How truly headless is a phantompy?**
+
+Thanks to Qt5 and QPA is truly headless. You can run your apps
+without x11 with this environment variable:
+
+.. code-block:: bash
+
+    export QT_QPA_PLATFORM=minimal
+
+
+**Can compile and use phantompy on OSX?**
+
+Yes and Not. For build phantompy library you need put
+``SET(CMAKE_PREFIX_PATH "/usr/local/opt/qt5")`` with valid qt5 instalation prefix
+on CMakeLists.txt
+
+But python library does not works properly because can not import a library
+due some load imports.
+
+I'm not osx expert and improvements are welcome.
