@@ -19,6 +19,7 @@ public:
     QByteArray evaluateJavaScript(const QString &data);
 
     QWebElement findFirstElement(const QString &selector);
+    QWebElementCollection findAll(const QString &selector);
 
 private:
     QWebFrame *p_frame;

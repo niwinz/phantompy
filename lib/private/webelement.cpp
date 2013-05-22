@@ -65,4 +65,9 @@ void WebElement::setHtml(const QString &html) {
     m_web_element.setInnerXml(html);
 }
 
+QWebElementCollection WebElement::findAll(const QString &selector) {
+    return m_web_element.findAll(selector);
+}
+
+
 }

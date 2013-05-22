@@ -24,6 +24,8 @@ public:
     QByteArray getClasses();
     QByteArray getAttributes();
 
+    QWebElementCollection findAll(const QString &selector);
+
     bool hasClass(const QString &classname);
 
     bool hasAttribute(const QString &attrname);

@@ -43,4 +43,8 @@ QWebElement Frame::findFirstElement(const QString &selector) {
     return p_frame->findFirstElement(selector);
 }
 
+QWebElementCollection Frame::findAll(const QString &selector) {
+    return p_frame->findAllElements(selector);
+}
+
 }
