@@ -176,17 +176,30 @@ void ph_webelement_free(void *element) {
 
 char* ph_webelement_tag_name(void *element) {
     ph::WebElement *el = (ph::WebElement*)element;
-    return el->tagName().data();
+
+    QByteArray data = el->tagName().toUtf8();
+    char *resultData = new char[data.size() + 1];
+
+    qstrncpy(resultData, data.data(), data.size() + 1);
+    return resultData;
 }
 
 char* ph_webelement_inner_html(void *element) {
     ph::WebElement *el = (ph::WebElement*)element;
-    return el->toHtml().data();
+    QByteArray data = el->toHtml().toUtf8();
+    char *resultData = new char[data.size() + 1];
+
+    qstrncpy(resultData, data.data(), data.size() + 1);
+    return resultData;
 }
 
 char* ph_webelement_inner_text(void *element) {
     ph::WebElement *el = (ph::WebElement*)element;
-    return el->toText().data();
+    QByteArray data = el->toText().toUtf8();
+    char *resultData = new char[data.size() + 1];
+
+    qstrncpy(resultData, data.data(), data.size() + 1);
+    return resultData;
 }
 
 int32_t ph_webelement_has_class(void *element, const char *classname) {

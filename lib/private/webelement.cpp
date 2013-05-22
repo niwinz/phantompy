@@ -12,21 +12,21 @@ bool WebElement::isNull() {
     return m_web_element.isNull();
 }
 
-QByteArray WebElement::tagName() {
-    return m_web_element.tagName().toUtf8();
+QString WebElement::tagName() {
+    return m_web_element.tagName();
 }
 
-QByteArray WebElement::toHtml() {
-    return m_web_element.toInnerXml().toUtf8();
+QString WebElement::toHtml() {
+    return m_web_element.toInnerXml();
 }
 
-QByteArray WebElement::toText() {
-    return m_web_element.toPlainText().toUtf8();
+QString WebElement::toText() {
+    return m_web_element.toPlainText();
 }
 
-QByteArray WebElement::evaluateJavaScript(const QString &data) {
+QString WebElement::evaluateJavaScript(const QString &data) {
     QVariant result = m_web_element.evaluateJavaScript(data);
-    return result.toString().toUtf8();
+    return result.toString();
 }
 
 QByteArray WebElement::getClasses() {

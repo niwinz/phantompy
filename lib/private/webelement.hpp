@@ -16,11 +16,11 @@ public:
 
     bool isNull();
 
-    QByteArray tagName();
-    QByteArray toHtml();
-    QByteArray toText();
+    QString tagName();
+    QString toHtml();
+    QString toText();
+    QString evaluateJavaScript(const QString &data);
 
-    QByteArray evaluateJavaScript(const QString &data);
     QByteArray getClasses();
     QByteArray getAttributes();
 
