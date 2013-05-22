@@ -2,17 +2,17 @@
 Headless WebKit engine for Python
 =================================
 
-Phantompy is a headless WebKit engine scriptable with a clean pythonic api.
+Phantompy is a headless scriptable WebKit engine with a clean pythonic api.
 
-**Note:** Currently in earlier stage of development. Use it for experiment only.
+**Note:** Currently in an early stage of development. Use it for experiments only.
 
 Components
 ----------
 
 The package has two components:
 
-* C++/C library what exposes a ondemand api to Qt5/QtWebkit (libphantompy)
-* Python app build on top of the **libphantompy** with ctypes
+* C++/C library which exposes a on-demand api to Qt5/QtWebkit (libphantompy)
+* Python app that builds on top of **libphantompy** with ctypes
 
 Tested with python: cpython-3.3, cpython-2.7 and pypy-2.0.1
 
@@ -20,7 +20,7 @@ Tested with python: cpython-3.3, cpython-2.7 and pypy-2.0.1
 Documentation
 -------------
 
-Currently there is no documentation available. You can see **tests.py** file for
+Currently there is no documentation available. You can look at **tests.py** to
 see some examples.
 
 A lot of features are proof of concept and need more work.
@@ -30,7 +30,7 @@ A lot of features are proof of concept and need more work.
 Installation
 ^^^^^^^^^^^^
 
-For compile and install a **libphantompy** you need g++ 4.8 (not tested with
+To compile and install **libphantompy** you need g++ 4.8 (not tested with
 previous versions), qt5 and cmake 2.8.8+
 
 .. code-block:: console
@@ -39,7 +39,7 @@ previous versions), qt5 and cmake 2.8.8+
     cmake ..
     sudo make install
 
-For install python module:
+For installing the python module:
 
 .. code-block:: console
 
@@ -49,9 +49,9 @@ For install python module:
 FAQ
 ---
 
-**How truly headless is a phantompy?**
+**How truly headless is phantompy?**
 
-Thanks to Qt5 and QPA is truly headless. You can run your apps
+Thanks to Qt5 and QPA it's truly headless. You can run your apps
 without x11 with this environment variable:
 
 .. code-block:: bash
@@ -59,13 +59,13 @@ without x11 with this environment variable:
     export QT_QPA_PLATFORM=minimal
 
 
-**Can compile and use phantompy on OSX?**
+**Can you compile and use phantompy on OSX?**
 
-Yes and Not. For build phantompy library you need put
-``SET(CMAKE_PREFIX_PATH "/usr/local/opt/qt5")`` with valid qt5 instalation prefix
+Yes and no. To build phantompy library on OSX you need to put
+``SET(CMAKE_PREFIX_PATH "/usr/local/opt/qt5")`` with valid qt5 installation prefix
 on CMakeLists.txt
 
-But python library does not works properly because can not import a library
-due some load imports.
+But the python library does not work properly because it cannot import a library
+due to some load imports.
 
-I'm not osx expert and improvements are welcome.
+I'm not an OSX expert and improvements are welcome.
