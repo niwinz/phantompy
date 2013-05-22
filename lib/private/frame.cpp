@@ -30,7 +30,7 @@ QByteArray Frame::captureImage(const char *format, int quality) {
     p_frame->render(&painter);
     painter.end();
 
-    image.save(&buffer, "PNG");
+    image.save(&buffer, format, quality);
     return buffer.buffer();
 }
 
