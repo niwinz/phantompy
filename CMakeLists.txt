@@ -1,14 +1,13 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8.8)
 PROJECT(phantompy)
 
-#SET(CMAKE_BUILD_TYPE "Release")
-SET(CMAKE_BUILD_TYPE "Debug")
+SET(CMAKE_BUILD_TYPE "Release")
+#SET(CMAKE_BUILD_TYPE "Debug")
 SET(CMAKE_VERBOSE_MAKEFILE OFF)
 SET(CMAKE_INCLUDE_CURRENT_DIR ON)
 SET(CMAKE_AUTOMOC ON)
 SET(BUILD_SHARED_LIBS ON)
 
-#SET(CMAKE_CXX_COMPILER      "/usr/bin/clang++")
 SET(CMAKE_CXX_FLAGS         "-Wall -std=c++11 -fPIC")
 SET(CMAKE_CXX_FLAGS_DEBUG   "-O0 -g")
 SET(CMAKE_CXX_FLAGS_RELEASE "-O3")
@@ -58,6 +57,7 @@ SET(SOURCES
     lib/private/frame.cpp
     lib/private/image.cpp
     lib/private/webelement.cpp
+    lib/private/webelementcollection.cpp
     lib/private/networkmanagerproxy.cpp
 )
 
