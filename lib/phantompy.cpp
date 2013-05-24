@@ -131,7 +131,7 @@ void ph_frame_free(void *frame) {
 char* ph_frame_to_html(void *frame) {
     ph::Frame *f = (ph::Frame*)frame;
 
-    QByteArray data = f->toHtml();
+    QByteArray data = f->toHtml().toUtf8();
     char *resultData = new char[data.size() + 1];
     qstrncpy(resultData, data.data(), data.size() + 1);
     return resultData;
@@ -142,7 +142,7 @@ char* ph_frame_evaluate_javascript(void *frame, char *javascript) {
     ph::Frame *f = (ph::Frame*)frame;
 
     QString js(javascript);
-    QByteArray data = f->evaluateJavaScript(js);
+    QByteArray data = f->evaluateJavaScript(js).toUtf8();
 
     char *resultData = new char[data.size() + 1];
     qstrncpy(resultData, data.data(), data.size() + 1);

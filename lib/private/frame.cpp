@@ -9,10 +9,6 @@ Frame::Frame(QWebFrame *frame, QObject *parent): QObject(parent) {
 Frame::~Frame() {}
 
 
-QByteArray Frame::toHtml() {
-    return p_frame->toHtml().toUtf8();
-}
-
 QByteArray Frame::captureImage(const char *format, int quality) {
     p_frame->page()->setViewportSize(p_frame->contentsSize());
 
@@ -34,9 +30,13 @@ QByteArray Frame::captureImage(const char *format, int quality) {
     return buffer.buffer();
 }
 
-QByteArray Frame::evaluateJavaScript(const QString &js) {
+QString Frame::toHtml() {
+    return p_frame->toHtml();
+}
+
+QString Frame::evaluateJavaScript(const QString &js) {
     QVariant result = p_frame->evaluateJavaScript(js);
-    return result.toString().toUtf8();
+    return result.toString();
 }
 
 QWebElement Frame::findFirstElement(const QString &selector) {
