@@ -86,6 +86,27 @@ class WebElementTests(unittest.TestCase):
         elements = element.cssselect("span")
         self.assertEqual(len(elements), 1)
 
+    def test_has_attrs(self):
+        p = ph.open(TEST_FILE)
+        element = p.cssselect("#footer span")[0]
+        self.assertFalse(element.has_attrs())
+
+        element = p.cssselect("#footer")[0]
+        self.assertTrue(element.has_attrs())
+        self.assertTrue(element.has_attr("id"))
+        self.assertFalse(element.has_attr("class"))
+
+    def test_has_class(self):
+        p = ph.open(TEST_FILE)
+
+        elements = p.cssselect(".section")
+        self.assertEqual(len(elements), 2)
+        self.assertTrue(elements[0].has_class("barsection"))
+        self.assertTrue(elements[1].has_class("foosection"))
+        self.assertFalse(elements[1].has_class("barsection"))
+
+
+
 
 class WebPageImageTests(unittest.TestCase):
     def test_capture_page(self):

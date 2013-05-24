@@ -112,14 +112,14 @@ try:
     _library.ph_webelement_find_all.argtypes = [ctypes.c_void_p, ctypes.c_char_p]
     _library.ph_webelement_find_all.restype = ctypes.c_void_p
 
-    #_library.ph_webelement_has_class.argtypes = [ctypes.c_void_p, ctypes.c_char_p]
-    #_library.ph_webelement_has_class.restype = ctypes.c_int
+    _library.ph_webelement_has_class.argtypes = [ctypes.c_void_p, ctypes.c_char_p]
+    _library.ph_webelement_has_class.restype = ctypes.c_int
 
-    #_library.ph_webelement_has_attr.argtypes = [ctypes.c_void_p, ctypes.c_char_p]
-    #_library.ph_webelement_has_attr.restype = ctypes.c_int
+    _library.ph_webelement_has_attr.argtypes = [ctypes.c_void_p, ctypes.c_char_p]
+    _library.ph_webelement_has_attr.restype = ctypes.c_int
 
-    #_library.ph_webelement_has_attrs.argtypes = [ctypes.c_void_p]
-    #_library.ph_webelement_has_attrs.restype = ctypes.c_int
+    _library.ph_webelement_has_attrs.argtypes = [ctypes.c_void_p]
+    _library.ph_webelement_has_attrs.restype = ctypes.c_int
 
     _library.ph_webelement_is_null.argtypes = [ctypes.c_void_p]
     _library.ph_webelement_is_null.restype = ctypes.c_int

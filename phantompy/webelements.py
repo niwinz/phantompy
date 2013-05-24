@@ -28,22 +28,35 @@ class WebElement(object):
     def name(self):
         return self._tag_name
 
+    def has_class(self, classname):
+        classname = util.force_bytes(classname)
+        result = lib.ph_webelement_has_class(self.ptr, classname)
+        return util.int_to_bool(result)
+
+    def has_attr(self, attrname):
+        attrname = util.force_bytes(attrname)
+        result = lib.ph_webelement_has_attr(self.ptr, attrname)
+        return util.int_to_bool(result)
+
+    def has_attrs(self):
+        result = lib.ph_webelement_has_attrs(self.ptr)
+        return util.int_to_bool(result)
+
     def inner_html(self):
         result = lib.ph_webelement_inner_html(self.ptr)
-        return result.decode("utf-8")
+        return util.force_text(result)
 
     def inner_text(self):
         result = lib.ph_webelement_inner_text(self.ptr)
-        return result.decode("utf-8")
+        return util.force_text(result)
 
     def is_none(self):
         result = lib.ph_webelement_is_null(self.ptr)
-        return True if result == 0 else False
+        return util.int_to_bool(result)
 
     @util.as_list
     def cssselect(self, selector):
-        if hasattr(selector, "encode"):
-            selector = selector.encode('utf-8')
+        selector = util.force_bytes(selector)
 
         c_ptr = lib.ph_webelement_find_all(self.ptr, selector)
         c_size = lib.ph_webcollection_size(c_ptr)
