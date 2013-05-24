@@ -4,6 +4,7 @@
 #include "private/frame.hpp"
 #include "private/image.hpp"
 #include "private/webelement.hpp"
+#include "private/webelementcollection.hpp"
 
 extern "C" {
 
@@ -116,6 +117,8 @@ char* ph_page_requested_urls(void *page) {
 //    return QJsonDocument(hobj).toJson();
 //}
 
+/****** Page ******/
+
 void* ph_page_main_frame(void *page) {
     ph::Page *p = (ph::Page*)page;
     ph::Frame *f = new ph::Frame(p->mainFrame());
@@ -127,7 +130,6 @@ void ph_frame_free(void *frame) {
     delete f;
 }
 
-
 char* ph_frame_to_html(void *frame) {
     ph::Frame *f = (ph::Frame*)frame;
 
@@ -136,7 +138,6 @@ char* ph_frame_to_html(void *frame) {
     qstrncpy(resultData, data.data(), data.size() + 1);
     return resultData;
 }
-
 
 char* ph_frame_evaluate_javascript(void *frame, char *javascript) {
     ph::Frame *f = (ph::Frame*)frame;
@@ -152,8 +153,33 @@ char* ph_frame_evaluate_javascript(void *frame, char *javascript) {
 void* ph_frame_find_first(void *frame, const char *selector) {
     ph::Frame *f = (ph::Frame*)frame;
     QWebElement element = f->findFirstElement(QString::fromUtf8(selector));
-    ph::WebElement *elm = new ph::WebElement(element);
-    return elm;
+    ph::WebElement *el = new ph::WebElement(element);
+    return el;
+}
+
+void* ph_frame_find_all(void *frame, const char *selector) {
+    ph::Frame *f = static_cast<ph::Frame*>(frame);
+
+    QWebElementCollection collection = f->findAll(QString::fromUtf8(selector));
+    ph::WebElementCollection *c = new ph::WebElementCollection(collection);
+    return c;
+}
+
+int32_t ph_webcollection_size(void *collection) {
+    ph::WebElementCollection *c = static_cast<ph::WebElementCollection*>(collection);
+    return c->size();
+}
+
+void* ph_webcollection_get_webelement(void *collection, int32_t index) {
+    ph::WebElementCollection *c = static_cast<ph::WebElementCollection*>(collection);
+    QWebElement element = c->at(index);
+    ph::WebElement *el = new ph::WebElement(element);
+    return el;
+}
+
+void ph_webcollection_free(void *collection) {
+    ph::WebElementCollection *c = static_cast<ph::WebElementCollection*>(collection);
+    delete c;
 }
 
 void* ph_frame_capture_image(void *frame, const char *format, int quality) {
@@ -188,10 +214,18 @@ void ph_image_free(void *image) {
     delete img;
 }
 
+/****** Web Elements ******/
 
 void ph_webelement_free(void *element) {
     ph::WebElement *el = (ph::WebElement*)element;
     delete el;
+}
+
+void* ph_webelement_find_all(void *element, const char *selector) {
+    ph::WebElement *el = static_cast<ph::WebElement*>(element);
+    QWebElementCollection collection = el->findAll(QString::fromUtf8(selector));
+    ph::WebElementCollection *c = new ph::WebElementCollection(collection);
+    return c;
 }
 
 char* ph_webelement_tag_name(void *element) {

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from .api import library as lib
-from .api import ctypes
+from . import util
 
 
 class WebElement(object):
@@ -39,3 +39,17 @@ class WebElement(object):
     def is_none(self):
         result = lib.ph_webelement_is_null(self.ptr)
         return True if result == 0 else False
+
+    @util.as_list
+    def cssselect(self, selector):
+        if hasattr(selector, "encode"):
+            selector = selector.encode('utf-8')
+
+        c_ptr = lib.ph_webelement_find_all(self.ptr, selector)
+        c_size = lib.ph_webcollection_size(c_ptr)
+
+        for i in range(c_size):
+            el_ptr = lib.ph_webcollection_get_webelement(c_ptr, i)
+            yield WebElement(el_ptr, self)
+
+        lib.ph_webcollection_free(c_ptr)

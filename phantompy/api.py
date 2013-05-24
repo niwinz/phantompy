@@ -79,9 +79,23 @@ try:
     _library.ph_image_get_bytes.argtypes = [ctypes.c_void_p, ctypes.c_void_p, ctypes.c_longlong]
     _library.ph_image_get_bytes.restype = None
 
+    # Web Element Collection methods
+
+    _library.ph_webcollection_size.argtypes = [ctypes.c_void_p]
+    _library.ph_webcollection_size.restype = ctypes.c_int
+
+    _library.ph_webcollection_get_webelement.argtypes = [ctypes.c_void_p, ctypes.c_int]
+    _library.ph_webcollection_get_webelement.restype = ctypes.c_void_p
+
+    _library.ph_webcollection_free.argtypes = [ctypes.c_void_p]
+    _library.ph_webcollection_free.restype = None
+
     # Web Element methods
     _library.ph_frame_find_first.argtypes = [ctypes.c_void_p, ctypes.c_char_p]
     _library.ph_frame_find_first.restype = ctypes.c_void_p
+
+    _library.ph_frame_find_all.argtypes = [ctypes.c_void_p, ctypes.c_char_p]
+    _library.ph_frame_find_all.restype = ctypes.c_void_p
 
     _library.ph_webelement_free.argtypes = [ctypes.c_void_p]
     _library.ph_webelement_free.restype = None
@@ -94,6 +108,9 @@ try:
 
     _library.ph_webelement_inner_text.argtypes = [ctypes.c_void_p]
     _library.ph_webelement_inner_text.restype = ctypes.c_char_p
+
+    _library.ph_webelement_find_all.argtypes = [ctypes.c_void_p, ctypes.c_char_p]
+    _library.ph_webelement_find_all.restype = ctypes.c_void_p
 
     #_library.ph_webelement_has_class.argtypes = [ctypes.c_void_p, ctypes.c_char_p]
     #_library.ph_webelement_has_class.restype = ctypes.c_int

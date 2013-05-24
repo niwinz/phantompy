@@ -50,29 +50,41 @@ class WebElementTests(unittest.TestCase):
     def test_get_title_element(self):
         p = ph.open(TEST_FILE)
 
-        element = p.cssselect("title")
-        self.assertEqual(element.name, "TITLE")
-        self.assertEqual(element.inner_html(), "simple title")
+        elements = p.cssselect("title")
+        self.assertEqual(len(elements), 1)
+        self.assertEqual(elements[0].name, "TITLE")
+        self.assertEqual(elements[0].inner_html(), "simple title")
 
     def test_get_null_element(self):
         p = ph.open(TEST_FILE)
 
-        element = p.cssselect("foo")
-        self.assertTrue(element.is_none())
+        elements = p.cssselect("foo")
+        self.assertEqual(len(elements), 0)
 
     def test_get_inner_html(self):
         p = ph.open(TEST_FILE)
 
-        element = p.cssselect("#footer")
-        html = element.inner_html()
+        elements = p.cssselect("#footer")
+        self.assertEqual(len(elements), 1)
+
+        html = elements[0].inner_html()
         self.assertEqual(html.strip(), "<span>some footer</span>")
 
     def test_get_inner_text(self):
         p = ph.open(TEST_FILE)
 
-        element = p.cssselect("#footer")
-        text = element.inner_text()
+        elements = p.cssselect("#footer")
+        self.assertEqual(len(elements), 1)
+
+        text = elements[0].inner_text()
         self.assertEqual(text.strip(), "some footer")
+
+    def test_inner_cssselect(self):
+        p = ph.open(TEST_FILE)
+        element = p.cssselect("#footer")[0]
+
+        elements = element.cssselect("span")
+        self.assertEqual(len(elements), 1)
 
 
 class WebPageImageTests(unittest.TestCase):

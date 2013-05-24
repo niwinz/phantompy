@@ -3,21 +3,11 @@
 import json
 
 from .api import library as lib
-from .api import ctypes
 
 from . import context
 from . import image
 from . import webelements
-
-
-def open(url, size=(1280, 768), ctx=None):
-    if ctx is None:
-        ctx = context.get_context()
-
-    page = Page(url=url, size=size, ctx=ctx)
-    page.load()
-
-    return page.main_frame()
+from . import util
 
 
 class Frame(object):
@@ -57,12 +47,19 @@ class Frame(object):
         result = lib.ph_frame_evaluate_javascript(self.ptr, js)
         return result.decode('utf-8')
 
+    @util.as_list
     def cssselect(self, selector):
         if hasattr(selector, "encode"):
             selector = selector.encode('utf-8')
 
-        el_ptr = lib.ph_frame_find_first(self.ptr, selector)
-        return webelements.WebElement(el_ptr, self)
+        c_ptr = lib.ph_frame_find_all(self.ptr, selector)
+        c_size = lib.ph_webcollection_size(c_ptr)
+
+        for i in range(c_size):
+            el_ptr = lib.ph_webcollection_get_webelement(c_ptr, i)
+            yield webelements.WebElement(el_ptr, self)
+
+        lib.ph_webcollection_free(c_ptr)
 
 
 class Page(object):

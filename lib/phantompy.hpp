@@ -1,7 +1,6 @@
 #include <stdint.h>
 #include <cstring>
 
-
 extern "C" {
     // Initialize methods
     void* ph_context_init();
@@ -39,7 +38,13 @@ extern "C" {
     void ph_image_get_bytes(void *image, void *buffer, int64_t size);
 
     // Web element methods
-    void* ph_frame_find_first(void *frame, const char *selector);
+    void* ph_frame_find_first(void *frame, const char *selector); // TODO: deprectated
+    void* ph_frame_find_all(void *frame, const char *selector);
+
+    int32_t ph_webcollection_size(void *collection);
+    void* ph_webcollection_get_webelement(void *collection,  int32_t index);
+    void ph_webcollection_free(void *collection);
+
     void ph_webelement_free(void *el);
 
     char* ph_webelement_tag_name(void *el);
@@ -50,4 +55,9 @@ extern "C" {
     int32_t ph_webelement_has_attr(void *el, const char *attrname);
     int32_t ph_webelement_has_attrs(void *el);
     int32_t ph_webelement_is_null(void *el);
+
+    void *ph_webelement_find_all(void *el, const char *selector);
+
+    //void ph_webelement_remove_class(void *el);
+    //void ph_webelement_remove_attr(void *el);
 }
