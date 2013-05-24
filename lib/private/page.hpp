@@ -56,6 +56,8 @@ private:
 
     QNetworkAccessManager m_networkManager;
 
+    void applySettings();
+
 private slots:
     void loadFinished(bool ok);
     void replyReceived(QNetworkReply *reply);

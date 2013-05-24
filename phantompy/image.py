@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from .api import library as lib
-from .api import ctypes
 
 
 class Image(object):
@@ -24,14 +23,7 @@ class Image(object):
         return lib.ph_image_get_size(self.ptr)
 
     def to_blob(self):
-        # Get image size
-        image_size = self.size
-
-        # Get image binary data
-        blob = ctypes.create_string_buffer(image_size)
-        lib.ph_image_get_bytes(self.ptr, ctypes.byref(blob), image_size)
-
-        return blob.raw
+        return lib.ph_image_get_bytes(self.ptr, self.size)
 
     def save(self, path):
         with open(path, "wb") as f:

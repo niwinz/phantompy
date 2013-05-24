@@ -9,10 +9,8 @@ from . import image
 from . import webelements
 
 
-def open(url, size=(1280, 768), ctx=None):
-    if ctx is None:
-        ctx = context.get_context()
-
+def open(url, size=(1280, 768)):
+    ctx = context.context()
     p = page.Page(url=url, size=size, ctx=ctx)
     p.load()
 

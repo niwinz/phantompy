@@ -7,13 +7,33 @@
 
 extern "C" {
 
-void* ph_engine_init() {
+/******* Context *******/
+
+void* ph_context_init() {
     return ph::Context::instance();
 }
 
-void ph_engine_free(void *ctx) {
+void ph_context_free(void *ctx) {
     ph::Context::clerInstance();
 }
+
+void ph_context_set_boolean_config(int key, int value) {
+    ph::Context::instance()->setConfig(ph::Settings(key), QVariant::fromValue(!!value));
+}
+
+void ph_context_clear_memory_cache() {
+    ph::Context::instance()->clearMemoryCaches();
+}
+
+void ph_context_set_object_cache_capacity(int i, int x, int z) {
+    ph::Context::instance()->setObjectCacheCapacities(i, x, z);
+}
+
+void ph_context_set_max_pages_in_cache(int num) {
+    ph::Context::instance()->setMaximumPagesInCache(num);
+}
+
+/******* Page *******/
 
 void* ph_page_create() {
     ph::Page *p = new ph::Page();

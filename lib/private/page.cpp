@@ -1,4 +1,5 @@
 #include "page.hpp"
+#include "context.hpp"
 
 namespace ph {
 
@@ -6,9 +7,7 @@ Page::Page(QObject *parent):QObject(parent) {
     m_page.setNetworkAccessManager(&m_networkManager);
     m_nmProxy.setNetworkAccessManager(&m_networkManager);
 
-    m_page.settings()->setAttribute(QWebSettings::LocalContentCanAccessFileUrls, true);
-    m_page.settings()->setAttribute(QWebSettings::LocalContentCanAccessRemoteUrls, true);
-    //m_page.settings()->setAttribute(QWebSettings::PrivateBrowsingEnabled, true);
+    applySettings();
 
     connect(&m_page, SIGNAL(loadFinished(bool)), this, SLOT(loadFinished(bool)));
     connect(m_page.networkAccessManager(), SIGNAL(finished(QNetworkReply*)),
@@ -19,6 +18,28 @@ Page::Page(QObject *parent):QObject(parent) {
 }
 
 Page::~Page() {}
+
+void Page::applySettings() {
+    Context *ctx = Context::instance();
+
+    m_page.settings()->setAttribute(QWebSettings::AutoLoadImages, ctx->settingsLoadImagesEnabled());
+    m_page.settings()->setAttribute(QWebSettings::DnsPrefetchEnabled, ctx->settingsDnsPrefetchEnabled());
+    m_page.settings()->setAttribute(QWebSettings::JavascriptEnabled, ctx->settingsJavascriptEnabled());
+    m_page.settings()->setAttribute(QWebSettings::PluginsEnabled, ctx->settingsPluginsEnabled());
+    m_page.settings()->setAttribute(QWebSettings::PrivateBrowsingEnabled, ctx->settingsPrivateBrowsingEnabled());
+    m_page.settings()->setAttribute(QWebSettings::FrameFlatteningEnabled, ctx->settingsFrameFlatteningEnabled());
+    m_page.settings()->setAttribute(QWebSettings::LocalStorageEnabled, ctx->settingsLocalStorageEnabled());
+    m_page.settings()->setAttribute(QWebSettings::OfflineWebApplicationCacheEnabled, ctx->settingsOfflineApplicationCacheEnabled());
+    m_page.settings()->setAttribute(QWebSettings::OfflineStorageDatabaseEnabled, ctx->settingsOfflineStorageDatabaseEnabled());
+
+    // TODO: expose these settings to ctypes api
+    m_page.settings()->setAttribute(QWebSettings::JavascriptCanOpenWindows, false);
+    m_page.settings()->setAttribute(QWebSettings::JavascriptCanCloseWindows, false);
+    m_page.settings()->setAttribute(QWebSettings::JavascriptCanAccessClipboard, false);
+    m_page.settings()->setAttribute(QWebSettings::SiteSpecificQuirksEnabled, true);
+    m_page.settings()->setAttribute(QWebSettings::LocalContentCanAccessRemoteUrls, true);
+    m_page.settings()->setAttribute(QWebSettings::LocalContentCanAccessFileUrls, true);
+}
 
 void Page::load(const QString &_url) {
     m_mainUrl = QUrl::fromUserInput(_url);

@@ -4,8 +4,14 @@
 
 extern "C" {
     // Initialize methods
-    void* ph_engine_init();
-    void ph_engine_free(void* engine);
+    void* ph_context_init();
+    void ph_context_free(void* context);
+
+    void ph_context_clear_memory_cache();
+    void ph_context_set_object_cache_capacity(int i, int x, int z);
+    void ph_context_set_max_pages_in_cache(int num);
+
+    void ph_context_set_boolean_config(int key, int value);
 
     // Page Methods
     void* ph_page_create();

@@ -12,6 +12,16 @@ TEST_FILE = join(CURRENT_DIR, "misc", "test.html")
 TEST_FILE_WITH_FRAMES = join(CURRENT_DIR, "misc", "test_with_frames.html")
 
 
+def setUpModule():
+    ctx = ph.context.context()
+    ctx.set_max_pages_in_cache(0)
+    ctx.set_object_cache_capacity(0, 0, 0)
+    ctx.clear_memory_caches()
+
+def tearDownModule():
+    ph.context.destroy_context()
+
+
 class WebPageTests(unittest.TestCase):
     def test_load_page(self):
         #import pdb; pdb.set_trace()
