@@ -58,6 +58,7 @@ SET(SOURCES
     lib/private/image.cpp
     lib/private/webelement.cpp
     lib/private/webelementcollection.cpp
+    lib/private/cookiejar.cpp
     lib/private/networkmanagerproxy.cpp
 )
 
