@@ -45,10 +45,12 @@ try:
     _library.ph_page_is_loaded.restype = ctypes.c_int
 
     _library.ph_page_cookies.argtypes = [ctypes.c_void_p]
-    _library.ph_page_cookies.restype = ctypes.c_char_p
+    _library.ph_page_cookies.restype = ctypes.c_void_p
+    _library.ph_page_cookies._char_ptr = True
 
     _library.ph_page_requested_urls.argtypes = [ctypes.c_void_p]
-    _library.ph_page_requested_urls.restype = ctypes.c_char_p
+    _library.ph_page_requested_urls.restype = ctypes.c_void_p
+    _library.ph_page_requested_urls._char_ptr = True
 
     # Frame methods
     _library.ph_page_main_frame.argtypes = [ctypes.c_void_p]
@@ -58,10 +60,12 @@ try:
     _library.ph_frame_free.restype = None
 
     _library.ph_frame_to_html.argtypes = [ctypes.c_void_p]
-    _library.ph_frame_to_html.restype = ctypes.c_char_p
+    _library.ph_frame_to_html.restype = ctypes.c_void_p
+    _library.ph_frame_to_html._char_ptr = True
 
     _library.ph_frame_evaluate_javascript.argtypes = [ctypes.c_void_p, ctypes.c_char_p]
-    _library.ph_frame_evaluate_javascript.restype = ctypes.c_char_p
+    _library.ph_frame_evaluate_javascript.restype = ctypes.c_void_p
+    _library.ph_frame_evaluate_javascript._char_ptr = True
 
     # Image methods
     _library.ph_frame_capture_image.argtypes = [ctypes.c_void_p, ctypes.c_char_p, ctypes.c_int]
@@ -101,13 +105,16 @@ try:
     _library.ph_webelement_free.restype = None
 
     _library.ph_webelement_tag_name.argtypes = [ctypes.c_void_p]
-    _library.ph_webelement_tag_name.restype = ctypes.c_char_p
+    _library.ph_webelement_tag_name.restype = ctypes.c_void_p
+    _library.ph_webelement_tag_name._char_ptr = True
 
     _library.ph_webelement_inner_html.argtypes = [ctypes.c_void_p]
-    _library.ph_webelement_inner_html.restype = ctypes.c_char_p
+    _library.ph_webelement_inner_html.restype = ctypes.c_void_p
+    _library.ph_webelement_inner_html._char_ptr = True
 
     _library.ph_webelement_inner_text.argtypes = [ctypes.c_void_p]
-    _library.ph_webelement_inner_text.restype = ctypes.c_char_p
+    _library.ph_webelement_inner_text.restype = ctypes.c_void_p
+    _library.ph_webelement_inner_text._char_ptr = True
 
     _library.ph_webelement_find_all.argtypes = [ctypes.c_void_p, ctypes.c_char_p]
     _library.ph_webelement_find_all.restype = ctypes.c_void_p
@@ -131,6 +138,16 @@ except (OSError, IOError):
                       'you probably had not installed library.\n')
 
 
+def _wrap_char_pointer_function(func):
+    def _char_pointer_wrapper(*args, **kwargs):
+        ptr = func(*args, **kwargs)
+        data = ctypes.cast(ptr, ctypes.c_char_p).value
+        _library.ph_free_charptr(ptr)
+        return data
+
+    return _char_pointer_wrapper
+
+
 class ExternLibraryInterface(object):
     def __init__(self, lib):
         self._clib = lib
@@ -141,6 +158,9 @@ class ExternLibraryInterface(object):
         return blob.raw
 
     def __getattr__(self, name):
-        return getattr(self._clib, name)
+        attr = getattr(self._clib, name)
+        if getattr(attr, "_char_ptr", False):
+            return _wrap_char_pointer_function(attr)
+        return attr
 
 library = ExternLibraryInterface(_library)

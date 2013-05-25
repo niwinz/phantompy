@@ -18,6 +18,10 @@ void ph_context_free(void *ctx) {
     ph::Context::clerInstance();
 }
 
+void ph_free_charptr(char *ptr) {
+    delete [] ptr;
+}
+
 void ph_context_set_boolean_config(int key, int value) {
     ph::Context::instance()->setConfig(ph::Settings(key), QVariant::fromValue(!!value));
 }

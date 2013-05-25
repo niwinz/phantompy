@@ -5,6 +5,7 @@ extern "C" {
     // Initialize methods
     void* ph_context_init();
     void ph_context_free(void* context);
+    void ph_free_charptr(char *ptr);
 
     void ph_context_clear_memory_cache();
     void ph_context_set_object_cache_capacity(int i, int x, int z);
