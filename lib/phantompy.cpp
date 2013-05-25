@@ -221,7 +221,7 @@ void ph_image_free(void *image) {
 /****** Web Elements ******/
 
 void ph_webelement_free(void *element) {
-    ph::WebElement *el = (ph::WebElement*)element;
+    ph::WebElement *el = static_cast<ph::WebElement*>(element);
     delete el;
 }
 
@@ -233,35 +233,64 @@ void* ph_webelement_find_all(void *element, const char *selector) {
 }
 
 char* ph_webelement_tag_name(void *element) {
-    ph::WebElement *el = (ph::WebElement*)element;
+    ph::WebElement *el = static_cast<ph::WebElement*>(element);
 
     QByteArray data = el->tagName().toUtf8();
-    char *resultData = new char[data.size() + 1];
 
+    char *resultData = new char[data.size() + 1];
     qstrncpy(resultData, data.data(), data.size() + 1);
     return resultData;
 }
 
 char* ph_webelement_inner_html(void *element) {
-    ph::WebElement *el = (ph::WebElement*)element;
+    ph::WebElement *el = static_cast<ph::WebElement*>(element);
     QByteArray data = el->toHtml().toUtf8();
-    char *resultData = new char[data.size() + 1];
 
+    char *resultData = new char[data.size() + 1];
     qstrncpy(resultData, data.data(), data.size() + 1);
     return resultData;
 }
 
 char* ph_webelement_inner_text(void *element) {
-    ph::WebElement *el = (ph::WebElement*)element;
+    ph::WebElement *el = static_cast<ph::WebElement*>(element);
     QByteArray data = el->toText().toUtf8();
-    char *resultData = new char[data.size() + 1];
 
+    char *resultData = new char[data.size() + 1];
+    qstrncpy(resultData, data.data(), data.size() + 1);
+    return resultData;
+}
+
+
+char* ph_webelement_get_classes(void *element) {
+    ph::WebElement *el = static_cast<ph::WebElement*>(element);
+    QByteArray data = el->getClasses().join(" ").toUtf8();
+
+    char *resultData = new char[data.size() + 1];
+    qstrncpy(resultData, data.data(), data.size() + 1);
+    return resultData;
+
+}
+
+char* ph_webelement_get_attrnames(void *element) {
+    ph::WebElement *el = static_cast<ph::WebElement*>(element);
+    QByteArray data = el->getAttributeNames().join(" ").toUtf8();
+
+    char *resultData = new char[data.size() + 1];
+    qstrncpy(resultData, data.data(), data.size() + 1);
+    return resultData;
+}
+
+char* ph_webelement_get_attr(void *element, const char *attrname) {
+    ph::WebElement *el = static_cast<ph::WebElement*>(element);
+    QByteArray data = el->getAttribute(QString::fromUtf8(attrname)).toUtf8();
+
+    char *resultData = new char[data.size() + 1];
     qstrncpy(resultData, data.data(), data.size() + 1);
     return resultData;
 }
 
 int32_t ph_webelement_has_class(void *element, const char *classname) {
-    ph::WebElement *el = (ph::WebElement*)element;
+    ph::WebElement *el = static_cast<ph::WebElement*>(element);
     if (el->hasClass(QString::fromUtf8(classname))) {
         return 0;
     } else {
@@ -270,7 +299,7 @@ int32_t ph_webelement_has_class(void *element, const char *classname) {
 }
 
 int32_t ph_webelement_has_attr(void *element, const char *attrname) {
-    ph::WebElement *el = (ph::WebElement*)element;
+    ph::WebElement *el = static_cast<ph::WebElement*>(element);
     if (el->hasAttribute(QString::fromUtf8(attrname))) {
         return 0;
     } else {
@@ -279,7 +308,7 @@ int32_t ph_webelement_has_attr(void *element, const char *attrname) {
 }
 
 int32_t ph_webelement_has_attrs(void *element) {
-    ph::WebElement *el = (ph::WebElement*)element;
+    ph::WebElement *el = static_cast<ph::WebElement*>(element);
     if (el->hasAttributes()) {
         return 0;
     } else {
@@ -288,7 +317,7 @@ int32_t ph_webelement_has_attrs(void *element) {
 }
 
 int32_t ph_webelement_is_null(void *element) {
-    ph::WebElement *el = (ph::WebElement*)element;
+    ph::WebElement *el = static_cast<ph::WebElement*>(element);
     if (el->isNull()) {
         return 0;
     } else {

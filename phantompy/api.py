@@ -122,8 +122,16 @@ try:
     _library.ph_webelement_add_class.argtypes = [c_void_p, c_char_p]
     _library.ph_webelement_add_class.restype = None
 
+    _library.ph_webelement_get_classes.argtypes = [c_void_p]
+    _library.ph_webelement_get_classes.restype = c_void_p
+    _library.ph_webelement_get_classes._char_ptr = True
+
     _library.ph_webelement_remove_class.argtypes = [c_void_p, c_char_p]
     _library.ph_webelement_remove_class.restype = None
+
+    _library.ph_webelement_get_attr.argtypes = [c_void_p, c_char_p]
+    _library.ph_webelement_get_attr.restype = c_void_p
+    _library.ph_webelement_get_attr._char_ptr = True
 
     _library.ph_webelement_set_attr.argtypes = [c_void_p, c_char_p, c_char_p]
     _library.ph_webelement_set_attr.restype = None
@@ -137,36 +145,51 @@ try:
     _library.ph_webelement_has_attrs.argtypes = [c_void_p]
     _library.ph_webelement_has_attrs.restype = c_int
 
+    _library.ph_webelement_get_attrnames.argtypes = [c_void_p]
+    _library.ph_webelement_get_attrnames.restype = c_void_p
+    _library.ph_webelement_get_attrnames._char_ptr = True
+
     _library.ph_webelement_is_null.argtypes = [c_void_p]
     _library.ph_webelement_is_null.restype = c_int
 
     _library.ph_webelement_append_html.argtypes = [c_void_p, c_char_p]
     _library.ph_webelement_append_html.restype = None
+
     _library.ph_webelement_append_element.argtypes = [c_void_p, c_void_p]
     _library.ph_webelement_append_element.restype = None
+
     _library.ph_webelement_append_html_after.argtypes = [c_void_p, c_char_p]
     _library.ph_webelement_append_html_after.restype = None
+
     _library.ph_webelement_append_element_after.argtypes = [c_void_p, c_void_p]
     _library.ph_webelement_append_element_after.restype = None
+
     _library.ph_webelement_replace_with_html.argtypes = [c_void_p, c_char_p]
     _library.ph_webelement_replace_with_html.restype = None
+
     _library.ph_webelement_replace_with_element.argtypes = [c_void_p, c_void_p]
     _library.ph_webelement_replace_with_element.restype = None
+
     _library.ph_webelement_remove_all_child_elements.argtypes = [c_void_p]
     _library.ph_webelement_remove_all_child_elements.restype = None
+
     _library.ph_webelement_remove_from_document.argtypes = [c_void_p]
     _library.ph_webelement_remove_from_document.restype = None
+
     _library.ph_webelement_take_from_document.argtypes = [c_void_p]
     _library.ph_webelement_take_from_document.restype = c_void_p
+
     _library.ph_webelement_wrap_with_html.argtypes = [c_void_p, c_char_p]
     _library.ph_webelement_wrap_with_html.restype = None
+
     _library.ph_webelement_wrap_with_element.argtypes = [c_void_p, c_void_p]
     _library.ph_webelement_wrap_with_element.restype = None
+
     _library.ph_webelement_previous.argtypes = [c_void_p]
     _library.ph_webelement_previous.restype = c_void_p
+
     _library.ph_webelement_next.argtypes = [c_void_p]
     _library.ph_webelement_next.restype = c_void_p
-
 
 except AttributeError:
     raise ImportError('shared library not found or incompatible')

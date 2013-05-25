@@ -21,8 +21,9 @@ public:
     QString toText();
     QString evaluateJavaScript(const QString &data);
 
-    QByteArray getClasses();
-    QByteArray getAttributes();
+    QStringList getClasses();
+    QStringList getAttributeNames();
+    QString getAttribute(const QString &attrname);
 
     QWebElementCollection findAll(const QString &selector);
 
@@ -41,6 +42,7 @@ public:
 
     bool hasAttribute(const QString &attrname);
     bool hasAttributes();
+
 
     void replace(const QString &html);
     void replace(WebElement *element);

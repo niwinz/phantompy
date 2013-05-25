@@ -41,25 +41,28 @@ extern "C" {
     // Web element methods
     void* ph_frame_find_first(void *frame, const char *selector); // TODO: deprectated
     void* ph_frame_find_all(void *frame, const char *selector);
-
-    int32_t ph_webcollection_size(void *collection);
     void* ph_webcollection_get_webelement(void *collection,  int32_t index);
-    void ph_webcollection_free(void *collection);
+    void* ph_webelement_find_all(void *element, const char *selector);
+    void* ph_webelement_take_from_document(void *element);
+    void* ph_webelement_previous(void *element);
+    void* ph_webelement_next(void *element);
 
+    void ph_webcollection_free(void *collection);
     void ph_webelement_free(void *element);
 
     char* ph_webelement_tag_name(void *element);
     char* ph_webelement_inner_html(void *element);
     char* ph_webelement_inner_text(void *element);
+    char* ph_webelement_get_classes(void *element);
+    char* ph_webelement_get_attnames(void *element);
+    char* ph_webelement_get_attr(void *element, const char *attrname);
 
+    int32_t ph_webcollection_size(void *collection);
     int32_t ph_webelement_has_class(void *element, const char *classname);
     int32_t ph_webelement_has_attr(void *element, const char *attrname);
     int32_t ph_webelement_has_attrs(void *element);
     int32_t ph_webelement_is_null(void *element);
 
-    void *ph_webelement_find_all(void *element, const char *selector);
-
-    void ph_webelement_remove_class(void *element, const char *classname);
     void ph_webelement_remove_attr(void *element, const char *attrname);
     void ph_webelement_add_class(void *element, const char *classname);
     void ph_webelement_set_attr(void *element, const char *attrname, const char *value);
@@ -71,11 +74,6 @@ extern "C" {
     void ph_webelement_replace_with_element(void *element, void *elementement);
     void ph_webelement_remove_all_child_elements(void *element);
     void ph_webelement_remove_from_document(void *element);
-    void* ph_webelement_take_from_document(void *element);
-
     void ph_webelement_wrap_with_html(void *element, const char *htmldata);
     void ph_webelement_wrap_with_element(void *element, void *elementement);
-
-    void* ph_webelement_previous(void *element);
-    void* ph_webelement_next(void *element);
 }

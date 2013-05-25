@@ -19,7 +19,15 @@ def as_list(function):
     @functools.wraps(function)
     def _decorator(*args, **kwargs):
         return list(function(*args, **kwargs))
+    return _decorator
 
+def as_dict(function):
+    """
+    Convert to list a generator function.
+    """
+    @functools.wraps(function)
+    def _decorator(*args, **kwargs):
+        return dict(list(function(*args, **kwargs)))
     return _decorator
 
 def force_bytes(data, encoding="utf-8"):

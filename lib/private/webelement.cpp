@@ -29,12 +29,16 @@ QString WebElement::evaluateJavaScript(const QString &data) {
     return result.toString();
 }
 
-QByteArray WebElement::getClasses() {
-    return m_web_element.classes().join(" ").toUtf8();
+QStringList WebElement::getClasses() {
+    return m_web_element.classes();
 }
 
-QByteArray WebElement::getAttributes() {
-    return m_web_element.attributeNames().join(" ").toUtf8();
+QStringList WebElement::getAttributeNames() {
+    return m_web_element.attributeNames();
+}
+
+QString WebElement::getAttribute(const QString &attrname) {
+    return m_web_element.attribute(attrname);
 }
 
 void WebElement::addClass(const QString &classname) {
