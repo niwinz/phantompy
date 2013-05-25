@@ -3,6 +3,7 @@
 import ctypes
 import ctypes.util
 from ctypes import *
+import warnings
 import os
 import json
 
@@ -191,11 +192,9 @@ try:
     _library.ph_webelement_next.argtypes = [c_void_p]
     _library.ph_webelement_next.restype = c_void_p
 
-except AttributeError:
-    raise ImportError('shared library not found or incompatible')
-except (OSError, IOError):
-    raise ImportError('shared library not found.\n'
-                      'you probably had not installed library.\n')
+except (AttributeError, OSError, IOError):
+    warnings.warn('libphantompy shared library not found or incompatible')
+    _library = object()
 
 
 def _wrap_char_pointer_function(func):
