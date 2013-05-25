@@ -35,7 +35,10 @@ Features
 User guide
 ----------
 
-TODO
+.. toctree::
+    :maxdepth: 2
+
+    install.rst
 
 
 Developers Api
