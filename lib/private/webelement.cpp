@@ -37,8 +37,32 @@ QByteArray WebElement::getAttributes() {
     return m_web_element.attributeNames().join(" ").toUtf8();
 }
 
+void WebElement::addClass(const QString &classname) {
+    m_web_element.addClass(classname);
+}
+
 bool WebElement::hasClass(const QString &classname) {
     return m_web_element.hasClass(classname);
+}
+
+void WebElement::removeClass(const QString &classname) {
+    m_web_element.removeClass(classname);
+}
+
+void WebElement::append(const QString &html) {
+    m_web_element.appendInside(html);
+}
+
+void WebElement::append(WebElement *element) {
+    m_web_element.appendInside(element->internalElement());
+}
+
+void WebElement::appendAfter(const QString &html) {
+    m_web_element.appendOutside(html);
+}
+
+void WebElement::appendAfter(WebElement *element) {
+    m_web_element.appendOutside(element->internalElement());
 }
 
 bool WebElement::hasAttribute(const QString &attrname) {
@@ -49,12 +73,48 @@ bool WebElement::hasAttributes() {
     return m_web_element.hasAttributes();
 }
 
-void WebElement::removeClass(const QString &classname) {
-    m_web_element.removeClass(classname);
+void WebElement::setAttribute(const QString &attrname, const QVariant &value) {
+    m_web_element.setAttribute(attrname, value.toString());
 }
 
 void WebElement::removeAttribute(const QString &attrname) {
     m_web_element.removeAttribute(attrname);
+}
+
+void WebElement::replace(const QString &html) {
+    m_web_element.replace(html);
+}
+
+void WebElement::replace(WebElement *element) {
+    m_web_element.replace(element->internalElement());
+}
+
+void WebElement::wrap(const QString &html) {
+    m_web_element.encloseWith(html);
+}
+
+void WebElement::wrap(WebElement *element) {
+    m_web_element.encloseWith(element->internalElement());
+}
+
+void WebElement::removeAllChildren() {
+    m_web_element.removeAllChildren();
+}
+
+void WebElement::removeFromDocument() {
+    m_web_element.removeFromDocument();
+}
+
+QWebElement WebElement::takeFromDocument() {
+    return m_web_element.takeFromDocument();
+}
+
+QWebElement WebElement::prev() {
+    return m_web_element.previousSibling();
+}
+
+QWebElement WebElement::next() {
+    return m_web_element.nextSibling();
 }
 
 void WebElement::setText(const QString &text) {
@@ -67,6 +127,10 @@ void WebElement::setHtml(const QString &html) {
 
 QWebElementCollection WebElement::findAll(const QString &selector) {
     return m_web_element.findAll(selector);
+}
+
+QWebElement WebElement::internalElement() {
+    return m_web_element;
 }
 
 

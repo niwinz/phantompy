@@ -296,4 +296,97 @@ int32_t ph_webelement_is_null(void *element) {
     }
 }
 
+void ph_webelement_remove_class(void *element, const char *classname) {
+    ph::WebElement *el = static_cast<ph::WebElement*>(element);
+    el->removeClass(QString::fromUtf8(classname));
+}
+
+void ph_webelement_remove_attr(void *element, const char *attrname) {
+    ph::WebElement *el = static_cast<ph::WebElement*>(element);
+    el->removeAttribute(QString::fromUtf8(attrname));
+}
+
+void ph_webelement_add_class(void *element, const char *classname) {
+    ph::WebElement *el = static_cast<ph::WebElement*>(element);
+    el->addClass(QString::fromUtf8(classname));
+}
+
+void ph_webelement_set_attr(void *element, const char *attrname, const char *value) {
+    ph::WebElement *el = static_cast<ph::WebElement*>(element);
+    el->setAttribute(QString::fromUtf8(attrname), QVariant::fromValue(QString::fromUtf8(value)));
+}
+
+void ph_webelement_append_html(void *element, const char *htmldata) {
+    ph::WebElement *el = static_cast<ph::WebElement*>(element);
+    el->append(QString::fromUtf8(htmldata));
+}
+
+void ph_webelement_append_element(void *element, void *element2) {
+    ph::WebElement *el = static_cast<ph::WebElement*>(element);
+    ph::WebElement *el2 = static_cast<ph::WebElement*>(element2);
+    el->append(el2);
+}
+
+void ph_webelement_append_html_after(void *element, const char *htmldata) {
+    ph::WebElement *el = static_cast<ph::WebElement*>(element);
+    el->appendAfter(QString::fromUtf8(htmldata));
+}
+
+void ph_webelement_append_element_after(void *element, void *element2) {
+    ph::WebElement *el = static_cast<ph::WebElement*>(element);
+    ph::WebElement *el2 = static_cast<ph::WebElement*>(element2);
+    el->appendAfter(el2);
+}
+
+void ph_webelement_replace_with_html(void *element, const char *htmldata) {
+    ph::WebElement *el = static_cast<ph::WebElement*>(element);
+    el->replace(QString::fromUtf8(htmldata));
+}
+
+void ph_webelement_replace_with_element(void *element, void *element2) {
+    ph::WebElement *el = static_cast<ph::WebElement*>(element);
+    ph::WebElement *el2 = static_cast<ph::WebElement*>(element2);
+    el->replace(el2);
+}
+
+void ph_webelement_remove_all_child_elements(void *element) {
+    ph::WebElement *el = static_cast<ph::WebElement*>(element);
+    el->removeAllChildren();
+}
+
+void ph_webelement_remove_from_document(void *element) {
+    ph::WebElement *el = static_cast<ph::WebElement*>(element);
+    el->removeFromDocument();
+}
+
+void* ph_webelement_take_from_document(void *element) {
+    ph::WebElement *el = static_cast<ph::WebElement*>(element);
+    QWebElement elref = el->takeFromDocument();
+    ph::WebElement *el2 = new ph::WebElement(elref);
+    return el2;
+}
+
+void ph_webelement_wrap_with_html(void *element, const char *htmldata) {
+    ph::WebElement *el = static_cast<ph::WebElement*>(element);
+    el->wrap(QString::fromUtf8(htmldata));
+}
+
+void ph_webelement_wrap_with_element(void *element, void *element2) {
+    ph::WebElement *el = static_cast<ph::WebElement*>(element);
+    ph::WebElement *el2 = static_cast<ph::WebElement*>(element2);
+    el->wrap(el2);
+}
+
+void* ph_webelement_previous(void *element) {
+    ph::WebElement *el = static_cast<ph::WebElement*>(element);
+    QWebElement elm = el->prev();
+    return new ph::WebElement(elm);
+}
+
+void* ph_webelement_next(void *element) {
+    ph::WebElement *el = static_cast<ph::WebElement*>(element);
+    QWebElement elm = el->next();
+    return new ph::WebElement(elm);
+}
+
 }

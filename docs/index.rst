@@ -8,7 +8,7 @@ phantompy
 
 Release v\ |version|.
 
-phantompy is a :ref:`BSD Licensed`, headless WebKit engine with pythonic clean api, build with ctypes.
+phantompy is a :ref:`BSD Licensed`, headless WebKit engine with powerful pythonic api.
 
 Introduction
 ------------
