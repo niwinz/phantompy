@@ -20,30 +20,9 @@ Tested with python: cpython-3.3, cpython-2.7 and pypy-2.0.1
 Documentation
 -------------
 
-Currently there is no documentation available. You can look at **tests.py** to
-see some examples.
+Partial documentation available on: https://phantompy.readthedocs.org/en/latest/
 
 A lot of features are proof of concept and need more work.
-
-
-
-Installation
-^^^^^^^^^^^^
-
-To compile and install **libphantompy** you need g++ 4.8 (not tested with
-previous versions), qt5 and cmake 2.8.8+
-
-.. code-block:: console
-
-    cd build
-    cmake ..
-    sudo make install
-
-For installing the python module:
-
-.. code-block:: console
-
-    python setup.py install
 
 
 FAQ
