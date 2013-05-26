@@ -59,6 +59,7 @@ SET(SOURCES
     lib/private/webelement.cpp
     lib/private/webelementcollection.cpp
     lib/private/cookiejar.cpp
+    lib/private/networkmanager.cpp
     lib/private/networkmanagerproxy.cpp
 )
 

@@ -6,6 +6,7 @@
 #include <QtWebKit>
 #include <QtWebKitWidgets>
 
+#include "networkmanager.hpp"
 #include "networkmanagerproxy.hpp"
 
 namespace ph {
@@ -48,13 +49,13 @@ private:
     QWebPage m_page;
     QSize m_viewSize;
 
-    SyncNetworkManagerProxy m_nmProxy;
 
     QSet<QString> m_requestedUrls;
     HeadersCache m_headersCache;
     ResponsesCache m_responsesCache;
 
-    QNetworkAccessManager m_networkManager;
+    SyncNetworkManagerProxy m_nmProxy;
+    NetworkManager m_networkManager;
 
     void applySettings();
 

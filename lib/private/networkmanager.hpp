@@ -4,6 +4,8 @@
 #include <QtCore>
 #include <QtNetwork>
 
+namespace ph {
+
 
 class NetworkManager: public QNetworkAccessManager {
     Q_OBJECT
@@ -18,17 +20,21 @@ public:
 
 private:
     int m_requestTimeout;
+    int m_authAttempts;
+    int m_maxAuthAttempts;
 
     QString m_username;
     QString m_password;
 
-protected:
-    QNetworkReply *createRequest(Operation op, const QNetworkRequest &rq, QIODevice *data=0);
+//protected:
+//    QNetworkReply *createRequest(Operation op, const QNetworkRequest &rq, QIODevice *data=0);
 
 private slots:
     void provideAuthentication(QNetworkReply *reply, QAuthenticator *authenticator);
-    void handleReadyReply();
+    //void handleReadyReply();
 };
+
+}
 
 
 #endif

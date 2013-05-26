@@ -3,15 +3,14 @@
 
 namespace ph {
 
-Page::Page(QObject *parent):QObject(parent) {
+Page::Page(QObject *parent):QObject(parent), m_networkManager(this) {
     m_page.setNetworkAccessManager(&m_networkManager);
     m_nmProxy.setNetworkAccessManager(&m_networkManager);
 
     applySettings();
 
-    connect(&m_page, SIGNAL(loadFinished(bool)), this, SLOT(loadFinished(bool)));
-    connect(m_page.networkAccessManager(), SIGNAL(finished(QNetworkReply*)),
-                this, SLOT(replyReceived(QNetworkReply*)));
+    connect(&m_page, &QWebPage::loadFinished, this, &Page::loadFinished);
+    connect(&m_networkManager, &NetworkManager::finished, this, &Page::replyReceived);
 
     m_loaded = false;
     m_error = false;
