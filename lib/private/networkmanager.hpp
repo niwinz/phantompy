@@ -26,12 +26,12 @@ private:
     QString m_username;
     QString m_password;
 
-//protected:
-//    QNetworkReply *createRequest(Operation op, const QNetworkRequest &rq, QIODevice *data=0);
+protected:
+    QNetworkReply *createRequest(Operation op, const QNetworkRequest &rq, QIODevice *data=0);
 
 private slots:
     void provideAuthentication(QNetworkReply *reply, QAuthenticator *authenticator);
-    //void handleReadyReply();
+    void handleReadyReply();
 };
 
 }

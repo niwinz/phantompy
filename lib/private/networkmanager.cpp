@@ -39,4 +39,16 @@ void NetworkManager::provideAuthentication(QNetworkReply *reply, QAuthenticator 
     }
 }
 
+QNetworkReply* NetworkManager::createRequest(Operation op, const QNetworkRequest &rq, QIODevice *data) {
+    QNetworkReply *reply = QNetworkAccessManager::createRequest(op, rq, data);
+    //connect(reply, &QNetworkReply::readyRead, this, &NetworkManager::handleReadyReply);
+    return reply;
+}
+
+void NetworkManager::handleReadyReply() {
+    //QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
+    //if (!reply) return;
+    //qWarning() << "!!!" << reply->peek(reply->size());
+}
+
 }
