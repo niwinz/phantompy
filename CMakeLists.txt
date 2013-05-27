@@ -60,6 +60,7 @@ SET(SOURCES
     lib/private/webelementcollection.cpp
     lib/private/cookiejar.cpp
     lib/private/networkmanager.cpp
+    lib/private/networktimeout.cpp
     lib/private/networkmanagerproxy.cpp
 )
 
