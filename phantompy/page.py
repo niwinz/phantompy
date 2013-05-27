@@ -122,7 +122,7 @@ class Page(object):
 
     def get_response_by_url(self, url):
         """
-        Get a backgroun response by url.
+        Get a background response by url.
 
         Every page what contains a links to external resources, requires
         a make extra background request for load all page.
