@@ -74,23 +74,23 @@ int ph_page_is_loaded(void *page) {
     }
 }
 
-char* ph_page_cookies(void *page) {
-    ph::Page *p = (ph::Page*)page;
-    ph::Cookies cookies = p->cookies();
+//char* ph_page_cookies(void *page) {
+//    ph::Page *p = (ph::Page*)page;
+//    ph::Cookies cookies = p->cookies();
+//
+//    QJsonObject cookiesObj;
+//    for(auto i=cookies.cbegin(); i!=cookies.cend(); ++i) {
+//        cookiesObj.insert(i.key(), QJsonValue(i.value()));
+//    }
+//
+//    QByteArray cookiesData = QJsonDocument(cookiesObj).toJson();
+//    char *resultData = new char[cookiesData.size() + 1];
+//
+//    qstrncpy(resultData, cookiesData.data(), cookiesData.size() + 1);
+//    return resultData;
+//}
 
-    QJsonObject cookiesObj;
-    for(auto i=cookies.cbegin(); i!=cookies.cend(); ++i) {
-        cookiesObj.insert(i.key(), QJsonValue(i.value()));
-    }
-
-    QByteArray cookiesData = QJsonDocument(cookiesObj).toJson();
-    char *resultData = new char[cookiesData.size() + 1];
-
-    qstrncpy(resultData, cookiesData.data(), cookiesData.size() + 1);
-    return resultData;
-}
-
-char* ph_page_requested_urls(void *page) {
+char* ph_page_get_requested_urls(void *page) {
     ph::Page *p = (ph::Page*)page;
     QSet<QString> urlsList = p->requestedUrls();
 
@@ -106,20 +106,17 @@ char* ph_page_requested_urls(void *page) {
     return resultData;
 }
 
-//char* ph_page_request_headers(void *page, const char* url) {
-//    Page *p = (Page*)page;
-//
-//    QJsonObject hobj;
-//
-//    for(auto i=headers.cbegin(); i != headers.cend(); ++i) {
-//        QString key = QString::fromUtf8( (*i).first );
-//        QString value = QString::fromUtf8( (*i).second );
-//
-//        hobj.insert(key, QJsonValue(value));
-//    }
-//
-//    return QJsonDocument(hobj).toJson();
-//}
+char* ph_page_get_reply_by_url(void *page, const char *url) {
+    ph::Page *p = static_cast<ph::Page*>(page);
+    QVariantMap response = p->getResponseByUrl(QString::fromUtf8(url));
+    QJsonObject rsp = QJsonObject::fromVariantMap(response);
+
+    QByteArray data = QJsonDocument(rsp).toJson();
+    char *resultData = new char[data.size() + 1];
+
+    qstrncpy(resultData, data.data(), data.size() + 1);
+    return resultData;
+}
 
 /****** Page ******/
 

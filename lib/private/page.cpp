@@ -10,7 +10,7 @@ Page::Page(QObject *parent):QObject(parent), m_networkManager(this) {
     applySettings();
 
     connect(&m_page, &QWebPage::loadFinished, this, &Page::loadFinished);
-    connect(&m_networkManager, &NetworkManager::finished, this, &Page::replyReceived);
+    connect(&m_networkManager, &NetworkManager::replyReceived, this, &Page::replyReceived);
 
     m_loaded = false;
     m_error = false;
@@ -72,67 +72,31 @@ QWebFrame* Page::mainFrame() {
     return m_page.mainFrame();
 }
 
-Cookies Page::cookies() {
-    QNetworkCookieJar *cj = m_networkManager.cookieJar();
-    QUrl url = m_page.mainFrame()->url();
-
-    Cookies cookies;
-    foreach(QNetworkCookie c, cj->cookiesForUrl(url)) {
-        cookies.insert(QString::fromUtf8(c.name()), QString::fromUtf8(c.value()));
-    }
-
-    return cookies;
-}
+//Cookies Page::cookies() {
+//    QNetworkCookieJar *cj = m_networkManager.cookieJar();
+//    QUrl url = m_page.mainFrame()->url();
+//
+//    Cookies cookies;
+//    foreach(QNetworkCookie c, cj->cookiesForUrl(url)) {
+//        cookies.insert(QString::fromUtf8(c.name()), QString::fromUtf8(c.value()));
+//    }
+//
+//    return cookies;
+//}
 
 QSet<QString> Page::requestedUrls() {
     return m_requestedUrls;
 }
 
-QByteArray Page::requestData(const QString &url) {
-    if (m_responsesCache.contains(url)) {
-        return m_responsesCache.value(url);
-    }
-
-    QNetworkReply *reply = m_nmProxy.get(QUrl(url));
-
-    QByteArray data = reply->readAll();
-    HeaderPairs headers = reply->rawHeaderPairs();
-
-    reply->close();
-    delete reply;
-
-    m_responsesCache.insert(url, data);
-    m_headersCache.insert(url, headers);
-
-    return data;
+QVariantMap Page::getResponseByUrl(const QString &url) {
+    return m_responsesCache[url];
 }
 
-HeaderPairs Page::requestHeaders(const QString &url) {
-    HeaderPairs headers;
+void Page::replyReceived(const QVariantMap &reply) {
+    qDebug() << "RECEIVED:" << reply["url"].toString();
 
-    if (m_headersCache.contains(url)) {
-        headers = m_headersCache.value(url);
-    } else {
-        QNetworkReply *reply = m_nmProxy.get(QUrl(url));
-
-        QByteArray data = reply->readAll();
-        headers = reply->rawHeaderPairs();
-
-        reply->close();
-        delete reply;
-
-        m_responsesCache.insert(url, data);
-        m_headersCache.insert(url, headers);
-    }
-
-    return headers;
-
-}
-
-void Page::replyReceived(QNetworkReply *reply) {
-    if (reply->url() != m_mainUrl) {
-        m_requestedUrls.insert(reply->url().toString());
-    }
+    m_requestedUrls.insert(reply["url"].toString());
+    m_responsesCache.insert(reply["url"].toString(), reply);
 }
 
 }

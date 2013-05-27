@@ -46,13 +46,17 @@ try:
     _library.ph_page_is_loaded.argtypes = [c_void_p]
     _library.ph_page_is_loaded.restype = c_int
 
-    _library.ph_page_cookies.argtypes = [c_void_p]
-    _library.ph_page_cookies.restype = c_void_p
-    _library.ph_page_cookies._char_ptr = True
+    _library.ph_page_get_reply_by_url.argtypes = [c_void_p, c_char_p]
+    _library.ph_page_get_reply_by_url.restype = c_void_p
+    _library.ph_page_get_reply_by_url._char_ptr = True
 
-    _library.ph_page_requested_urls.argtypes = [c_void_p]
-    _library.ph_page_requested_urls.restype = c_void_p
-    _library.ph_page_requested_urls._char_ptr = True
+    #_library.ph_page_cookies.argtypes = [c_void_p]
+    #_library.ph_page_cookies.restype = c_void_p
+    #_library.ph_page_cookies._char_ptr = True
+
+    _library.ph_page_get_requested_urls.argtypes = [c_void_p]
+    _library.ph_page_get_requested_urls.restype = c_void_p
+    _library.ph_page_get_requested_urls._char_ptr = True
 
     # Frame methods
     _library.ph_page_main_frame.argtypes = [c_void_p]

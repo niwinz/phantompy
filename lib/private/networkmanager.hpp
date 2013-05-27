@@ -26,6 +26,9 @@ private:
     QString m_username;
     QString m_password;
 
+signals:
+    void replyReceived(const QVariantMap &reply);
+
 protected:
     QNetworkReply *createRequest(Operation op, const QNetworkRequest &rq, QIODevice *data=0);
 

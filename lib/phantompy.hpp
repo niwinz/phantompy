@@ -21,8 +21,9 @@ extern "C" {
     int32_t ph_page_load(void *page, char *url);
     int32_t ph_page_is_loaded(void *page);
 
-    char* ph_page_cookies(void *page);
-    char* ph_page_requested_urls(void *page);
+    //char* ph_page_cookies(void *page);
+    char* ph_page_get_requested_urls(void *page);
+    char* ph_page_get_reply_by_url(void *page, const char *url);
 
     // Frame
     void* ph_page_main_frame(void *page);

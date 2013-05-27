@@ -115,12 +115,28 @@ class Page(object):
         frame_ptr = lib.ph_page_main_frame(self.ptr)
         return Frame(frame_ptr, self)
 
-    def cookies(self):
+    def get_requested_urls(self):
         assert self._loaded, "Page not loaded"
-        cookies_raw_data = lib.ph_page_cookies(self.ptr)
-        return json.loads(cookies_raw_data.decode("utf-8"))
-
-    def requested_urls(self):
-        assert self._loaded, "Page not loaded"
-        requested_urls = lib.ph_page_requested_urls(self.ptr)
+        requested_urls = lib.ph_page_get_requested_urls(self.ptr)
         return json.loads(requested_urls.decode("utf-8"))
+
+    def get_response_by_url(self, url):
+        """
+        Get a backgroun response by url.
+
+        Every page what contains a links to external resources, requires
+        a make extra background request for load all page.
+        With this method you can access to all response data
+        ot their requests.
+
+        :param str url: a url string
+        :rtype: dict
+        """
+
+        response = lib.ph_page_get_reply_by_url(self.ptr, util.force_bytes(url))
+        return json.loads(util.force_text(response))
+
+    @util.as_list
+    def get_all_responses(self):
+        for url in self.get_requested_urls():
+            yield self.get_response_by_url(url)

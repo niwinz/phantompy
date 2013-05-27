@@ -11,10 +11,7 @@
 
 namespace ph {
 
-typedef QPair<QByteArray, QByteArray> HeaderPair;
-typedef QList<HeaderPair> HeaderPairs;
-typedef QHash<QString, HeaderPairs> HeadersCache;
-typedef QHash<QString, QByteArray> ResponsesCache;
+typedef QHash<QString, QVariantMap> ResponsesMap;
 typedef QHash<QString, QString> Cookies;
 
 
@@ -32,13 +29,11 @@ public:
     bool hasLoadErrors();
 
     QWebFrame* mainFrame();
-    Cookies cookies();
 
     // Methods for get information about
     // background requests.
     QSet<QString> requestedUrls();
-    QByteArray requestData(const QString &url);
-    HeaderPairs requestHeaders(const QString &url);
+    QVariantMap getResponseByUrl(const QString &url);
 
 private:
     bool m_loaded;
@@ -49,10 +44,8 @@ private:
     QWebPage m_page;
     QSize m_viewSize;
 
-
     QSet<QString> m_requestedUrls;
-    HeadersCache m_headersCache;
-    ResponsesCache m_responsesCache;
+    ResponsesMap m_responsesCache;
 
     SyncNetworkManagerProxy m_nmProxy;
     NetworkManager m_networkManager;
@@ -61,7 +54,7 @@ private:
 
 private slots:
     void loadFinished(bool ok);
-    void replyReceived(QNetworkReply *reply);
+    void replyReceived(const QVariantMap &reply);
 };
 
 }

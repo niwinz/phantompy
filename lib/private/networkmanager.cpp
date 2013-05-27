@@ -41,14 +41,39 @@ void NetworkManager::provideAuthentication(QNetworkReply *reply, QAuthenticator 
 
 QNetworkReply* NetworkManager::createRequest(Operation op, const QNetworkRequest &rq, QIODevice *data) {
     QNetworkReply *reply = QNetworkAccessManager::createRequest(op, rq, data);
-    //connect(reply, &QNetworkReply::readyRead, this, &NetworkManager::handleReadyReply);
+    connect(reply, &QNetworkReply::readyRead, this, &NetworkManager::handleReadyReply);
     return reply;
 }
 
 void NetworkManager::handleReadyReply() {
-    //QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
-    //if (!reply) return;
-    //qWarning() << "!!!" << reply->peek(reply->size());
+    QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
+
+    if (!reply) return;
+
+    QByteArray replyData(reply->peek(reply->size()));
+
+    QVariantList headers;
+    foreach (QByteArray headerName, reply->rawHeaderList()) {
+        QVariantMap header;
+        header["name"] = QString::fromUtf8(headerName);
+        header["value"] = QString::fromUtf8(reply->rawHeader(headerName));
+
+        headers.append(header);
+    }
+
+    QVariantMap data;
+    data["url"] = reply->url().toEncoded().data();
+    data["status"] = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+    data["statusText"] = reply->attribute(QNetworkRequest::HttpReasonPhraseAttribute);
+    data["contentType"] = reply->header(QNetworkRequest::ContentTypeHeader);
+    data["bodySize"] = reply->size();
+    data["redirectURL"] = reply->header(QNetworkRequest::LocationHeader);
+    data["headers"] = headers;
+    data["time"] = QDateTime::currentDateTime();
+    data["data"] = replyData;
+    data["size"] = replyData.size();
+
+    emit replyReceived(data);
 }
 
 }

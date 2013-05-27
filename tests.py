@@ -36,16 +36,23 @@ class WebPageTests(unittest.TestCase):
         result = frame.evaluate('document.getElementsByTagName("h1")[0].innerHTML')
         self.assertEqual(result, "Title")
 
-    def test_page_cookies(self):
-        frame = ph.open("http://www.facebook.com")
-        cookies = frame.page.cookies()
-        self.assertIsInstance(cookies, dict)
+    #def test_page_cookies(self):
+    #    frame = ph.open("http://www.facebook.com")
+    #    cookies = frame.page.cookies()
+    #    self.assertIsInstance(cookies, dict)
 
     def test_page_all_requests(self):
         frame = ph.open(TEST_FILE)
-        self.assertEqual(frame.page.requested_urls(),
-            ['http://code.jquery.com/jquery-1.9.1.min.js'])
-        self.assertEqual(len(frame.page.requested_urls()), 1)
+        self.assertIn('http://code.jquery.com/jquery-1.9.1.min.js', frame.page.get_requested_urls())
+        self.assertEqual(len(frame.page.get_requested_urls()), 2)
+
+    def test_retrieve_page_background_responses(self):
+        frame = ph.open(TEST_FILE)
+        response = frame.page.get_response_by_url('http://code.jquery.com/jquery-1.9.1.min.js')
+
+        self.assertNotEqual(response["size"], 0)
+        self.assertEqual(response["status"], 200)
+        self.assertNotEqual(len(response["headers"]), 0)
 
 
 class WebElementTests(unittest.TestCase):
