@@ -36,10 +36,16 @@ class WebPageTests(unittest.TestCase):
         result = frame.evaluate('document.getElementsByTagName("h1")[0].innerHTML')
         self.assertEqual(result, "Title")
 
-    #def test_page_cookies(self):
-    #    frame = ph.open("http://www.facebook.com")
-    #    cookies = frame.page.cookies()
-    #    self.assertIsInstance(cookies, dict)
+    def test_page_cookies(self):
+        frame = ph.open("http://www.facebook.com")
+        ctx = ph.context.context()
+
+        cookies = ctx.get_all_cookies()
+        self.assertNotEqual(len(cookies), 0)
+        self.assertIn("value", cookies[0])
+        self.assertIn("name", cookies[0])
+        self.assertIn("domain", cookies[0])
+        self.assertIn("expires", cookies[0])
 
     def test_page_all_requests(self):
         frame = ph.open(TEST_FILE)

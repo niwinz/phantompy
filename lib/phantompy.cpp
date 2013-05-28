@@ -1,4 +1,5 @@
 #include "phantompy.hpp"
+#include "private/cookiejar.hpp"
 #include "private/context.hpp"
 #include "private/page.hpp"
 #include "private/frame.hpp"
@@ -37,6 +38,26 @@ void ph_context_set_object_cache_capacity(int i, int x, int z) {
 void ph_context_set_max_pages_in_cache(int num) {
     ph::Context::instance()->setMaximumPagesInCache(num);
 }
+
+char* ph_context_get_all_cookies() {
+    QVariantList cookies = ph::CookieJar::instance()->getAllCookies();
+
+    QJsonArray cookiesArray;
+
+    foreach(QVariant cvariant, cookies) {
+        QVariantMap cookie = cvariant.toMap();
+        QJsonObject cookieObj = QJsonObject::fromVariantMap(cookie);
+
+        cookiesArray.append(QJsonValue(cookieObj));
+    }
+
+    QByteArray data = QJsonDocument(cookiesArray).toJson();
+    char *resultData = new char[data.size() + 1];
+
+    qstrncpy(resultData, data.data(), data.size() + 1);
+    return resultData;
+}
+
 
 /******* Page *******/
 

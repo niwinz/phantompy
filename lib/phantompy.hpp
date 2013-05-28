@@ -11,6 +11,9 @@ extern "C" {
     void ph_context_set_object_cache_capacity(int i, int x, int z);
     void ph_context_set_max_pages_in_cache(int num);
 
+    // CookieJar access
+    char* ph_context_get_all_cookies();
+
     void ph_context_set_boolean_config(int key, int value);
 
     // Page Methods

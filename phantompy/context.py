@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
+import json
 from .api import library as lib
+from . import util
 
 
 class Context(object):
@@ -15,6 +17,10 @@ class Context(object):
 
     def set_max_pages_in_cache(self, num):
         lib.ph_context_set_max_pages_in_cache(num)
+
+    def get_all_cookies(self):
+        cookies_json = lib.ph_context_get_all_cookies()
+        return json.loads(util.force_text(cookies_json))
 
 
 _context = None

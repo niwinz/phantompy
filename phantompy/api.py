@@ -30,6 +30,10 @@ try:
     _library.ph_context_set_max_pages_in_cache.argtypes = [c_int]
     _library.ph_context_set_max_pages_in_cache.restype = None
 
+    _library.ph_context_get_all_cookies.argtypes = []
+    _library.ph_context_get_all_cookies.restype = c_void_p
+    _library.ph_context_get_all_cookies._char_ptr = True
+
     # Page methods
     _library.ph_page_create.argtypes = []
     _library.ph_page_create.restype = c_void_p

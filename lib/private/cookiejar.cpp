@@ -64,4 +64,38 @@ void CookieJar::addCookiesFromMapList(const QVariantList &cookies, const QString
     }
 }
 
+QVariantList CookieJar::getCookies(const QString &url) {
+    QVariantList cookiesList;
+    QVariantMap cookie;
+
+    foreach(QNetworkCookie n_cookie, cookiesForUrl(QUrl(url))) {
+        cookie["name"] = QString::fromUtf8(n_cookie.name());
+        cookie["value"] = QString::fromUtf8(n_cookie.value());
+        cookie["domain"] = n_cookie.domain();
+        cookie["path"] = n_cookie.path();
+        cookie["expires"] = n_cookie.expirationDate().toString(Qt::ISODate);
+
+        cookiesList.append(cookie);
+    }
+
+    return cookiesList;
+}
+
+QVariantList CookieJar::getAllCookies() {
+    QVariantList cookiesList;
+    QVariantMap cookie;
+
+    foreach(QNetworkCookie n_cookie, allCookies()) {
+        cookie["name"] = QString::fromUtf8(n_cookie.name());
+        cookie["value"] = QString::fromUtf8(n_cookie.value());
+        cookie["domain"] = n_cookie.domain();
+        cookie["path"] = n_cookie.path();
+        cookie["expires"] = n_cookie.expirationDate().toString(Qt::ISODate);
+
+        cookiesList.append(cookie);
+    }
+
+    return cookiesList;
+}
+
 }
