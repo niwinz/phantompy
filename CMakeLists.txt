@@ -11,11 +11,34 @@ SET(BUILD_SHARED_LIBS ON)
 SET(CMAKE_CXX_FLAGS         "-Wall -std=c++11 -fPIC")
 SET(CMAKE_CXX_FLAGS_DEBUG   "-O0 -g")
 SET(CMAKE_CXX_FLAGS_RELEASE "-O3")
+
 IF(APPLE)
-    # use brew qt5
-    # brew link qt5 or use below.
-    SET(CMAKE_PREFIX_PATH "/usr/local/opt/qt5")
     set(CMAKE_CXX_FLAGS        "${CMAKE_CXX_FLAGS} -stdlib=libc++")
+    FIND_PROGRAM(HAS_BREW_COMMAND brew)
+    IF(HAS_BREW_COMMAND)
+        execute_process(COMMAND brew list qt5
+            ERROR_VARIABLE QT5_MISSING
+            OUTPUT_VARIABLE QT5_FILES
+            ERROR_STRIP_TRAILING_WHITESPACE)
+
+        IF(NOT(QT5_MISSING))
+            execute_process(COMMAND brew --prefix qt5
+                OUTPUT_VARIABLE BREW_QT5_PREFIX
+                RESULT_VARIABLE NONZERO_BREW_EXIT_CODE
+                ERROR_VARIABLE BREW_ERROR 
+                OUTPUT_STRIP_TRAILING_WHITESPACE
+                ERROR_STRIP_TRAILING_WHITESPACE)
+            IF(NOT(NONZERO_BREW_EXIT_CODE))
+                SET(CMAKE_PREFIX_PATH ${BREW_QT5_PREFIX})
+            ELSE()
+                MESSAGE(FATAL_ERROR "Brew reported an error:\n${BREW_ERROR}.\nPlease resolve this error.")
+            ENDIF()
+        ELSE()
+            MESSAGE(FATAL_ERROR "Brew reported that QT5 is not installed, error: ${QT5_MISSING}")
+        ENDIF()
+    ELSE()
+        MESSAGE("Detected OSX but not brew. Assuming QT5 is within default search path. CMake will complain!")
+    ENDIF()
 ENDIF()
 
 FIND_PACKAGE(Qt5Core)
