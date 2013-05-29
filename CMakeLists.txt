@@ -11,6 +11,12 @@ SET(BUILD_SHARED_LIBS ON)
 SET(CMAKE_CXX_FLAGS         "-Wall -std=c++11 -fPIC")
 SET(CMAKE_CXX_FLAGS_DEBUG   "-O0 -g")
 SET(CMAKE_CXX_FLAGS_RELEASE "-O3")
+IF(APPLE)
+    # use brew qt5
+    # brew link qt5 or use below.
+    # SET(CMAKE_PREFIX_PATH "/usr/local/opt/qt5")
+    set(CMAKE_CXX_FLAGS        "${CMAKE_CXX_FLAGS} -stdlib=libc++")
+ENDIF()
 
 FIND_PACKAGE(Qt5Core)
 FIND_PACKAGE(Qt5Network)
