@@ -14,7 +14,7 @@ SET(CMAKE_CXX_FLAGS_RELEASE "-O3")
 IF(APPLE)
     # use brew qt5
     # brew link qt5 or use below.
-    # SET(CMAKE_PREFIX_PATH "/usr/local/opt/qt5")
+    SET(CMAKE_PREFIX_PATH "/usr/local/opt/qt5")
     set(CMAKE_CXX_FLAGS        "${CMAKE_CXX_FLAGS} -stdlib=libc++")
 ENDIF()
 
