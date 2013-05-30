@@ -1,0 +1,3 @@
+prune tests
+include lib/*.cpp lib/*.hpp lib/private/*.hpp lib/private/*.cpp CMakeLists.txt
+include build/empty

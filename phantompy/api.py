@@ -8,9 +8,10 @@ import os
 import json
 
 def load_library():
-    libpath = ctypes.util.find_library('phantompy')
-    libssh = ctypes.CDLL(libpath)
-    return libssh
+    cwd = os.path.dirname(os.path.abspath(__file__))
+    libdir = os.path.join(cwd, "_phantompy.so")
+    return ctypes.CDLL(libdir)
+
 
 try:
     _library = load_library()
