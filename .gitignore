@@ -2,3 +2,7 @@ build
 docs/_build
 *.pyc
 *.swp
+MANIFEST
+dist
+
+*egg*

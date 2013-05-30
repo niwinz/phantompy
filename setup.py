@@ -1,10 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from distutils.core import setup, Extension
+from distutils.core import setup
 from distutils.command.build import build
-from distutils.command.build_ext import build_ext
-from distutils.command.install_lib import install_lib
 
 from distutils import log
 from distutils.spawn import find_executable
@@ -17,28 +15,20 @@ import os.path
 from os.path import join
 import glob
 
-class _install_lib(install_lib):
-    build_directory =  "build"
-    current_path = os.path.dirname(os.path.abspath(__file__))
-
-    def install(self):
-        super(_install_lib, self).install()
-
-        #import pdb; pdb.set_trace()
-        #shutil.copy(join(self.current_path, self.build_dir, "_phantompy.so"),
-        #                join(self.install_dir, "_phantompy.so"))
-
-
 
 class _build_ext(build):
     def run(self):
+        result = super(_build_ext, self).run()
         cwd = os.path.dirname(os.path.abspath(__file__))
-        #new_module_dir = os.path.join(cwd, 'build', 'lib', 'phantompy')
+        new_module_dir = join(cwd, 'build', 'lib', 'phantompy')
 
         self._compile_phantompy(cwd)
+
         for filename in glob.glob(os.path.join(cwd, 'build', '_phantompy*')):
             if os.path.isfile(filename) and not os.path.islink(filename):
-                shutil.move(filename, os.path.join(cwd, self.build_lib, "phantompy", '_phantompy.so'))
+                shutil.copy(filename, os.path.join(new_module_dir, '_phantompy.so'))
+
+        return result
 
     def _compile_phantompy(self, cwd):
         retval = subprocess.call(shlex.split('cmake ..'),
@@ -64,13 +54,11 @@ setup(
     url = 'https://github.com/niwibe/phantompy',
     license = 'BSD',
     zip_safe = False,
-    #ext_modules=[Extension('_phantompy', [], optional=True)],
     packages = [
         "phantompy",
     ],
     cmdclass={
         'build': _build_ext,
-        'install_lib': _install_lib,
     },
     classifiers = [
         'Development Status :: 4 - Beta',
