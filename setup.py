@@ -2,10 +2,8 @@
 # -*- coding: utf-8 -*-
 
 from distutils.core import setup
-from distutils.command.build import build
-
-from distutils import log
 from distutils.spawn import find_executable
+import distutils.command.build
 
 import subprocess
 import shutil
@@ -16,9 +14,9 @@ from os.path import join
 import glob
 
 
-class _build_ext(build):
+class build(distutils.command.build.build):
     def run(self):
-        result = super(_build_ext, self).run()
+        result = distutils.command.build.build.run(self)
         cwd = os.path.dirname(os.path.abspath(__file__))
         new_module_dir = join(cwd, 'build', 'lib', 'phantompy')
 
@@ -45,7 +43,7 @@ class _build_ext(build):
 
 setup(
     name = 'phantompy',
-    version = "0.2",
+    version = "0.3",
     description = "Headless WebKit engine for python build on top of Qt5 and Webkit",
     long_description = "",
     keywords = 'webkit, headless, qt, engine',
@@ -58,7 +56,7 @@ setup(
         "phantompy",
     ],
     cmdclass={
-        'build': _build_ext,
+        'build': build,
     },
     classifiers = [
         'Development Status :: 4 - Beta',
