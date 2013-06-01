@@ -28,6 +28,8 @@ public:
 
     QVariantList getCookies(const QString &url);
     QVariantList getAllCookies();
+
+    void clearCookies();
 };
 
 }

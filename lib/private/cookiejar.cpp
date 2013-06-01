@@ -137,4 +137,8 @@ QVariantList CookieJar::getAllCookies() {
     return cookiesList;
 }
 
+void CookieJar::clearCookies() {
+    setAllCookies(QList<QNetworkCookie>());
+}
+
 }

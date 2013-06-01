@@ -53,6 +53,17 @@ class WebPageTests(TestCase):
         self.assertIn("name", cookies[0])
         self.assertIn("domain", cookies[0])
         self.assertIn("expires", cookies[0])
+        ctx.clear_cookies()
+
+    def test_cookies(self):
+        ctx = ph.context.context()
+
+        ctx.set_cookie("kk", "ll", ".niwi.be")
+        cookies = ctx.get_all_cookies()
+        self.assertEqual(len(cookies), 1)
+        self.assertEqual(cookies[0]['name'], 'kk')
+
+        ctx.clear_cookies()
 
     def test_page_all_requests(self):
         frame = ph.open(TEST_FILE)

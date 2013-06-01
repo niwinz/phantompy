@@ -22,6 +22,9 @@ try:
     _library.ph_context_free.argtypes = []
     _library.ph_context_free.restype = None
 
+    _library.ph_context_clear_cookies.argtypes = []
+    _library.ph_context_clear_cookies.restype = None
+
     _library.ph_context_clear_memory_cache.argtypes = []
     _library.ph_context_clear_memory_cache.restype = None
 

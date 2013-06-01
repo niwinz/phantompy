@@ -14,6 +14,7 @@ extern "C" {
     // CookieJar access
     char* ph_context_get_all_cookies();
     void ph_context_set_cookies(const char *cookies);
+    void ph_context_clear_cookies();
 
     void ph_context_set_boolean_config(int key, int value);
     void ph_context_set_int_config(int key, int value);

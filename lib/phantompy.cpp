@@ -78,6 +78,10 @@ void ph_context_set_cookies(const char *cookies) {
     ph::CookieJar::instance()->addCookiesFromMapList(cookiesList);
 }
 
+void ph_context_clear_cookies() {
+    ph::CookieJar::instance()->clearCookies();
+}
+
 
 /******* Page *******/
 
@@ -135,6 +139,7 @@ char* ph_page_get_cookies(void *page) {
     qstrncpy(resultData, cookiesData.data(), cookiesData.size() + 1);
     return resultData;
 }
+
 
 char* ph_page_get_requested_urls(void *page) {
     ph::Page *p = (ph::Page*)page;
