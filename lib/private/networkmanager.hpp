@@ -35,6 +35,7 @@ protected:
 private slots:
     void provideAuthentication(QNetworkReply *reply, QAuthenticator *authenticator);
     void handleReadyReply();
+    void handleTimeout();
 };
 
 }

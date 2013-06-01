@@ -1,4 +1,5 @@
 #include "networkmanager.hpp"
+#include "networktimeout.hpp"
 #include "cookiejar.hpp"
 #include "context.hpp"
 
@@ -8,6 +9,7 @@ NetworkManager::NetworkManager(QObject *parent): QNetworkAccessManager(parent) {
     setCookieJar(CookieJar::instance());
     m_authAttempts = 0;
     m_maxAuthAttempts = 3;
+    m_requestTimeout = 0;
 
     connect(this, &NetworkManager::authenticationRequired,
             this, &NetworkManager::provideAuthentication);
@@ -41,6 +43,17 @@ void NetworkManager::provideAuthentication(QNetworkReply *reply, QAuthenticator 
 
 QNetworkReply* NetworkManager::createRequest(Operation op, const QNetworkRequest &rq, QIODevice *data) {
     QNetworkReply *reply = QNetworkAccessManager::createRequest(op, rq, data);
+
+    if (m_requestTimeout > 0) {
+        NetworkTimeoutTimer *timeoutTimer = new NetworkTimeoutTimer();
+        timeoutTimer->reply = reply;
+        timeoutTimer->setInterval(m_requestTimeout);
+        timeoutTimer->setSingleShot(true);
+
+        connect(timeoutTimer, &NetworkTimeoutTimer::timeout,
+                this, &NetworkManager::handleTimeout);
+    }
+
     connect(reply, &QNetworkReply::readyRead, this, &NetworkManager::handleReadyReply);
     return reply;
 }
@@ -74,6 +87,12 @@ void NetworkManager::handleReadyReply() {
     data["size"] = replyData.size();
 
     emit replyReceived(data);
+}
+
+void NetworkManager::handleTimeout() {
+    NetworkTimeoutTimer *timer = qobject_cast<NetworkTimeoutTimer*>(sender());
+    timer->reply->abort();
+    delete timer;
 }
 
 }
