@@ -9,9 +9,9 @@ from . import image
 from . import webelements
 
 
-def open(url, size=(1280, 768)):
+def open(url, size=(1280, 768), cookies=[]):
     ctx = context.context()
-    p = page.Page(url=url, size=size, ctx=ctx)
+    p = page.Page(url=url, size=size, ctx=ctx, cookies=cookies)
     p.load()
 
     return p.frame()

@@ -70,7 +70,7 @@ class Page(object):
     _closed = False
     _page_ptr = None
 
-    def __init__(self, url, size=(1280, 768), ctx=None):
+    def __init__(self, url, size=(1280, 768), ctx=None, cookies=[]):
         if ctx is None:
             self._context = context.Context()
             self._context_own = True
@@ -84,6 +84,9 @@ class Page(object):
         lib.ph_page_set_viewpoint_size(self.ptr,
                                        self._size[0],
                                        self._size[1])
+
+        if cookies:
+            self._context.set_cookies(cookies)
 
     @property
     def ptr(self):
