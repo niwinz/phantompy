@@ -13,18 +13,19 @@ CURRENT_DIR = dirname(abspath(__file__))
 TEST_FILE = join(CURRENT_DIR, "misc", "test.html")
 TEST_FILE_WITH_FRAMES = join(CURRENT_DIR, "misc", "test_with_frames.html")
 
-
 def setUpModule():
     ctx = ph.context.context()
-    ctx.set_max_pages_in_cache(0)
-    ctx.set_object_cache_capacity(0, 0, 0)
+    ctx.conf.set_max_pages_in_cache(0)
+    ctx.conf.set_object_cache_capacity(0, 0, 0)
     ctx.clear_memory_caches()
 
 def tearDownModule():
     ph.context.destroy_context()
 
+class TestCase(unittest.TestCase):
+    pass
 
-class WebPageTests(unittest.TestCase):
+class WebPageTests(TestCase):
     def test_load_page(self):
         #import pdb; pdb.set_trace()
         frame = ph.open(TEST_FILE)
@@ -61,7 +62,26 @@ class WebPageTests(unittest.TestCase):
         self.assertNotEqual(len(response["headers"]), 0)
 
 
-class WebElementTests(unittest.TestCase):
+    def test_conf_access(self):
+        ctx = ph.context.context()
+        ctx.conf.load_images = False
+        ctx.conf.javascript = False
+        ctx.conf.offline_storage_quota = 2000
+
+        self.assertFalse(ctx.conf.load_images)
+        self.assertFalse(ctx.conf.javascript)
+        self.assertEqual(ctx.conf.offline_storage_quota, 2000)
+
+        ctx.conf.load_images = True
+        ctx.conf.javascript = True
+        ctx.conf.offline_storage_quota = 0
+
+        self.assertTrue(ctx.conf.load_images)
+        self.assertTrue(ctx.conf.javascript)
+        self.assertEqual(ctx.conf.offline_storage_quota, 0)
+
+
+class WebElementTests(TestCase):
     def test_get_title_element(self):
         p = ph.open(TEST_FILE)
 
@@ -247,7 +267,8 @@ class WebElementTests(unittest.TestCase):
         self.assertNotIn("data-id", attrs)
         self.assertFalse(element.has_attr("data-id"))
 
-class WebPageImageTests(unittest.TestCase):
+
+class WebPageImageTests(TestCase):
     def test_capture_page(self):
         p = ph.open(TEST_FILE)
         img = p.to_image()

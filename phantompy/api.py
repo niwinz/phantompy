@@ -19,7 +19,7 @@ try:
     _library.ph_context_init.argtypes = []
     _library.ph_context_init.restype = c_void_p
 
-    _library.ph_context_free.argtypes = [c_void_p]
+    _library.ph_context_free.argtypes = []
     _library.ph_context_free.restype = None
 
     _library.ph_context_clear_memory_cache.argtypes = []
@@ -30,6 +30,15 @@ try:
 
     _library.ph_context_set_max_pages_in_cache.argtypes = [c_int]
     _library.ph_context_set_max_pages_in_cache.restype = None
+
+    _library.ph_context_set_boolean_config.argtypes = [c_int, c_int]
+    _library.ph_context_set_boolean_config.restype = None
+    _library.ph_context_set_int_config.argtypes = [c_int, c_int]
+    _library.ph_context_set_int_config.restype = None
+    _library.ph_context_get_boolean_config.argtypes = [c_int]
+    _library.ph_context_get_boolean_config.restype = c_int
+    _library.ph_context_get_int_config.argtypes = [c_int]
+    _library.ph_context_get_int_config.restype = c_int
 
     _library.ph_context_get_all_cookies.argtypes = []
     _library.ph_context_get_all_cookies.restype = c_void_p

@@ -15,7 +15,7 @@ void* ph_context_init() {
     return ph::Context::instance();
 }
 
-void ph_context_free(void *ctx) {
+void ph_context_free() {
     ph::Context::clerInstance();
 }
 
@@ -25,6 +25,19 @@ void ph_free_charptr(char *ptr) {
 
 void ph_context_set_boolean_config(int key, int value) {
     ph::Context::instance()->setConfig(ph::Settings(key), QVariant::fromValue(!!value));
+}
+
+void ph_context_set_int_config(int key, int value) {
+    ph::Context::instance()->setConfig(ph::Settings(key), QVariant::fromValue(value));
+}
+
+int32_t ph_context_get_boolean_config(int key) {
+    return (int32_t)ph::Context::instance()->getConfig(ph::Settings(key)).toBool();
+}
+
+int32_t ph_context_get_int_config(int key) {
+    return ph::Context::instance()->getConfig(ph::Settings(key)).toInt();
+
 }
 
 void ph_context_clear_memory_cache() {

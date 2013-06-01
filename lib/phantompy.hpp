@@ -4,7 +4,7 @@
 extern "C" {
     // Initialize methods
     void* ph_context_init();
-    void ph_context_free(void* context);
+    void ph_context_free();
     void ph_free_charptr(char *ptr);
 
     void ph_context_clear_memory_cache();
@@ -15,6 +15,9 @@ extern "C" {
     char* ph_context_get_all_cookies();
 
     void ph_context_set_boolean_config(int key, int value);
+    void ph_context_set_int_config(int key, int value);
+    int32_t ph_context_get_boolean_config(int key);
+    int32_t ph_context_get_int_config(int key);
 
     // Page Methods
     void* ph_page_create();
