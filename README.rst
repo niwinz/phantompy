@@ -25,6 +25,12 @@ Partial documentation available on: https://phantompy.readthedocs.org/en/latest/
 A lot of features are proof of concept and need more work.
 
 
+Thanks
+------
+
+* Benjamin Torsten Jolitz (@benjolitz) for the many ideas submitted.
+
+
 FAQ
 ---
 
@@ -36,15 +42,3 @@ without x11 with this environment variable:
 .. code-block:: bash
 
     export QT_QPA_PLATFORM=minimal
-
-
-**Can you compile and use phantompy on OSX?**
-
-Yes and no. To build phantompy library on OSX you need to put
-``SET(CMAKE_PREFIX_PATH "/usr/local/opt/qt5")`` with valid qt5 installation prefix
-on CMakeLists.txt
-
-But the python library does not work properly because it cannot import a library
-due to some load imports.
-
-I'm not an OSX expert and improvements are welcome.
