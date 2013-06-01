@@ -52,58 +52,58 @@ QVariant Context::getConfig(const Settings &key) {
 }
 
 void Context::setDefaultSettings() {
-    m_settings[Settings::LoadImages] = QVariant::fromValue(true);
-    m_settings[Settings::Javascript] = QVariant::fromValue(true);
-    m_settings[Settings::DnsPrefetching] = QVariant::fromValue(true);
-    m_settings[Settings::Plugins] = QVariant::fromValue(false);
-    m_settings[Settings::PrivateBrowsing] = QVariant::fromValue(false);
-    m_settings[Settings::OfflineStorageDB] = QVariant::fromValue(true);
-    m_settings[Settings::OfflineAppCache] = QVariant::fromValue(true);
-    m_settings[Settings::OfflineStorageQuota] = QVariant::fromValue(0);
-    m_settings[Settings::FrameFlattening] = QVariant::fromValue(true);
-    m_settings[Settings::LocalStorage] = QVariant::fromValue(true);
+    m_settings[ph::LoadImages] = QVariant::fromValue(true);
+    m_settings[ph::Javascript] = QVariant::fromValue(true);
+    m_settings[ph::DnsPrefetching] = QVariant::fromValue(true);
+    m_settings[ph::Plugins] = QVariant::fromValue(false);
+    m_settings[ph::PrivateBrowsing] = QVariant::fromValue(false);
+    m_settings[ph::OfflineStorageDB] = QVariant::fromValue(true);
+    m_settings[ph::OfflineAppCache] = QVariant::fromValue(true);
+    m_settings[ph::OfflineStorageQuota] = QVariant::fromValue(0);
+    m_settings[ph::FrameFlattening] = QVariant::fromValue(true);
+    m_settings[ph::LocalStorage] = QVariant::fromValue(true);
 }
 
 // Shortcuts
 
 bool Context::settingsLoadImagesEnabled() {
-    return m_settings[Settings::LoadImages].toBool();
+    return m_settings[ph::LoadImages].toBool();
 }
 
 bool Context::settingsJavascriptEnabled() {
-    return m_settings[Settings::Javascript].toBool();
+    return m_settings[ph::Javascript].toBool();
 }
 
 bool Context::settingsDnsPrefetchEnabled() {
-    return m_settings[Settings::DnsPrefetching].toBool();
+    return m_settings[ph::DnsPrefetching].toBool();
 }
 
 bool Context::settingsPluginsEnabled() {
-    return m_settings[Settings::Plugins].toBool();
+    return m_settings[ph::Plugins].toBool();
 }
 
 bool Context::settingsPrivateBrowsingEnabled() {
-    return m_settings[Settings::PrivateBrowsing].toBool();
+    return m_settings[ph::PrivateBrowsing].toBool();
 }
 
 bool Context::settingsFrameFlatteningEnabled() {
-    return m_settings[Settings::FrameFlattening].toBool();
+    return m_settings[ph::FrameFlattening].toBool();
 }
 
 bool Context::settingsLocalStorageEnabled() {
-    return m_settings[Settings::LocalStorage].toBool();
+    return m_settings[ph::LocalStorage].toBool();
 }
 
 bool Context::settingsOfflineStorageDatabaseEnabled() {
-    return m_settings[Settings::OfflineStorageDB].toBool();
+    return m_settings[ph::OfflineStorageDB].toBool();
 }
 
 bool Context::settingsOfflineApplicationCacheEnabled() {
-    return m_settings[Settings::OfflineAppCache].toBool();
+    return m_settings[ph::OfflineAppCache].toBool();
 }
 
 int Context::settingsofflineStorageDefaultQuota() {
-    return m_settings[Settings::OfflineStorageQuota].toInt();
+    return m_settings[ph::OfflineStorageQuota].toInt();
 }
 
 }

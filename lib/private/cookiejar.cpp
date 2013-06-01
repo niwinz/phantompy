@@ -92,13 +92,15 @@ void CookieJar::addCookieFromMap(const QVariantMap &cookie) {
 }
 
 void CookieJar::addCookiesFromMapList(const QVariantList &cookies, const QString &url) {
-    for(auto i=cookies.cbegin(); i!=cookies.cend(); ++i) {
+    QVariantList::const_iterator i;
+    for(i=cookies.cbegin(); i!=cookies.cend(); ++i) {
         addCookieFromMap((*i).toMap(), url);
     }
 }
 
 void CookieJar::addCookiesFromMapList(const QVariantList &cookies) {
-    for(auto i=cookies.cbegin(); i!=cookies.cend(); ++i) {
+    QVariantList::const_iterator i;
+    for(i=cookies.cbegin(); i!=cookies.cend(); ++i) {
         addCookieFromMap((*i).toMap());
     }
 }

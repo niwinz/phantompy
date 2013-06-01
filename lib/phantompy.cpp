@@ -146,7 +146,9 @@ char* ph_page_get_requested_urls(void *page) {
     QSet<QString> urlsList = p->requestedUrls();
 
     QJsonArray urls;
-    for(auto i=urlsList.cbegin(); i != urlsList.cend(); ++i) {
+    QSet<QString>::const_iterator i;
+
+    for(i=urlsList.cbegin(); i != urlsList.cend(); ++i) {
         urls.append(QJsonValue((*i)));
     }
 
