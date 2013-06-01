@@ -40,15 +40,13 @@ WebKit engine (with Qt5WebKit).
 On installation time of **phantompy** you need compile this library, is really transparent
 but you need have installed some system dependences:
 
-* Gcc >= 4.8 (not tested with lower version)
+* Gcc >= 4.8 or clang++ >= 3.2
 * Qt5 (Core, Network, WebKit, Widgets)
 * CMake >= 2.8.4
 
 
 Also:
 
-* Clang version found on OSX (3.2~) can compile this library but with clang 3.2 on
-  linux, qt5 has one bug and can not compile it with -std=c++11
 * This library has limited tested environtments. If you can compile in other environments
   would be helpful if you notified me of it.
 * This library does not works properly on OSX, any help is welcome.
