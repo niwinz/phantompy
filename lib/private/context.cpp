@@ -31,6 +31,15 @@ void Context::clerInstance() {
     }
 }
 
+void Context::initializeEventTimer() {
+    connect(&m_timer, &QTimer::timeout, this, &Context::handleTimeout);
+
+    m_timer.setTimerType(Qt::CoarseTimer);
+    m_timer.setInterval(300);
+
+    m_timer.start();
+}
+
 void Context::setMaximumPagesInCache(int pages) {
    QWebSettings::setMaximumPagesInCache(pages);
 }
@@ -105,5 +114,11 @@ bool Context::settingsOfflineApplicationCacheEnabled() {
 int Context::settingsofflineStorageDefaultQuota() {
     return m_settings[ph::OfflineStorageQuota].toInt();
 }
+
+void Context::handleTimeout() {
+    qWarning() << "Handle Context Timeout";
+    QApplication::processEvents();
+}
+
 
 }

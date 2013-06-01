@@ -47,4 +47,12 @@ QWebElementCollection Frame::findAll(const QString &selector) {
     return p_frame->findAllElements(selector);
 }
 
+QString Frame::getUrl() {
+    return p_frame->url().toString();
+}
+
+void Frame::setUrl(const QString &url) {
+    p_frame->setUrl(QUrl(url));
+}
+
 }

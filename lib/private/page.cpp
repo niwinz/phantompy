@@ -96,5 +96,9 @@ void Page::setInitialCookies(const QVariantList &cookies) {
     m_initialCookies = cookies;
 }
 
+QWebHistory* Page::history() {
+    return m_page.history();
+}
+
 }
 

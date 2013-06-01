@@ -304,3 +304,8 @@ class WebElement(object):
             yield WebElement(el_ptr, self)
 
         lib.ph_webcollection_free(c_ptr)
+
+    def evaluate(self, js):
+        js = util.force_bytes(js)
+        result = lib.ph_webelement_evaluate_javascript(self.ptr, js)
+        return util.force_text(result)

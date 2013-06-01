@@ -21,6 +21,9 @@ public:
     QWebElement findFirstElement(const QString &selector);
     QWebElementCollection findAll(const QString &selector);
 
+    QString getUrl();
+    void setUrl(const QString &url);
+
 private:
     QWebFrame *p_frame;
 };

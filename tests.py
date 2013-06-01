@@ -78,7 +78,6 @@ class WebPageTests(TestCase):
         self.assertEqual(response["status"], 200)
         self.assertNotEqual(len(response["headers"]), 0)
 
-
     def test_conf_access(self):
         ctx = ph.context.context()
         ctx.conf.load_images = False
@@ -96,6 +95,11 @@ class WebPageTests(TestCase):
         self.assertTrue(ctx.conf.load_images)
         self.assertTrue(ctx.conf.javascript)
         self.assertEqual(ctx.conf.offline_storage_quota, 0)
+
+    #def test_page_navigation(self):
+    #    frame = ph.open(TEST_FILE)
+    #    import pdb; pdb.set_trace()
+    #    frame.cssselect("a")[0].evaluate("click()")
 
 
 class WebElementTests(TestCase):

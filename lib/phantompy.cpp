@@ -37,7 +37,6 @@ int32_t ph_context_get_boolean_config(int key) {
 
 int32_t ph_context_get_int_config(int key) {
     return ph::Context::instance()->getConfig(ph::Settings(key)).toInt();
-
 }
 
 void ph_context_clear_memory_cache() {
@@ -171,7 +170,18 @@ char* ph_page_get_reply_by_url(void *page, const char *url) {
     return resultData;
 }
 
-/****** Page ******/
+
+void ph_page_go_back(void *page) {
+    ph::Page *p = static_cast<ph::Page*>(page);
+    p->history()->back();
+}
+
+void ph_page_go_forward(void *page) {
+    ph::Page *p = static_cast<ph::Page*>(page);
+    p->history()->forward();
+}
+
+/****** Frame ******/
 
 void* ph_page_main_frame(void *page) {
     ph::Page *p = (ph::Page*)page;
@@ -219,6 +229,23 @@ void* ph_frame_find_all(void *frame, const char *selector) {
     return c;
 }
 
+char* ph_frame_get_url(void *frame) {
+    ph::Frame *f = static_cast<ph::Frame*>(frame);
+
+    QByteArray data = f->getUrl().toUtf8();
+    char *resultData = new char[data.size() + 1];
+    qstrncpy(resultData, data.data(), data.size() + 1);
+    return resultData;
+}
+
+
+void ph_frame_set_url(void *frame, const char *url) {
+    ph::Frame *f = static_cast<ph::Frame*>(frame);
+    f->setUrl(QString::fromUtf8(url));
+}
+
+/****** Web Element Collection *******/
+
 int32_t ph_webcollection_size(void *collection) {
     ph::WebElementCollection *c = static_cast<ph::WebElementCollection*>(collection);
     return c->size();
@@ -235,6 +262,8 @@ void ph_webcollection_free(void *collection) {
     ph::WebElementCollection *c = static_cast<ph::WebElementCollection*>(collection);
     delete c;
 }
+
+/******* Frame Image *********/
 
 void* ph_frame_capture_image(void *frame, const char *format, int quality) {
     ph::Frame *f = (ph::Frame*)frame;
@@ -253,7 +282,7 @@ int64_t ph_image_get_size(void *image) {
     return img->size();
 }
 
-const char * ph_image_get_format(void *image) {
+const char* ph_image_get_format(void *image) {
     ph::Image *img = (ph::Image*)image;
     return img->format().data();
 }
@@ -466,6 +495,18 @@ void* ph_webelement_next(void *element) {
     ph::WebElement *el = static_cast<ph::WebElement*>(element);
     QWebElement elm = el->next();
     return new ph::WebElement(elm);
+}
+
+char* ph_webelement_evaluate_javascript(void *element, const char *javascript) {
+    ph::WebElement *el = static_cast<ph::WebElement*>(element);
+
+    QString js(javascript);
+    QByteArray data = el->evaluateJavaScript(js).toUtf8();
+
+    char *resultData = new char[data.size() + 1];
+    qstrncpy(resultData, data.data(), data.size() + 1);
+    return resultData;
+
 }
 
 }

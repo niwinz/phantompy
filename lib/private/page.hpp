@@ -31,9 +31,8 @@ public:
     bool hasLoadErrors();
 
     QWebFrame* mainFrame();
+    QWebHistory* history();
 
-    // Methods for get information about
-    // background requests.
     QSet<QString> requestedUrls();
     QVariantMap getResponseByUrl(const QString &url);
 

@@ -24,6 +24,14 @@ class Frame(object):
         return self._frame_ptr
 
     @property
+    def url(self):
+        return util.force_text(lib.ph_frame_get_url(self.ptr))
+
+    @url.setter
+    def url(self, value):
+        lib.ph_frame_set_url(self.ptr, util.force_bytes(value))
+
+    @property
     def page(self):
         return self._page
 
@@ -144,8 +152,17 @@ class Page(object):
         for url in self.get_requested_urls():
             yield self.get_response_by_url(url)
 
-
     def get_cookies(self):
+        """
+        Get all cookies assiociated with a current
+        page url.
+        """
         assert self._loaded, "Page not loaded"
         cookies = lib.ph_page_get_cookies(self.ptr)
         return json.loads(cookies.decode("utf-8"))
+
+    def go_back(self):
+        lib.ph_page_go_back(self.ptr)
+
+    def go_forward(self):
+        lib.ph_page_go_forward(self.ptr)

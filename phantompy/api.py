@@ -78,6 +78,12 @@ try:
     _library.ph_page_get_requested_urls.restype = c_void_p
     _library.ph_page_get_requested_urls._char_ptr = True
 
+    _library.ph_page_go_back.argtypes = [c_void_p]
+    _library.ph_page_go_back.restype = None
+
+    _library.ph_page_go_forward.argtypes = [c_void_p]
+    _library.ph_page_go_forward.restype = None
+
     # Frame methods
     _library.ph_page_main_frame.argtypes = [c_void_p]
     _library.ph_page_main_frame.restype = c_void_p
@@ -92,6 +98,13 @@ try:
     _library.ph_frame_evaluate_javascript.argtypes = [c_void_p, c_char_p]
     _library.ph_frame_evaluate_javascript.restype = c_void_p
     _library.ph_frame_evaluate_javascript._char_ptr = True
+
+    _library.ph_frame_get_url.argtypes = [c_void_p]
+    _library.ph_frame_get_url.restype = c_void_p
+    _library.ph_frame_get_url._char_ptr = True
+
+    _library.ph_frame_set_url.argtypes = [c_void_p, c_char_p]
+    _library.ph_frame_set_url.restype = None
 
     # Image methods
     _library.ph_frame_capture_image.argtypes = [c_void_p, c_char_p, c_int]
@@ -215,6 +228,10 @@ try:
 
     _library.ph_webelement_next.argtypes = [c_void_p]
     _library.ph_webelement_next.restype = c_void_p
+
+    _library.ph_webelement_evaluate_javascript.argtypes = [c_void_p, c_char_p]
+    _library.ph_webelement_evaluate_javascript.restype = c_void_p
+    _library.ph_webelement_evaluate_javascript._char_ptr = True
 
 except (AttributeError, OSError, IOError):
     warnings.warn('libphantompy shared library not found or incompatible')
