@@ -2,6 +2,8 @@
 Installation
 ============
 
+Distribute & Pip
+----------------
 
 You can install **phantompy** with `pip`:
 
@@ -9,6 +11,9 @@ You can install **phantompy** with `pip`:
 
     pip install phantompy
 
+
+Get the Code
+------------
 
 Also, you can download the latest version from github_ and install
 it manually:
@@ -23,8 +28,11 @@ it manually:
 .. _github: https://github.com/niwibe/phantompy
 
 
-Notes about C/C++ Library
--------------------------
+Additional notes
+----------------
+
+C/C++ Library Notes
+^^^^^^^^^^^^^^^^^^^
 
 The core part of **phantompy** is a c/c++ library that uses qt5 for access to
 WebKit engine (with Qt5WebKit).
@@ -46,8 +54,14 @@ Also:
 * This library does not works properly on OSX, any help is welcome.
 
 
-Compatibility
--------------
+Ubuntu instalation notes
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+I have not been able to install all modules needed by phantompy on ubuntu. Ubuntu sucks.
+If you get compile, notify me so I can fill this gap with useful information.
+
+Python Compatibility
+^^^^^^^^^^^^^^^^^^^^
 
 This python bindings library is build with python3 in mind and has some layer of compatibility
 with python2.
