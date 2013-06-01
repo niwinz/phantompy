@@ -2,36 +2,42 @@
 Installation
 ============
 
-This part of the documentation covers the installation of **libphantompy** library
-and python bindings for it.
 
-C/C++ library
--------------
+You can install **phantompy** with `pip`:
 
-**libphantompy** is build with c++, using Qt5 as main library and uses QtWebKit as
-library for access to WebKit engine.
+.. code-block:: console
 
-For compile this library you need install some build dependences:
+    pip install phantompy
+
+
+Also, you can download the latest version from github_ and install
+it manually:
+
+.. code-block:: console
+
+    git clone https://github.com/niwibe/phantompy
+    cd phantompy
+    python setup.py install
+
+
+.. _github: https://github.com/niwibe/phantompy
+
+
+Notes about C/C++ Library
+-------------------------
+
+The core part of **phantompy** is a c/c++ library that uses qt5 for access to
+WebKit engine (with Qt5WebKit).
+
+On installation time of **phantompy** you need compile this library, is really transparent
+but you need have installed some system dependences:
 
 * Gcc >= 4.8 (not tested with lower version)
 * Qt5 (Core, Network, WebKit, Widgets)
 * CMake >= 2.8.4
 
-These are the commands to compile **libphantompy**:
 
-.. code-block:: console
-
-   cd phantompy/build
-   cmake ..
-   make
-   sudo make install
-
-
-This installs **libphantompy** on ``/usr/lib/``.
-
-
-Additional notes
-^^^^^^^^^^^^^^^^
+Also:
 
 * Clang version found on OSX (3.2~) can compile this library but with clang 3.2 on
   linux, qt5 has one bug and can not compile it with -std=c++11
@@ -40,23 +46,8 @@ Additional notes
 * This library does not works properly on OSX, any help is welcome.
 
 
-Python Bindings
----------------
-
-At the moment, python bindins are not available on python package index, because of
-a state of development(alpha). in the near future when the api stabilizes, I'll upload one version.
-
-Now, you can install it, downloading it from github and run setup.py script:
-
-.. code-block:: console
-
-    git clone https://github.com/niwibe/phantompy.git
-    cd phantompy
-    python setup.py install
-
-
 Compatibility
-^^^^^^^^^^^^^
+-------------
 
 This python bindings library is build with python3 in mind and has some layer of compatibility
 with python2.

@@ -47,5 +47,5 @@ Developers Api
 .. toctree::
    :maxdepth: 1
 
-   ctypes_api.rst
-   python_api.rst
+   api-python.rst
+   api-ctypes.rst
