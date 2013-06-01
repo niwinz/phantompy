@@ -71,6 +71,13 @@ char* ph_context_get_all_cookies() {
     return resultData;
 }
 
+void ph_context_set_cookies(const char *cookies) {
+    QJsonArray cookiesArray = QJsonDocument::fromJson(QByteArray(cookies)).array();
+    QVariantList cookiesList = cookiesArray.toVariantList();
+
+    ph::CookieJar::instance()->addCookiesFromMapList(cookiesList);
+}
+
 
 /******* Page *******/
 
@@ -108,21 +115,26 @@ int ph_page_is_loaded(void *page) {
     }
 }
 
-//char* ph_page_cookies(void *page) {
-//    ph::Page *p = (ph::Page*)page;
-//    ph::Cookies cookies = p->cookies();
-//
-//    QJsonObject cookiesObj;
-//    for(auto i=cookies.cbegin(); i!=cookies.cend(); ++i) {
-//        cookiesObj.insert(i.key(), QJsonValue(i.value()));
-//    }
-//
-//    QByteArray cookiesData = QJsonDocument(cookiesObj).toJson();
-//    char *resultData = new char[cookiesData.size() + 1];
-//
-//    qstrncpy(resultData, cookiesData.data(), cookiesData.size() + 1);
-//    return resultData;
-//}
+
+void ph_page_set_initial_cookies(void *page, const char *cookies) {
+    ph::Page *p = static_cast<ph::Page*>(page);
+    QJsonArray cookiesArray = QJsonDocument::fromJson(QByteArray(cookies)).array();
+
+    p->setInitialCookies(cookiesArray.toVariantList());
+}
+
+
+char* ph_page_get_cookies(void *page) {
+    ph::Page *p = static_cast<ph::Page*>(page);
+    QVariantList cookiesList = p->getCookies();
+    QJsonArray cookies = QJsonArray::fromVariantList(cookiesList);
+
+    QByteArray cookiesData = QJsonDocument(cookies).toJson();
+    char *resultData = new char[cookiesData.size() + 1];
+
+    qstrncpy(resultData, cookiesData.data(), cookiesData.size() + 1);
+    return resultData;
+}
 
 char* ph_page_get_requested_urls(void *page) {
     ph::Page *p = (ph::Page*)page;

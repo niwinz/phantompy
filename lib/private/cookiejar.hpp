@@ -22,7 +22,9 @@ public:
 
     void addCookie(const QNetworkCookie &cookie, const QString &url);
     void addCookieFromMap(const QVariantMap &cookie, const QString &url);
+    void addCookieFromMap(const QVariantMap &cookie);
     void addCookiesFromMapList(const QVariantList &cookies, const QString &url);
+    void addCookiesFromMapList(const QVariantList &cookies);
 
     QVariantList getCookies(const QString &url);
     QVariantList getAllCookies();

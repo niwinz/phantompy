@@ -1,5 +1,6 @@
 #include "page.hpp"
 #include "context.hpp"
+#include "cookiejar.hpp"
 
 namespace ph {
 
@@ -72,17 +73,9 @@ QWebFrame* Page::mainFrame() {
     return m_page.mainFrame();
 }
 
-//Cookies Page::cookies() {
-//    QNetworkCookieJar *cj = m_networkManager.cookieJar();
-//    QUrl url = m_page.mainFrame()->url();
-//
-//    Cookies cookies;
-//    foreach(QNetworkCookie c, cj->cookiesForUrl(url)) {
-//        cookies.insert(QString::fromUtf8(c.name()), QString::fromUtf8(c.value()));
-//    }
-//
-//    return cookies;
-//}
+QVariantList Page::getCookies() {
+    return CookieJar::instance()->getCookies(m_page.mainFrame()->url().toString());
+}
 
 QSet<QString> Page::requestedUrls() {
     return m_requestedUrls;
@@ -99,4 +92,9 @@ void Page::replyReceived(const QVariantMap &reply) {
     m_responsesCache.insert(reply["url"].toString(), reply);
 }
 
+void Page::setInitialCookies(const QVariantList &cookies) {
+    m_initialCookies = cookies;
 }
+
+}
+

@@ -48,6 +48,12 @@ class WebPageTests(TestCase):
         self.assertIn("domain", cookies[0])
         self.assertIn("expires", cookies[0])
 
+        cookies = frame.page.get_cookies()
+        self.assertIn("value", cookies[0])
+        self.assertIn("name", cookies[0])
+        self.assertIn("domain", cookies[0])
+        self.assertIn("expires", cookies[0])
+
     def test_page_all_requests(self):
         frame = ph.open(TEST_FILE)
         self.assertIn('http://code.jquery.com/jquery-1.9.1.min.js', frame.page.get_requested_urls())

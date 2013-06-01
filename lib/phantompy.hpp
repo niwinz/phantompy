@@ -13,6 +13,7 @@ extern "C" {
 
     // CookieJar access
     char* ph_context_get_all_cookies();
+    void ph_context_set_cookies(const char *cookies);
 
     void ph_context_set_boolean_config(int key, int value);
     void ph_context_set_int_config(int key, int value);
@@ -23,6 +24,9 @@ extern "C" {
     void* ph_page_create();
     void ph_page_set_viewpoint_size(void *page, int x, int y);
     void ph_page_free(void *page);
+
+    char *ph_page_get_cookies(void *page);
+    void ph_page_set_initial_cookies(void *page, const char *cookies);
 
     int32_t ph_page_load(void *page, char *url);
     int32_t ph_page_is_loaded(void *page);

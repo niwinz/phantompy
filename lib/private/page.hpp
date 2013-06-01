@@ -24,6 +24,8 @@ public:
 
     void load(const QString &url);
     void setViewSize(int x, int y);
+    void setInitialCookies(const QVariantList &cookies);
+    QVariantList getCookies();
 
     bool isLoaded();
     bool hasLoadErrors();
@@ -43,6 +45,7 @@ private:
     QEventLoop m_eventLoop;
     QWebPage m_page;
     QSize m_viewSize;
+    QVariantList m_initialCookies;
 
     QSet<QString> m_requestedUrls;
     ResponsesMap m_responsesCache;

@@ -140,3 +140,9 @@ class Page(object):
     def get_all_responses(self):
         for url in self.get_requested_urls():
             yield self.get_response_by_url(url)
+
+
+    def get_cookies(self):
+        assert self._loaded, "Page not loaded"
+        cookies = lib.ph_page_get_cookies(self.ptr)
+        return json.loads(cookies.decode("utf-8"))

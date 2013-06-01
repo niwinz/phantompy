@@ -44,6 +44,9 @@ try:
     _library.ph_context_get_all_cookies.restype = c_void_p
     _library.ph_context_get_all_cookies._char_ptr = True
 
+    _library.ph_context_set_cookies.argtypes = [c_char_p]
+    _library.ph_context_set_cookies.restype = None
+
     # Page methods
     _library.ph_page_create.argtypes = []
     _library.ph_page_create.restype = c_void_p
@@ -64,9 +67,9 @@ try:
     _library.ph_page_get_reply_by_url.restype = c_void_p
     _library.ph_page_get_reply_by_url._char_ptr = True
 
-    #_library.ph_page_cookies.argtypes = [c_void_p]
-    #_library.ph_page_cookies.restype = c_void_p
-    #_library.ph_page_cookies._char_ptr = True
+    _library.ph_page_get_cookies.argtypes = [c_void_p]
+    _library.ph_page_get_cookies.restype = c_void_p
+    _library.ph_page_get_cookies._char_ptr = True
 
     _library.ph_page_get_requested_urls.argtypes = [c_void_p]
     _library.ph_page_get_requested_urls.restype = c_void_p

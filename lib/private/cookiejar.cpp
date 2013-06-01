@@ -58,9 +58,48 @@ void CookieJar::addCookieFromMap(const QVariantMap &cookie, const QString &url) 
     }
 }
 
+void CookieJar::addCookieFromMap(const QVariantMap &cookie) {
+    QNetworkCookie n_cookie;
+
+    if (!cookie["name"].isNull() && !cookie["name"].toString().isEmpty() && !cookie["value"].isNull()) {
+        n_cookie.setName(cookie["name"].toByteArray());
+        n_cookie.setValue(cookie["value"].toByteArray());
+
+        if (!cookie["domain"].isNull() && !cookie["domain"].toString().isEmpty()) {
+            n_cookie.setDomain(cookie["domain"].toString());
+        }
+
+        if (!cookie["path"].isNull() || !cookie["path"].toString().isEmpty()) {
+            n_cookie.setPath(cookie["path"].toString());
+        }
+
+        n_cookie.setHttpOnly(cookie["httponly"].isNull() ? false : cookie["httponly"].toBool());
+        n_cookie.setSecure(cookie["secure"].isNull() ? false : cookie["secure"].toBool());
+
+        if (!cookie["expires"].isNull()) {
+            QDateTime n_expires = QDateTime::fromString(cookie["expires"].toString(), Qt::ISODate);
+            if (n_expires.isValid()) {
+                n_cookie.setExpirationDate(n_expires);
+            }
+        }
+
+        bool ok = insertCookie(n_cookie);
+        if (!ok) {
+            qWarning() << "CookieJar::addCookie(2): Rejected Cookie"
+                       << n_cookie.toRawForm();
+        }
+    }
+}
+
 void CookieJar::addCookiesFromMapList(const QVariantList &cookies, const QString &url) {
     for(auto i=cookies.cbegin(); i!=cookies.cend(); ++i) {
         addCookieFromMap((*i).toMap(), url);
+    }
+}
+
+void CookieJar::addCookiesFromMapList(const QVariantList &cookies) {
+    for(auto i=cookies.cbegin(); i!=cookies.cend(); ++i) {
+        addCookieFromMap((*i).toMap());
     }
 }
 
