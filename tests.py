@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 from __future__ import unicode_literals
@@ -97,9 +98,11 @@ class WebPageTests(TestCase):
         self.assertEqual(ctx.conf.offline_storage_quota, 0)
 
     #def test_page_navigation(self):
-    #    frame = ph.open(TEST_FILE)
+    #    frame = ph.open("http://www.niwi.be/")
+    #    frame.evaluate('document.querySelectorAll("a")[1].click()')
+
+    #    import time; time.sleep(1)
     #    import pdb; pdb.set_trace()
-    #    frame.cssselect("a")[0].evaluate("click()")
 
 
 class WebElementTests(TestCase):

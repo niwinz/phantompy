@@ -20,7 +20,6 @@ class Frame(object):
 
     @property
     def ptr(self):
-        assert not self._page.is_closed(), "Page closed"
         return self._frame_ptr
 
     @property
@@ -29,6 +28,7 @@ class Frame(object):
 
     @url.setter
     def url(self, value):
+        #lib.ph_frame_load(self.ptr, util.force_bytes(value))
         lib.ph_frame_set_url(self.ptr, util.force_bytes(value))
 
     @property
@@ -71,54 +71,28 @@ class Frame(object):
 
 
 class Page(object):
-    _context = None
-    _context_own = False
     _size = None
-    _loaded = False
-    _closed = False
     _page_ptr = None
 
-    def __init__(self, url, size=(1280, 768), ctx=None, cookies=[]):
-        if ctx is None:
-            self._context = context.Context()
-            self._context_own = True
-        else:
-            self._context = ctx
-
-        self._url = url
+    def __init__(self, size=(1280, 768), cookies=[]):
         self._size = size
 
         self._page_ptr = lib.ph_page_create()
         lib.ph_page_set_viewpoint_size(self.ptr,
                                        self._size[0],
                                        self._size[1])
-
         if cookies:
             self._context.set_cookies(cookies)
 
     @property
     def ptr(self):
-        assert not self._closed, "Page closed"
         return self._page_ptr
 
-    def close(self):
-        assert not self._closed, "Page already closed"
+    def __del__(self):
         lib.ph_page_free(self.ptr)
 
-        if self._context_own:
-            self._context.close()
-
-        self._closed = True
-
-    def is_closed(self):
-        return self._closed
-
-    def load(self):
-        assert not self._loaded, "Page already loaded"
-
-        self._loaded = True
-        result = lib.ph_page_load(self.ptr, self._url.encode('utf-8'))
-
+    def load(self, url):
+        result = lib.ph_page_load(self.ptr, util.force_bytes(url))
         if result != 0:
             raise RuntimeError("Error loading page")
 
@@ -127,7 +101,6 @@ class Page(object):
         return Frame(frame_ptr, self)
 
     def get_requested_urls(self):
-        assert self._loaded, "Page not loaded"
         requested_urls = lib.ph_page_get_requested_urls(self.ptr)
         return json.loads(requested_urls.decode("utf-8"))
 
@@ -157,7 +130,6 @@ class Page(object):
         Get all cookies assiociated with a current
         page url.
         """
-        assert self._loaded, "Page not loaded"
         cookies = lib.ph_page_get_cookies(self.ptr)
         return json.loads(cookies.decode("utf-8"))
 

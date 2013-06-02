@@ -46,6 +46,7 @@ extern "C" {
     char* ph_frame_evaluate_javascript(void *frame, char* javascript);
     char* ph_frame_get_url(void *frame);
     void ph_frame_set_url(void *frame, const char *url);
+    void ph_frame_load(void *frame, const char *url);
 
     // Frame Image methods
     void* ph_frame_capture_image(void *frame, const char *format, int quality);

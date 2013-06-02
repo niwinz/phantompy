@@ -23,6 +23,7 @@ public:
 
     QString getUrl();
     void setUrl(const QString &url);
+    void load(const QString &url);
 
 private:
     QWebFrame *p_frame;

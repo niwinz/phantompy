@@ -57,6 +57,7 @@ private:
 private slots:
     void loadFinished(bool ok);
     void replyReceived(const QVariantMap &reply);
+    void linkClicked(const QUrl &url);
 };
 
 }

@@ -55,4 +55,9 @@ void Frame::setUrl(const QString &url) {
     p_frame->setUrl(QUrl(url));
 }
 
+void Frame::load(const QString &url) {
+    p_frame->load(QUrl(url));
+    qDebug() << "FRAME::LOAD" << url;
+}
+
 }

@@ -106,6 +106,9 @@ try:
     _library.ph_frame_set_url.argtypes = [c_void_p, c_char_p]
     _library.ph_frame_set_url.restype = None
 
+    _library.ph_frame_load.argtypes = [c_void_p, c_char_p]
+    _library.ph_frame_load.restype = None
+
     # Image methods
     _library.ph_frame_capture_image.argtypes = [c_void_p, c_char_p, c_int]
     _library.ph_frame_capture_image.restype = c_void_p

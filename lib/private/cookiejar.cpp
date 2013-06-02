@@ -24,7 +24,7 @@ void CookieJar::addCookie(const QNetworkCookie &cookie, const QString &url) {
 
         setCookiesFromUrl(cookiesList, QUrl(url));
     } else {
-        qWarning() << "CookieJar::addCookie: Rejected Cookie"
+        qDebug() << "CookieJar::addCookie: Rejected Cookie"
                    << cookie.toRawForm();
     }
 }
@@ -85,7 +85,7 @@ void CookieJar::addCookieFromMap(const QVariantMap &cookie) {
 
         bool ok = insertCookie(n_cookie);
         if (!ok) {
-            qWarning() << "CookieJar::addCookie(2): Rejected Cookie"
+            qDebug() << "CookieJar::addCookie(2): Rejected Cookie"
                        << n_cookie.toRawForm();
         }
     }

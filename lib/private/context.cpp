@@ -116,7 +116,7 @@ int Context::settingsofflineStorageDefaultQuota() {
 }
 
 void Context::handleTimeout() {
-    qWarning() << "Handle Context Timeout";
+    qDebug() << "Handle Context Timeout";
     QApplication::processEvents();
 }
 

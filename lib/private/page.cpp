@@ -6,12 +6,14 @@ namespace ph {
 
 Page::Page(QObject *parent):QObject(parent), m_networkManager(this) {
     m_page.setNetworkAccessManager(&m_networkManager);
+    m_page.setLinkDelegationPolicy(QWebPage::DontDelegateLinks);
     m_nmProxy.setNetworkAccessManager(&m_networkManager);
 
     applySettings();
 
-    connect(&m_page, &QWebPage::loadFinished, this, &Page::loadFinished);
     connect(&m_networkManager, &NetworkManager::replyReceived, this, &Page::replyReceived);
+    connect(&m_page, &QWebPage::loadFinished, this, &Page::loadFinished);
+    connect(&m_page, &QWebPage::linkClicked, this, &Page::linkClicked);
 
     m_loaded = false;
     m_error = false;
@@ -56,10 +58,6 @@ void Page::setViewSize(int x, int y) {
     this->m_viewSize = QSize(x, y);
 }
 
-void Page::loadFinished(bool ok) {
-    m_eventLoop.quit();
-    m_error = ok;
-}
 
 bool Page::isLoaded() {
     return m_loaded;
@@ -85,12 +83,6 @@ QVariantMap Page::getResponseByUrl(const QString &url) {
     return m_responsesCache[url];
 }
 
-void Page::replyReceived(const QVariantMap &reply) {
-    qDebug() << "RECEIVED:" << reply["url"].toString();
-
-    m_requestedUrls.insert(reply["url"].toString());
-    m_responsesCache.insert(reply["url"].toString(), reply);
-}
 
 void Page::setInitialCookies(const QVariantList &cookies) {
     m_initialCookies = cookies;
@@ -98,6 +90,24 @@ void Page::setInitialCookies(const QVariantList &cookies) {
 
 QWebHistory* Page::history() {
     return m_page.history();
+}
+
+/* Private Slots */
+
+void Page::loadFinished(bool ok) {
+    m_eventLoop.quit();
+    m_error = ok;
+}
+
+void Page::replyReceived(const QVariantMap &reply) {
+    qDebug() << "RECEIVED:" << reply["url"].toString();
+
+    m_requestedUrls.insert(reply["url"].toString());
+    m_responsesCache.insert(reply["url"].toString(), reply);
+}
+
+void Page::linkClicked(const QUrl &url) {
+    qDebug() << "LINK CLICKED" << url.toString();
 }
 
 }

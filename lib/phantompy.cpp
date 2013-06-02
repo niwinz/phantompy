@@ -238,10 +238,14 @@ char* ph_frame_get_url(void *frame) {
     return resultData;
 }
 
-
 void ph_frame_set_url(void *frame, const char *url) {
     ph::Frame *f = static_cast<ph::Frame*>(frame);
     f->setUrl(QString::fromUtf8(url));
+}
+
+void ph_frame_load(void *frame, const char *url) {
+    ph::Frame *f = static_cast<ph::Frame*>(frame);
+    f->load(QString::fromUtf8(url));
 }
 
 /****** Web Element Collection *******/
