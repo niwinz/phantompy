@@ -5,6 +5,7 @@ from __future__ import unicode_literals
 
 import unittest
 import time
+import io
 from os.path import join, dirname, abspath
 
 import phantompy as ph
@@ -12,6 +13,8 @@ import phantompy as ph
 CURRENT_DIR = dirname(abspath(__file__))
 
 TEST_FILE = join(CURRENT_DIR, "misc", "test.html")
+TEST_FILE_SIMPLE = join(CURRENT_DIR, "misc", "test_simple.html")
+JQUERY_FILE = join(CURRENT_DIR, "misc", "jquery-1.9.1.min.js")
 TEST_FILE_WITH_FRAMES = join(CURRENT_DIR, "misc", "test_with_frames.html")
 
 def setUpModule():
@@ -96,6 +99,15 @@ class WebPageTests(TestCase):
         self.assertTrue(ctx.conf.load_images)
         self.assertTrue(ctx.conf.javascript)
         self.assertEqual(ctx.conf.offline_storage_quota, 0)
+
+    def test_inject_jquery(self):
+        frame = ph.open(TEST_FILE_SIMPLE)
+
+        with io.open(JQUERY_FILE, "rb") as f:
+            frame.evaluate(f.read())
+
+        result = frame.evaluate("$('title').html()")
+        self.assertEqual(result, "simple title")
 
     #def test_page_navigation(self):
     #    frame = ph.open("http://www.niwi.be/")
