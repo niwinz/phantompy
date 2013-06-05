@@ -5,11 +5,11 @@ namespace ph {
 static Context *contextInstance = NULL;
 
 Context::Context(QObject *parent):QObject(parent) {
-   char *argv;
-   int argc = 1;
+    char *argv[] = {"hello"};
+    int argc = 1;
 
-   p_app = new QApplication(argc, &argv);
-   setDefaultSettings();
+    p_app = new QApplication(argc, argv);
+    setDefaultSettings();
 }
 
 Context::~Context() {
@@ -33,7 +33,7 @@ void Context::clerInstance() {
 
 void Context::initializeEventTimer() {
 #ifdef PHANTOMPY_QT4
-    connect(&m_timer, SIGNAL(QTimer::timeout), this, SLOT(Context::handleTimeout()));
+    connect(&m_timer, SIGNAL(timeout()), this, SLOT(handleTimeout()));
 #else
     connect(&m_timer, &QTimer::timeout, this, &Context::handleTimeout);
 #endif

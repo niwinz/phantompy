@@ -12,14 +12,14 @@ Page::Page(QObject *parent):QObject(parent), m_networkManager(this) {
     applySettings();
 
 #ifdef PHANTOMPY_QT4
-    connect(&m_networkManager, SIGNAL(NetworkManager::replyReceived(const QVariantMap &)),
-            this, SLOT(Page::replyReceived(const QVariantMap &)));
+    connect(&m_networkManager, SIGNAL(replyReceived(const QVariantMap &)),
+            this, SLOT(replyReceived(const QVariantMap &)));
 
-    connect(&m_page, SIGNAL(QWebPage::loadFinished(bool)),
-            this, SLOT(Page::loadFinished(bool)));
+    connect(&m_page, SIGNAL(loadFinished(bool)),
+            this, SLOT(loadFinished(bool)));
 
-    connect(&m_page, SIGNAL(QWebPage::linkClicked(const QUrl &)),
-            this, SLOT(Page::linkClicked(const QUrl &)));
+    connect(&m_page, SIGNAL(linkClicked(const QUrl &)),
+            this, SLOT(linkClicked(const QUrl &)));
 #else
     connect(&m_networkManager, &NetworkManager::replyReceived, this, &Page::replyReceived);
     connect(&m_page, &QWebPage::loadFinished, this, &Page::loadFinished);
