@@ -62,6 +62,7 @@ INCLUDE_DIRECTORIES(
     ${Qt5Widgets_INCLUDE_DIRS}
     ${Qt5WebKit_INCLUDE_DIRS}
     ${Qt5WebKitWidgets_INCLUDE_DIRS}
+    lib
 )
 
 # Use the compile definitions defined in the Qt 5 Widgets module
@@ -79,7 +80,18 @@ ELSE()
     MESSAGE(STATUS "Debug build")
 ENDIF()
 
-SET(SOURCES
+
+SET(QJSON_SRCS
+    lib/qjson/parser.cpp
+    lib/qjson/qobjecthelper.cpp
+    lib/qjson/json_scanner.cpp
+    lib/qjson/json_parser.cc
+    lib/qjson/parserrunnable.cpp
+    lib/qjson/serializer.cpp
+    lib/qjson/serializerrunnable.cpp
+)
+
+SET(PHANTOMPY_SOURCES
     lib/phantompy.cpp
     lib/private/context.cpp
     lib/private/page.cpp
@@ -93,7 +105,7 @@ SET(SOURCES
     lib/private/networkmanagerproxy.cpp
 )
 
-ADD_LIBRARY(phantompy ${SOURCES})
+ADD_LIBRARY(phantompy ${QJSON_SRCS} ${PHANTOMPY_SOURCES})
 
 TARGET_LINK_LIBRARIES(
     phantompy

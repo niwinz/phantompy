@@ -1,4 +1,6 @@
 #include "phantompy.hpp"
+#include "qjson/serializer.h"
+#include "qjson/parser.h"
 #include "private/cookiejar.hpp"
 #include "private/context.hpp"
 #include "private/page.hpp"
@@ -52,20 +54,13 @@ void ph_context_set_max_pages_in_cache(int num) {
 }
 
 char* ph_context_get_all_cookies() {
+    QJson::Serializer serializer;
     QVariantList cookies = ph::CookieJar::instance()->getAllCookies();
 
-    QJsonArray cookiesArray;
+    bool ok;
+    QByteArray data = serializer.serialize(cookies, &ok);
 
-    foreach(QVariant cvariant, cookies) {
-        QVariantMap cookie = cvariant.toMap();
-        QJsonObject cookieObj = QJsonObject::fromVariantMap(cookie);
-
-        cookiesArray.append(QJsonValue(cookieObj));
-    }
-
-    QByteArray data = QJsonDocument(cookiesArray).toJson();
     char *resultData = new char[data.size() + 1];
-
     qstrncpy(resultData, data.data(), data.size() + 1);
     return resultData;
 }
@@ -121,18 +116,25 @@ int ph_page_is_loaded(void *page) {
 
 void ph_page_set_initial_cookies(void *page, const char *cookies) {
     ph::Page *p = static_cast<ph::Page*>(page);
-    QJsonArray cookiesArray = QJsonDocument::fromJson(QByteArray(cookies)).array();
 
-    p->setInitialCookies(cookiesArray.toVariantList());
+    QJson::Parser parser;
+    bool ok;
+
+    QByteArray jsonData(cookies);
+    QVariant cookiesData = parser.parse(jsonData, &ok);
+
+    p->setInitialCookies(cookiesData.toList());
 }
 
 
 char* ph_page_get_cookies(void *page) {
     ph::Page *p = static_cast<ph::Page*>(page);
     QVariantList cookiesList = p->getCookies();
-    QJsonArray cookies = QJsonArray::fromVariantList(cookiesList);
 
-    QByteArray cookiesData = QJsonDocument(cookies).toJson();
+    QJson::Serializer serializer;
+    bool ok;
+
+    QByteArray cookiesData = serializer.serialize(cookiesList, &ok);
     char *resultData = new char[cookiesData.size() + 1];
 
     qstrncpy(resultData, cookiesData.data(), cookiesData.size() + 1);
@@ -144,14 +146,18 @@ char* ph_page_get_requested_urls(void *page) {
     ph::Page *p = (ph::Page*)page;
     QSet<QString> urlsList = p->requestedUrls();
 
-    QJsonArray urls;
+    QVariantList urls;
     QSet<QString>::const_iterator i;
 
     for(i=urlsList.cbegin(); i != urlsList.cend(); ++i) {
-        urls.append(QJsonValue((*i)));
+        urls << QVariant::fromValue((*i));
     }
 
-    QByteArray requestedUrls = QJsonDocument(urls).toJson();
+
+    QJson::Serializer serializer;
+    bool ok;
+
+    QByteArray requestedUrls = serializer.serialize(urls, &ok);
     char *resultData = new char[requestedUrls.size() + 1];
 
     qstrncpy(resultData, requestedUrls.data(), requestedUrls.size() + 1);
@@ -161,9 +167,11 @@ char* ph_page_get_requested_urls(void *page) {
 char* ph_page_get_reply_by_url(void *page, const char *url) {
     ph::Page *p = static_cast<ph::Page*>(page);
     QVariantMap response = p->getResponseByUrl(QString::fromUtf8(url));
-    QJsonObject rsp = QJsonObject::fromVariantMap(response);
 
-    QByteArray data = QJsonDocument(rsp).toJson();
+    QJson::Serializer serializer;
+    bool ok;
+
+    QByteArray data = serializer.serialize(response, &ok);
     char *resultData = new char[data.size() + 1];
 
     qstrncpy(resultData, data.data(), data.size() + 1);

@@ -1,3 +1,3 @@
 prune tests
-include lib/*.cpp lib/*.hpp lib/private/*.hpp lib/private/*.cpp CMakeLists.txt
+include lib/* lib/private/* lib/qjson/* CMakeLists.txt
 include build/empty
