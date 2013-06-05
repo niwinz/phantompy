@@ -32,9 +32,15 @@ void Context::clerInstance() {
 }
 
 void Context::initializeEventTimer() {
+#ifdef PHANTOMPY_QT4
+    connect(&m_timer, SIGNAL(QTimer::timeout), this, SLOT(Context::handleTimeout()));
+#else
     connect(&m_timer, &QTimer::timeout, this, &Context::handleTimeout);
+#endif
 
+#ifndef PHANTOMPY_QT4
     m_timer.setTimerType(Qt::CoarseTimer);
+#endif
     m_timer.setInterval(300);
 
     m_timer.start();

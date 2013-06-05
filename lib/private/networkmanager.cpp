@@ -10,9 +10,13 @@ NetworkManager::NetworkManager(QObject *parent): QNetworkAccessManager(parent) {
     m_authAttempts = 0;
     m_maxAuthAttempts = 3;
     m_requestTimeout = 0;
-
+#ifdef PHANTOMPY_QT4
+    connect(this, SIGNAL(authenticationRequired(QNetworkReply *, QAuthenticator *)),
+            this, SLOT(provideAuthentication(QNetworkReply *, QAuthenticator *)));
+#else
     connect(this, &NetworkManager::authenticationRequired,
             this, &NetworkManager::provideAuthentication);
+#endif
 }
 
 NetworkManager::~NetworkManager() {}
@@ -50,11 +54,20 @@ QNetworkReply* NetworkManager::createRequest(Operation op, const QNetworkRequest
         timeoutTimer->setInterval(m_requestTimeout);
         timeoutTimer->setSingleShot(true);
 
+#ifdef PHANTOMPY_QT4
+        connect(timeoutTimer, SIGNAL(timeout()),
+                this, SLOT(handleTimeout()));
+#else
         connect(timeoutTimer, &NetworkTimeoutTimer::timeout,
                 this, &NetworkManager::handleTimeout);
+#endif
     }
 
+#ifdef PHANTOMPY_QT4
+    connect(reply, SIGNAL(readyRead()), this, SLOT(handleReadyReply()));
+#else
     connect(reply, &QNetworkReply::readyRead, this, &NetworkManager::handleReadyReply);
+#endif
     return reply;
 }
 
