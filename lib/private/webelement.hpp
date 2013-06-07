@@ -20,7 +20,7 @@ public:
     QString toHtml();
     QString toText();
 
-    QString evaluateJavaScript(const QString &data);
+    QVariant evaluateJavaScript(const QString &data);
 
     QStringList getClasses();
     QStringList getAttributeNames();

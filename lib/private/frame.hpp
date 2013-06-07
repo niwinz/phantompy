@@ -16,7 +16,7 @@ public:
 
     QByteArray captureImage(const char *format, int quality);
     QString toHtml();
-    QString evaluateJavaScript(const QString &data);
+    QVariant evaluateJavaScript(const QString &data);
 
     QWebElement findFirstElement(const QString &selector);
     QWebElementCollection findAll(const QString &selector);

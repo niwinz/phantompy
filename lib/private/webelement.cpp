@@ -24,9 +24,8 @@ QString WebElement::toText() {
     return m_web_element.toPlainText();
 }
 
-QString WebElement::evaluateJavaScript(const QString &data) {
-    QVariant result = m_web_element.evaluateJavaScript(data);
-    return result.toString();
+QVariant WebElement::evaluateJavaScript(const QString &data) {
+    return m_web_element.evaluateJavaScript(data);
 }
 
 QStringList WebElement::getClasses() {
