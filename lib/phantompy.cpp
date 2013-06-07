@@ -66,10 +66,11 @@ char* ph_context_get_all_cookies() {
 }
 
 void ph_context_set_cookies(const char *cookies) {
-    QJsonArray cookiesArray = QJsonDocument::fromJson(QByteArray(cookies)).array();
-    QVariantList cookiesList = cookiesArray.toVariantList();
+    QJson::Parser parser;
+    bool ok;
 
-    ph::CookieJar::instance()->addCookiesFromMapList(cookiesList);
+    QVariant cookiesData = parser.parse(QByteArray(cookies), &ok);
+    ph::CookieJar::instance()->addCookiesFromMapList(cookiesData.toList());
 }
 
 void ph_context_clear_cookies() {
@@ -149,7 +150,11 @@ char* ph_page_get_requested_urls(void *page) {
     QVariantList urls;
     QSet<QString>::const_iterator i;
 
+#ifdef PHANTOMPY_QT4
+    for(i=urlsList.begin(); i != urlsList.end(); ++i) {
+#else
     for(i=urlsList.cbegin(); i != urlsList.cend(); ++i) {
+#endif
         urls << QVariant::fromValue((*i));
     }
 
@@ -214,7 +219,7 @@ char* ph_frame_to_html(void *frame) {
 char* ph_frame_evaluate_javascript(void *frame, char *javascript) {
     ph::Frame *f = (ph::Frame*)frame;
 
-    QString js(javascript);
+    QString js = QString::fromUtf8(javascript);
     QByteArray data = f->evaluateJavaScript(js).toUtf8();
 
     char *resultData = new char[data.size() + 1];
@@ -354,7 +359,7 @@ char* ph_webelement_inner_text(void *element) {
 
 char* ph_webelement_get_classes(void *element) {
     ph::WebElement *el = static_cast<ph::WebElement*>(element);
-    QByteArray data = el->getClasses().join(" ").toUtf8();
+    QByteArray data = el->getClasses().join(QString::fromUtf8(" ")).toUtf8();
 
     char *resultData = new char[data.size() + 1];
     qstrncpy(resultData, data.data(), data.size() + 1);
@@ -364,7 +369,7 @@ char* ph_webelement_get_classes(void *element) {
 
 char* ph_webelement_get_attrnames(void *element) {
     ph::WebElement *el = static_cast<ph::WebElement*>(element);
-    QByteArray data = el->getAttributeNames().join(" ").toUtf8();
+    QByteArray data = el->getAttributeNames().join(QString::fromUtf8(" ")).toUtf8();
 
     char *resultData = new char[data.size() + 1];
     qstrncpy(resultData, data.data(), data.size() + 1);
@@ -512,7 +517,7 @@ void* ph_webelement_next(void *element) {
 char* ph_webelement_evaluate_javascript(void *element, const char *javascript) {
     ph::WebElement *el = static_cast<ph::WebElement*>(element);
 
-    QString js(javascript);
+    QString js = QString::fromUtf8(javascript);
     QByteArray data = el->evaluateJavaScript(js).toUtf8();
 
     char *resultData = new char[data.size() + 1];

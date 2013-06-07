@@ -4,7 +4,10 @@
 #include <QtCore>
 #include <QtNetwork>
 #include <QtWebKit>
+#ifndef PHANTOMPY_QT4
 #include <QtWebKitWidgets>
+#endif
+
 
 #include "networkmanager.hpp"
 #include "networkmanagerproxy.hpp"
