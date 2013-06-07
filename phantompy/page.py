@@ -69,6 +69,7 @@ class Page(object):
 
     def __init__(self, size=(1280, 768), cookies=[]):
         self._size = size
+        self._ctx = context.context()
 
         self._page_ptr = lib.ph_page_create()
         lib.ph_page_set_viewpoint_size(self.ptr,
