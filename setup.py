@@ -43,7 +43,7 @@ class build(distutils.command.build.build):
 
 setup(
     name = 'phantompy',
-    version = "0.5",
+    version = "0.6",
     description = "Headless WebKit engine for python build on top of Qt5",
     long_description = "",
     keywords = 'webkit, headless, qt, engine',
@@ -51,7 +51,6 @@ setup(
     author_email = 'niwi@niwi.be',
     url = 'https://github.com/niwibe/phantompy',
     license = 'BSD',
-    zip_safe = False,
     packages = [
         "phantompy",
     ],
