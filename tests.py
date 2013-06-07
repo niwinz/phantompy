@@ -31,15 +31,26 @@ class TestCase(unittest.TestCase):
 
 class WebPageTests(TestCase):
     def test_load_page(self):
-        #import pdb; pdb.set_trace()
         frame = ph.open(TEST_FILE)
         html_data = frame.to_html()
         self.assertNotEqual(len(html_data), 0)
 
-    def test_evaluate_js(self):
+    def test_evaluate_js_01(self):
+        """
+        Evaluate js method can return strings.
+        """
         frame = ph.open(TEST_FILE)
         result = frame.evaluate('document.getElementsByTagName("h1")[0].innerHTML')
         self.assertEqual(result, "Title")
+
+    def test_evaluate_js_02(self):
+        """
+        Evaluate js method can return dicts and
+        arrays.
+        """
+        frame = ph.open(TEST_FILE)
+        result = frame.evaluate('$("#footer").data()')
+        self.assertEqual(result, {'id': 1.0})
 
     # Commented due a lot of coredumps with this method.
     #def test_page_cookies(self):

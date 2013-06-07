@@ -39,27 +39,20 @@ class Frame(object):
         return lib.ph_frame_to_html(self.ptr)
 
     def to_image(self, format="PNG", quality=-1):
-        if hasattr(format, "encode"):
-            _format = format.encode("utf-8")
-        else:
-            _format = format
+        _format = util.force_bytes(format)
 
         # Obtain image object pointer
         image_ptr = lib.ph_frame_capture_image(self.ptr, _format, quality)
         return image.Image(image_ptr, format, quality, self)
 
     def evaluate(self, js):
-        if hasattr(js, "encode"):
-            js = js.encode("utf-8")
-
+        js = util.force_bytes(js)
         result = lib.ph_frame_evaluate_javascript(self.ptr, js)
-        return result.decode('utf-8')
+        return json.loads(util.force_text(result))
 
     @util.as_list
     def cssselect(self, selector):
-        if hasattr(selector, "encode"):
-            selector = selector.encode('utf-8')
-
+        selector = util.force_bytes(selector)
         c_ptr = lib.ph_frame_find_all(self.ptr, selector)
         c_size = lib.ph_webcollection_size(c_ptr)
 
@@ -102,7 +95,7 @@ class Page(object):
 
     def get_requested_urls(self):
         requested_urls = lib.ph_page_get_requested_urls(self.ptr)
-        return json.loads(requested_urls.decode("utf-8"))
+        return json.loads(util.force_text(requested_urls))
 
     def get_response_by_url(self, url):
         """

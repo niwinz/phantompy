@@ -9,6 +9,20 @@
 #include "private/webelement.hpp"
 #include "private/webelementcollection.hpp"
 
+char* _bytearray_to_char_ptr(const QByteArray &data) {
+    char *resultData = new char[data.size() + 1];
+    qstrncpy(resultData, data.data(), data.size() + 1);
+
+    return resultData;
+}
+
+char* _qvariant_to_json_char_ptr(const QVariant &data) {
+    QJson::Serializer serializer;
+    bool ok;
+
+    return _bytearray_to_char_ptr(serializer.serialize(data, &ok));
+}
+
 extern "C" {
 
 /******* Context *******/
@@ -55,14 +69,10 @@ void ph_context_set_max_pages_in_cache(int num) {
 
 char* ph_context_get_all_cookies() {
     QJson::Serializer serializer;
-    QVariantList cookies = ph::CookieJar::instance()->getAllCookies();
-
     bool ok;
-    QByteArray data = serializer.serialize(cookies, &ok);
 
-    char *resultData = new char[data.size() + 1];
-    qstrncpy(resultData, data.data(), data.size() + 1);
-    return resultData;
+    QVariantList cookies = ph::CookieJar::instance()->getAllCookies();
+    return _bytearray_to_char_ptr(serializer.serialize(cookies, &ok));
 }
 
 void ph_context_set_cookies(const char *cookies) {
@@ -135,11 +145,7 @@ char* ph_page_get_cookies(void *page) {
     QJson::Serializer serializer;
     bool ok;
 
-    QByteArray cookiesData = serializer.serialize(cookiesList, &ok);
-    char *resultData = new char[cookiesData.size() + 1];
-
-    qstrncpy(resultData, cookiesData.data(), cookiesData.size() + 1);
-    return resultData;
+    return _bytearray_to_char_ptr(serializer.serialize(cookiesList, &ok));
 }
 
 
@@ -158,15 +164,10 @@ char* ph_page_get_requested_urls(void *page) {
         urls << QVariant::fromValue((*i));
     }
 
-
     QJson::Serializer serializer;
     bool ok;
 
-    QByteArray requestedUrls = serializer.serialize(urls, &ok);
-    char *resultData = new char[requestedUrls.size() + 1];
-
-    qstrncpy(resultData, requestedUrls.data(), requestedUrls.size() + 1);
-    return resultData;
+    return _bytearray_to_char_ptr(serializer.serialize(urls, &ok));
 }
 
 char* ph_page_get_reply_by_url(void *page, const char *url) {
@@ -176,11 +177,7 @@ char* ph_page_get_reply_by_url(void *page, const char *url) {
     QJson::Serializer serializer;
     bool ok;
 
-    QByteArray data = serializer.serialize(response, &ok);
-    char *resultData = new char[data.size() + 1];
-
-    qstrncpy(resultData, data.data(), data.size() + 1);
-    return resultData;
+    return _bytearray_to_char_ptr(serializer.serialize(response, &ok));
 }
 
 
@@ -209,22 +206,13 @@ void ph_frame_free(void *frame) {
 
 char* ph_frame_to_html(void *frame) {
     ph::Frame *f = (ph::Frame*)frame;
-
-    QByteArray data = f->toHtml().toUtf8();
-    char *resultData = new char[data.size() + 1];
-    qstrncpy(resultData, data.data(), data.size() + 1);
-    return resultData;
+    return _bytearray_to_char_ptr(f->toHtml().toUtf8());
 }
 
 char* ph_frame_evaluate_javascript(void *frame, char *javascript) {
     ph::Frame *f = (ph::Frame*)frame;
-
     QString js = QString::fromUtf8(javascript);
-    QByteArray data = f->evaluateJavaScript(js).toUtf8();
-
-    char *resultData = new char[data.size() + 1];
-    qstrncpy(resultData, data.data(), data.size() + 1);
-    return resultData;
+    return _qvariant_to_json_char_ptr(f->evaluateJavaScript(js));
 }
 
 void* ph_frame_find_first(void *frame, const char *selector) {
@@ -244,11 +232,7 @@ void* ph_frame_find_all(void *frame, const char *selector) {
 
 char* ph_frame_get_url(void *frame) {
     ph::Frame *f = static_cast<ph::Frame*>(frame);
-
-    QByteArray data = f->getUrl().toUtf8();
-    char *resultData = new char[data.size() + 1];
-    qstrncpy(resultData, data.data(), data.size() + 1);
-    return resultData;
+    return _bytearray_to_char_ptr(f->getUrl().toUtf8());
 }
 
 void ph_frame_set_url(void *frame, const char *url) {
@@ -330,30 +314,17 @@ void* ph_webelement_find_all(void *element, const char *selector) {
 
 char* ph_webelement_tag_name(void *element) {
     ph::WebElement *el = static_cast<ph::WebElement*>(element);
-
-    QByteArray data = el->tagName().toUtf8();
-
-    char *resultData = new char[data.size() + 1];
-    qstrncpy(resultData, data.data(), data.size() + 1);
-    return resultData;
+    return _bytearray_to_char_ptr(el->tagName().toUtf8());
 }
 
 char* ph_webelement_inner_html(void *element) {
     ph::WebElement *el = static_cast<ph::WebElement*>(element);
-    QByteArray data = el->toHtml().toUtf8();
-
-    char *resultData = new char[data.size() + 1];
-    qstrncpy(resultData, data.data(), data.size() + 1);
-    return resultData;
+    return _bytearray_to_char_ptr(el->toHtml().toUtf8());
 }
 
 char* ph_webelement_inner_text(void *element) {
     ph::WebElement *el = static_cast<ph::WebElement*>(element);
-    QByteArray data = el->toText().toUtf8();
-
-    char *resultData = new char[data.size() + 1];
-    qstrncpy(resultData, data.data(), data.size() + 1);
-    return resultData;
+    return _bytearray_to_char_ptr(el->toText().toUtf8());
 }
 
 
@@ -361,28 +332,21 @@ char* ph_webelement_get_classes(void *element) {
     ph::WebElement *el = static_cast<ph::WebElement*>(element);
     QByteArray data = el->getClasses().join(QString::fromUtf8(" ")).toUtf8();
 
-    char *resultData = new char[data.size() + 1];
-    qstrncpy(resultData, data.data(), data.size() + 1);
-    return resultData;
-
+    return _bytearray_to_char_ptr(data);
 }
 
 char* ph_webelement_get_attrnames(void *element) {
     ph::WebElement *el = static_cast<ph::WebElement*>(element);
     QByteArray data = el->getAttributeNames().join(QString::fromUtf8(" ")).toUtf8();
 
-    char *resultData = new char[data.size() + 1];
-    qstrncpy(resultData, data.data(), data.size() + 1);
-    return resultData;
+    return _bytearray_to_char_ptr(data);
 }
 
 char* ph_webelement_get_attr(void *element, const char *attrname) {
     ph::WebElement *el = static_cast<ph::WebElement*>(element);
     QByteArray data = el->getAttribute(QString::fromUtf8(attrname)).toUtf8();
 
-    char *resultData = new char[data.size() + 1];
-    qstrncpy(resultData, data.data(), data.size() + 1);
-    return resultData;
+    return _bytearray_to_char_ptr(data);
 }
 
 int32_t ph_webelement_has_class(void *element, const char *classname) {
@@ -516,14 +480,8 @@ void* ph_webelement_next(void *element) {
 
 char* ph_webelement_evaluate_javascript(void *element, const char *javascript) {
     ph::WebElement *el = static_cast<ph::WebElement*>(element);
-
     QString js = QString::fromUtf8(javascript);
-    QByteArray data = el->evaluateJavaScript(js).toUtf8();
-
-    char *resultData = new char[data.size() + 1];
-    qstrncpy(resultData, data.data(), data.size() + 1);
-    return resultData;
-
+    return _qvariant_to_json_char_ptr(el->evaluateJavaScript(js));
 }
 
 }
