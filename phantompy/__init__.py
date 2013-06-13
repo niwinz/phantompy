@@ -10,8 +10,8 @@ from . import webelements
 
 
 def open(url, size=(1280, 768), cookies=[]):
-    p = page.Page(size=size, cookies=cookies)
+    ctx = context.context()
+    p = page.Page(size=size, cookies=cookies, ctx=ctx)
     p.load(url)
-
     return p.frame()
 

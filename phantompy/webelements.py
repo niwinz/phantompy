@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+import json
+
 from .api import library as lib
 from . import util
 
@@ -308,4 +310,4 @@ class WebElement(object):
     def evaluate(self, js):
         js = util.force_bytes(js)
         result = lib.ph_webelement_evaluate_javascript(self.ptr, js)
-        return util.force_text(result)
+        return json.loads(util.force_text(result))

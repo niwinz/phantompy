@@ -17,12 +17,6 @@ CookieJar *CookieJar::instance() {
 }
 
 void CookieJar::addCookie(const QNetworkCookie &cookie, const QString &url) {
-#ifdef PHANTOMPY_QT4
-    QList<QNetworkCookie> cookiesList;
-    cookiesList << cookie;
-
-    setCookiesFromUrl(cookiesList, QUrl(url));
-#else
     bool ok = validateCookie(cookie, QUrl(url));
     if (ok) {
         QList<QNetworkCookie> cookiesList;
@@ -33,7 +27,6 @@ void CookieJar::addCookie(const QNetworkCookie &cookie, const QString &url) {
         qDebug() << "CookieJar::addCookie: Rejected Cookie"
                    << cookie.toRawForm();
     }
-#endif
 }
 
 void CookieJar::addCookieFromMap(const QVariantMap &cookie, const QString &url) {
@@ -89,39 +82,25 @@ void CookieJar::addCookieFromMap(const QVariantMap &cookie) {
                 n_cookie.setExpirationDate(n_expires);
             }
         }
-#ifdef PHANTOMPY_QT4
-        QList<QNetworkCookie> cookiesList;
-        cookiesList << n_cookie;
 
-        setAllCookies(cookiesList);
-#else
         bool ok = insertCookie(n_cookie);
         if (!ok) {
             qDebug() << "CookieJar::addCookie(2): Rejected Cookie"
                        << n_cookie.toRawForm();
         }
-#endif
     }
 }
 
 void CookieJar::addCookiesFromMapList(const QVariantList &cookies, const QString &url) {
     QVariantList::const_iterator i;
-#ifdef PHANTOMPY_QT4
-    for(i=cookies.begin(); i!=cookies.end(); ++i) {
-#else
     for(i=cookies.cbegin(); i!=cookies.cend(); ++i) {
-#endif
         addCookieFromMap((*i).toMap(), url);
     }
 }
 
 void CookieJar::addCookiesFromMapList(const QVariantList &cookies) {
     QVariantList::const_iterator i;
-#ifdef PHANTOMPY_QT4
-    for(i=cookies.begin(); i!=cookies.end(); ++i) {
-#else
     for(i=cookies.cbegin(); i!=cookies.cend(); ++i) {
-#endif
         addCookieFromMap((*i).toMap());
     }
 }

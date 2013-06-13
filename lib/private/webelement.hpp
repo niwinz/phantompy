@@ -3,9 +3,7 @@
 
 #include <QtCore>
 #include <QtWebKit>
-#ifndef PHANTOMPY_QT4
 #include <QtWebKitWidgets>
-#endif
 
 namespace ph {
 
@@ -22,7 +20,7 @@ public:
     QString toHtml();
     QString toText();
 
-    QVariant evaluateJavaScript(const QString &data);
+    QString evaluateJavaScript(const QString &data);
 
     QStringList getClasses();
     QStringList getAttributeNames();

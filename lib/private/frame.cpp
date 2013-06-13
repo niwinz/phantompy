@@ -34,8 +34,9 @@ QString Frame::toHtml() {
     return p_frame->toHtml();
 }
 
-QVariant Frame::evaluateJavaScript(const QString &js) {
-    return p_frame->evaluateJavaScript(js);
+QString Frame::evaluateJavaScript(const QString &js) {
+    QVariant result = p_frame->evaluateJavaScript(js);
+    return result.toString();
 }
 
 QWebElement Frame::findFirstElement(const QString &selector) {
@@ -56,6 +57,7 @@ void Frame::setUrl(const QString &url) {
 
 void Frame::load(const QString &url) {
     p_frame->load(QUrl(url));
+    qDebug() << "FRAME::LOAD" << url;
 }
 
 }

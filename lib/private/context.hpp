@@ -3,12 +3,7 @@
 
 #include <QtCore>
 #include <QtWebKit>
-
-#ifdef PHANTOMPY_QT4
-#include <QtGui>
-#else
 #include <QtWidgets>
-#endif
 
 //! Initial point for all engine execution.
 /*! Some Qt features requires one `QCoreApplication` global instance.

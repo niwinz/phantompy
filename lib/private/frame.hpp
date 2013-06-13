@@ -3,9 +3,7 @@
 
 #include <QtCore>
 #include <QtWebKit>
-#ifndef PHANTOMPY_QT4
 #include <QtWebKitWidgets>
-#endif
 
 namespace ph {
 
@@ -18,7 +16,7 @@ public:
 
     QByteArray captureImage(const char *format, int quality);
     QString toHtml();
-    QVariant evaluateJavaScript(const QString &data);
+    QString evaluateJavaScript(const QString &data);
 
     QWebElement findFirstElement(const QString &selector);
     QWebElementCollection findAll(const QString &selector);

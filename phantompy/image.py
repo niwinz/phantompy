@@ -9,7 +9,6 @@ class Image(object):
         self._format = format
         self._quality = quality
         self._frame = frame
-        self._closed = False
 
     def __del__(self):
         lib.ph_image_free(self.ptr)

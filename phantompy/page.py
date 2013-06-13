@@ -39,7 +39,10 @@ class Frame(object):
         return lib.ph_frame_to_html(self.ptr)
 
     def to_image(self, format="PNG", quality=-1):
-        _format = util.force_bytes(format)
+        if hasattr(format, "encode"):
+            _format = format.encode("utf-8")
+        else:
+            _format = format
 
         # Obtain image object pointer
         image_ptr = lib.ph_frame_capture_image(self.ptr, _format, quality)
@@ -52,7 +55,9 @@ class Frame(object):
 
     @util.as_list
     def cssselect(self, selector):
-        selector = util.force_bytes(selector)
+        if hasattr(selector, "encode"):
+            selector = selector.encode('utf-8')
+
         c_ptr = lib.ph_frame_find_all(self.ptr, selector)
         c_size = lib.ph_webcollection_size(c_ptr)
 
@@ -64,12 +69,17 @@ class Frame(object):
 
 
 class Page(object):
+    _context = None
     _size = None
     _page_ptr = None
 
-    def __init__(self, size=(1280, 768), cookies=[]):
+    def __init__(self, size=(1280, 768), ctx=None, cookies=[]):
+        if ctx is None:
+            self._context = context.Context()
+        else:
+            self._context = ctx
+
         self._size = size
-        self._ctx = context.context()
 
         self._page_ptr = lib.ph_page_create()
         lib.ph_page_set_viewpoint_size(self.ptr,
@@ -96,7 +106,7 @@ class Page(object):
 
     def get_requested_urls(self):
         requested_urls = lib.ph_page_get_requested_urls(self.ptr)
-        return json.loads(util.force_text(requested_urls))
+        return json.loads(requested_urls.decode("utf-8"))
 
     def get_response_by_url(self, url):
         """

@@ -4,10 +4,7 @@
 #include <QtCore>
 #include <QtNetwork>
 #include <QtWebKit>
-#ifndef PHANTOMPY_QT4
 #include <QtWebKitWidgets>
-#endif
-
 
 #include "networkmanager.hpp"
 #include "networkmanagerproxy.hpp"
@@ -60,7 +57,6 @@ private:
 private slots:
     void loadFinished(bool ok);
     void replyReceived(const QVariantMap &reply);
-    void linkClicked(const QUrl &url);
 };
 
 }
