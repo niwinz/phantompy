@@ -25,8 +25,7 @@ def setUpModule():
     ctx.clear_memory_caches()
 
 def tearDownModule():
-    #ph.context.destroy_context()
-    pass
+    ph.context.destroy_context()
 
 class TestCase(unittest.TestCase):
     pass
@@ -54,24 +53,23 @@ class WebPageTests(TestCase):
         result = frame.evaluate('$("#footer").data()')
         self.assertEqual(result, {'id': 1.0})
 
-    # Commented due a lot of coredumps with this method.
-    #def test_page_cookies(self):
-    #    frame = ph.open("http://www.facebook.com")
-    #    ctx = ph.context.context()
+    def test_page_cookies(self):
+        frame = ph.open("http://www.facebook.com")
+        ctx = ph.context.context()
 
-    #    cookies = ctx.get_all_cookies()
-    #    self.assertNotEqual(len(cookies), 0)
-    #    self.assertIn("value", cookies[0])
-    #    self.assertIn("name", cookies[0])
-    #    self.assertIn("domain", cookies[0])
-    #    self.assertIn("expires", cookies[0])
+        cookies = ctx.get_all_cookies()
+        self.assertNotEqual(len(cookies), 0)
+        self.assertIn("value", cookies[0])
+        self.assertIn("name", cookies[0])
+        self.assertIn("domain", cookies[0])
+        self.assertIn("expires", cookies[0])
 
-    #    #cookies = frame.page.get_cookies()
-    #    #self.assertIn("value", cookies[0])
-    #    #self.assertIn("name", cookies[0])
-    #    #self.assertIn("domain", cookies[0])
-    #    #self.assertIn("expires", cookies[0])
-    #    #ctx.clear_cookies()
+        cookies = frame.page.get_cookies()
+        self.assertIn("value", cookies[0])
+        self.assertIn("name", cookies[0])
+        self.assertIn("domain", cookies[0])
+        self.assertIn("expires", cookies[0])
+        ctx.clear_cookies()
 
     def test_cookies(self):
         ctx = ph.context.context()
