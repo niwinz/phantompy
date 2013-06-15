@@ -33,16 +33,15 @@ QString WebElement::toText() {
 QVariant WebElement::evaluateJavaScript(const QString &js, bool expectLoad, int timeout) {
     QVariant result = m_web_element.evaluateJavaScript(js);
 
-    Timeout *_timeout = new Timeout(&m_loop, timeout);
-    EventProcessor *eventProcessor = new EventProcessor();
+    Timeout *t = new Timeout(&m_loop, timeout);
+    EventProcessor *ep = new EventProcessor();
 
     if (expectLoad) {
         m_loop.exec();
     }
 
-    delete _timeout;
-    delete eventProcessor;
-
+    delete t;
+    delete ep;
     return result;
 }
 

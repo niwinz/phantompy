@@ -41,16 +41,15 @@ QString Frame::toHtml() {
 QVariant Frame::evaluateJavaScript(const QString &js, bool expectLoad, int timeout) {
     QVariant result = p_frame->evaluateJavaScript(js);
 
-    Timeout *_timeout = new Timeout(&m_loop, timeout);
-    EventProcessor *eventProcessor = new EventProcessor();
+    Timeout *t = new Timeout(&m_loop, timeout);
+    EventProcessor *ep = new EventProcessor();
 
     if (expectLoad) {
         m_loop.exec();
     }
 
-    delete _timeout;
-    delete eventProcessor;
-
+    delete t;
+    delete ep;
     return result;
 }
 
