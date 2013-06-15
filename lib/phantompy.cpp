@@ -196,7 +196,7 @@ void* ph_page_main_frame(void *page) {
 
 void ph_frame_free(void *frame) {
     ph::Frame *f = (ph::Frame*)frame;
-    delete f;
+    f->deleteLater();
 }
 
 char* ph_frame_to_html(void *frame) {
@@ -257,7 +257,7 @@ void* ph_webcollection_get_webelement(void *collection, int32_t index) {
 
 void ph_webcollection_free(void *collection) {
     ph::WebElementCollection *c = static_cast<ph::WebElementCollection*>(collection);
-    delete c;
+    c->deleteLater();
 }
 
 /******* Frame Image *********/
@@ -291,14 +291,14 @@ void ph_image_get_bytes(void *image, void *buffer, int64_t size) {
 
 void ph_image_free(void *image) {
     ph::Image *img = (ph::Image*)image;
-    delete img;
+    img->deleteLater();
 }
 
 /****** Web Elements ******/
 
 void ph_webelement_free(void *element) {
     ph::WebElement *el = static_cast<ph::WebElement*>(element);
-    delete el;
+    el->deleteLater();
 }
 
 void* ph_webelement_find_all(void *element, const char *selector) {

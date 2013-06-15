@@ -4,16 +4,21 @@ namespace ph {
 
 static Context *contextInstance = NULL;
 
-Context::Context(QObject *parent):QObject(parent) {
-   char *argv;
-   int argc = 1;
+Context::Context(QObject *parent): QObject(parent) {
+    char *argv;
+    int argc = 1;
 
-   p_app = new QApplication(argc, &argv);
-   setDefaultSettings();
+    p_mutex = new QMutex();
+    p_app = new QApplication(argc, &argv);
+    p_ep = new EventProcessor(200, this);
+
+    setDefaultSettings();
 }
 
 Context::~Context() {
     delete p_app;
+    delete p_ep;
+    delete p_mutex;
 }
 
 Context* Context::instance() {
@@ -108,6 +113,10 @@ int Context::settingsofflineStorageDefaultQuota() {
 
 QApplication* Context::app() {
     return p_app;
+}
+
+QMutex* Context::mutex() {
+    return p_mutex;
 }
 
 }

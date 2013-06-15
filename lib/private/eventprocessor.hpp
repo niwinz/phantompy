@@ -10,6 +10,7 @@ class EventProcessor: public QObject {
 
 public:
     EventProcessor(QObject *parent=0);
+    EventProcessor(int interval, QObject *parent=0);
     ~EventProcessor();
 
 private:

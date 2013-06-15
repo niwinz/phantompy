@@ -5,6 +5,8 @@
 #include <QtWebKit>
 #include <QtWidgets>
 
+#include "eventprocessor.hpp"
+
 //! Initial point for all engine execution.
 /*! Some Qt features requires one `QCoreApplication` global instance.
  *  This class manage a correct creation and removing of
@@ -54,9 +56,13 @@ public:
     int settingsofflineStorageDefaultQuota();
 
     QApplication* app();
+    QMutex* mutex();
 
 private:
     QApplication *p_app;
+    EventProcessor *p_ep;
+    QMutex *p_mutex;
+
     QTimer m_timer;
     QHash<Settings, QVariant> m_settings;
 
