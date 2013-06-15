@@ -43,7 +43,7 @@ extern "C" {
     void ph_frame_free(void *frame);
 
     char* ph_frame_to_html(void *frame);
-    char* ph_frame_evaluate_javascript(void *frame, char* javascript);
+    char* ph_frame_evaluate_javascript(void *frame, char* javascript, int expect_load, int timeout);
     char* ph_frame_get_url(void *frame);
     void ph_frame_set_url(void *frame, const char *url);
     void ph_frame_load(void *frame, const char *url);
@@ -73,7 +73,7 @@ extern "C" {
     char* ph_webelement_get_classes(void *element);
     char* ph_webelement_get_attnames(void *element);
     char* ph_webelement_get_attr(void *element, const char *attrname);
-    char* ph_webelement_evaluate_javascript(void *element, const char *javascript);
+    char* ph_webelement_evaluate_javascript(void *element, const char *javascript, int expect_load, int timeout);
 
     int32_t ph_webcollection_size(void *collection);
     int32_t ph_webelement_has_class(void *element, const char *classname);

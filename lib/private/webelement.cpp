@@ -1,9 +1,15 @@
 #include "webelement.hpp"
+#include "eventprocessor.hpp"
+#include "timeout.hpp"
 
 namespace ph {
 
 WebElement::WebElement(const QWebElement &element, QObject *parent): QObject(parent) {
     m_web_element = element;
+
+    if (!m_web_element.isNull()) {
+        connect(m_web_element.webFrame()->page(), &QWebPage::loadFinished, this, &WebElement::loadFinished);
+    }
 }
 
 WebElement::~WebElement() {}
@@ -24,8 +30,20 @@ QString WebElement::toText() {
     return m_web_element.toPlainText();
 }
 
-QVariant WebElement::evaluateJavaScript(const QString &data) {
-    return m_web_element.evaluateJavaScript(data);
+QVariant WebElement::evaluateJavaScript(const QString &js, bool expectLoad, int timeout) {
+    QVariant result = m_web_element.evaluateJavaScript(js);
+
+    Timeout *_timeout = new Timeout(&m_loop, timeout);
+    EventProcessor *eventProcessor = new EventProcessor();
+
+    if (expectLoad) {
+        m_loop.exec();
+    }
+
+    delete _timeout;
+    delete eventProcessor;
+
+    return result;
 }
 
 QStringList WebElement::getClasses() {
@@ -136,5 +154,8 @@ QWebElement WebElement::internalElement() {
     return m_web_element;
 }
 
+void WebElement::loadFinished(bool ok) {
+    m_loop.quit();
+}
 
 }

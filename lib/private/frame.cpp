@@ -1,9 +1,13 @@
 #include "frame.hpp"
+#include "eventprocessor.hpp"
+#include "timeout.hpp"
+#include "context.hpp"
 
 namespace ph {
 
 Frame::Frame(QWebFrame *frame, QObject *parent): QObject(parent) {
     p_frame = frame;
+    connect(p_frame->page(), &QWebPage::loadFinished, this, &Frame::loadFinished);
 }
 
 Frame::~Frame() {}
@@ -34,8 +38,20 @@ QString Frame::toHtml() {
     return p_frame->toHtml();
 }
 
-QVariant Frame::evaluateJavaScript(const QString &js) {
-    return p_frame->evaluateJavaScript(js);
+QVariant Frame::evaluateJavaScript(const QString &js, bool expectLoad, int timeout) {
+    QVariant result = p_frame->evaluateJavaScript(js);
+
+    Timeout *_timeout = new Timeout(&m_loop, timeout);
+    EventProcessor *eventProcessor = new EventProcessor();
+
+    if (expectLoad) {
+        m_loop.exec();
+    }
+
+    delete _timeout;
+    delete eventProcessor;
+
+    return result;
 }
 
 QWebElement Frame::findFirstElement(const QString &selector) {
@@ -56,6 +72,10 @@ void Frame::setUrl(const QString &url) {
 
 void Frame::load(const QString &url) {
     p_frame->load(QUrl(url));
+}
+
+void Frame::loadFinished(bool ok) {
+    m_loop.quit();
 }
 
 }

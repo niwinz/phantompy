@@ -103,6 +103,8 @@ SET(PHANTOMPY_SOURCES
     lib/private/networkmanager.cpp
     lib/private/networktimeout.cpp
     lib/private/networkmanagerproxy.cpp
+    lib/private/timeout.cpp
+    lib/private/eventprocessor.cpp
 )
 
 ADD_LIBRARY(phantompy ${QJSON_SRCS} ${PHANTOMPY_SOURCES})

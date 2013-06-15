@@ -45,10 +45,13 @@ class Frame(object):
         image_ptr = lib.ph_frame_capture_image(self.ptr, _format, quality)
         return image.Image(image_ptr, format, quality, self)
 
-    def evaluate(self, js):
+    def evaluate(self, js, expect_load=False, timeout=6000):
         js = util.force_bytes(js)
-        result = lib.ph_frame_evaluate_javascript(self.ptr, js)
-        return json.loads(util.force_text(result))
+        result = lib.ph_frame_evaluate_javascript(self.ptr, js, expect_load, timeout)
+        try:
+            return json.loads(util.force_text(result))
+        except ValueError:
+            return None
 
     @util.as_list
     def cssselect(self, selector):

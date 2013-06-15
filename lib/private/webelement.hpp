@@ -20,7 +20,7 @@ public:
     QString toHtml();
     QString toText();
 
-    QVariant evaluateJavaScript(const QString &data);
+    QVariant evaluateJavaScript(const QString &js, bool expectLoad, int timeout);
 
     QStringList getClasses();
     QStringList getAttributeNames();
@@ -63,6 +63,11 @@ public:
 private:
     QWebElement m_web_element;
     QWebElement internalElement();
+
+    QEventLoop m_loop;
+
+private slots:
+    void loadFinished(bool ok);
 };
 
 }

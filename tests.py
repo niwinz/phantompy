@@ -13,6 +13,7 @@ import phantompy as ph
 CURRENT_DIR = dirname(abspath(__file__))
 
 TEST_FILE = join(CURRENT_DIR, "misc", "test.html")
+TEST_WITH_LINK = join(CURRENT_DIR, "misc", "test_with_link.html")
 TEST_FILE_SIMPLE = join(CURRENT_DIR, "misc", "test_simple.html")
 JQUERY_FILE = join(CURRENT_DIR, "misc", "jquery-1.9.1.min.js")
 TEST_FILE_WITH_FRAMES = join(CURRENT_DIR, "misc", "test_with_frames.html")
@@ -24,7 +25,8 @@ def setUpModule():
     ctx.clear_memory_caches()
 
 def tearDownModule():
-    ph.context.destroy_context()
+    #ph.context.destroy_context()
+    pass
 
 class TestCase(unittest.TestCase):
     pass
@@ -121,12 +123,10 @@ class WebPageTests(TestCase):
         result = frame.evaluate("$('title').html()")
         self.assertEqual(result, "simple title")
 
-    #def test_page_navigation(self):
-    #    frame = ph.open("http://www.niwi.be/")
-    #    frame.evaluate('document.querySelectorAll("a")[1].click()')
-
-    #    import time; time.sleep(1)
-    #    import pdb; pdb.set_trace()
+    def test_page_navigation(self):
+        frame = ph.open(TEST_WITH_LINK)
+        frame.evaluate('document.querySelector("a").click()', expect_load=True)
+        self.assertTrue(frame.url.endswith("test_with_link_dst.html"))
 
 
 class WebElementTests(TestCase):

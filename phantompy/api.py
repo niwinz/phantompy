@@ -95,7 +95,7 @@ try:
     _library.ph_frame_to_html.restype = c_void_p
     _library.ph_frame_to_html._char_ptr = True
 
-    _library.ph_frame_evaluate_javascript.argtypes = [c_void_p, c_char_p]
+    _library.ph_frame_evaluate_javascript.argtypes = [c_void_p, c_char_p, c_int, c_int]
     _library.ph_frame_evaluate_javascript.restype = c_void_p
     _library.ph_frame_evaluate_javascript._char_ptr = True
 
@@ -232,7 +232,7 @@ try:
     _library.ph_webelement_next.argtypes = [c_void_p]
     _library.ph_webelement_next.restype = c_void_p
 
-    _library.ph_webelement_evaluate_javascript.argtypes = [c_void_p, c_char_p]
+    _library.ph_webelement_evaluate_javascript.argtypes = [c_void_p, c_char_p, c_int, c_int]
     _library.ph_webelement_evaluate_javascript.restype = c_void_p
     _library.ph_webelement_evaluate_javascript._char_ptr = True
 

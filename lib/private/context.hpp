@@ -53,17 +53,14 @@ public:
 
     int settingsofflineStorageDefaultQuota();
 
+    QApplication* app();
+
 private:
     QApplication *p_app;
     QTimer m_timer;
     QHash<Settings, QVariant> m_settings;
 
     void setDefaultSettings();
-    void initializeEventTimer();
-
-private slots:
-    void handleTimeout();
-
 };
 
 }

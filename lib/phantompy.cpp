@@ -96,7 +96,7 @@ void* ph_page_create() {
 
 void ph_page_free(void *page) {
     ph::Page *p = (ph::Page*)page;
-    delete p;
+    p->deleteLater();
 }
 
 void ph_page_set_viewpoint_size(void *page, int x, int y) {
@@ -204,11 +204,11 @@ char* ph_frame_to_html(void *frame) {
     return _bytearray_to_char_ptr(f->toHtml().toUtf8());
 }
 
-char* ph_frame_evaluate_javascript(void *frame, char *javascript) {
+char* ph_frame_evaluate_javascript(void *frame, char *javascript, int expect_load, int timeout) {
     ph::Frame *f = (ph::Frame*)frame;
 
     QString js = QString::fromUtf8(javascript);
-    return _qvariant_to_json_char_ptr(f->evaluateJavaScript(js));
+    return _qvariant_to_json_char_ptr(f->evaluateJavaScript(js, !!expect_load, timeout));
 }
 
 void* ph_frame_find_first(void *frame, const char *selector) {
@@ -474,11 +474,11 @@ void* ph_webelement_next(void *element) {
     return new ph::WebElement(elm);
 }
 
-char* ph_webelement_evaluate_javascript(void *element, const char *javascript) {
+char* ph_webelement_evaluate_javascript(void *element, const char *javascript, int expect_load, int timeout) {
     ph::WebElement *el = static_cast<ph::WebElement*>(element);
 
     QString js = QString::fromUtf8(javascript);
-    return _qvariant_to_json_char_ptr(el->evaluateJavaScript(js));
+    return _qvariant_to_json_char_ptr(el->evaluateJavaScript(js, !!expect_load, timeout));
 }
 
 }

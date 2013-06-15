@@ -16,7 +16,7 @@ public:
 
     QByteArray captureImage(const char *format, int quality);
     QString toHtml();
-    QVariant evaluateJavaScript(const QString &data);
+    QVariant evaluateJavaScript(const QString &data, bool expectLoad, int timeout);
 
     QWebElement findFirstElement(const QString &selector);
     QWebElementCollection findAll(const QString &selector);
@@ -27,6 +27,10 @@ public:
 
 private:
     QWebFrame *p_frame;
+    QEventLoop m_loop;
+
+private slots:
+    void loadFinished(bool ok);
 };
 
 }

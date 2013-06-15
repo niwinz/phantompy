@@ -7,11 +7,15 @@ from .api import library as lib
 from . import util
 
 
-
 class Context(object):
     def __init__(self):
         self._ctx_ptr = lib.ph_context_init()
         self._cfg = Config()
+
+    def __del__(self):
+        self._ctx_ptr = None
+        self._cfg = None
+        lib.ph_context_free()
 
     @property
     def conf(self):
