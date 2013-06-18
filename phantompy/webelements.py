@@ -133,6 +133,33 @@ class WebElement(object):
         if self.has_attr(attrname):
             lib.ph_webelement_remove_attr(self.ptr, util.force_bytes(attrname))
 
+    @util.as_dict
+    def get_attrs(self):
+        """
+        Get all attributes as python dict.
+        :rtype: dict
+        """
+
+        attr_names = lib.ph_webelement_get_attrnames(self.ptr)
+        for name in util.force_text(attr_names).split():
+            value = lib.ph_webelement_get_attr(self.ptr, util.force_bytes(name))
+            yield name, util.force_text(value)
+
+    def set_attr(self, name, value):
+        if not isinstance(value, (util.string_type, util.bytes_type)):
+            value = str(value)
+
+        lib.ph_webelement_set_attr(self.ptr,
+                                   util.force_bytes(name),
+                                   util.force_bytes(value))
+
+    def set_attrs(self, attrs):
+        if not isinstance(attrs, dict):
+            raise TypeError("attr must be a dict instance")
+
+        for key, value in attrs.items():
+            self.set_attr(key, value)
+
     def append(self, element):
         """
         Append element or raw html to the current dom element.
@@ -243,18 +270,6 @@ class WebElement(object):
         ptr = lib.ph_webelement_previous(self.ptr)
         return WebElement(ptr, self.frame)
 
-    @util.as_dict
-    def get_attrs(self):
-        """
-        Get all attributes as python dict.
-        :rtype: dict
-        """
-
-        attr_names = lib.ph_webelement_get_attrnames(self.ptr)
-        for name in util.force_text(attr_names).split():
-            value = lib.ph_webelement_get_attr(self.ptr, util.force_bytes(name))
-            yield name, util.force_text(value)
-
     def inner_html(self):
         """
         Get inner dom structure as html.
@@ -285,6 +300,20 @@ class WebElement(object):
 
         result = lib.ph_webelement_is_null(self.ptr)
         return util.int_to_bool(result)
+
+    def cssselect_first(self, selector):
+        selector = util.force_bytes(selector)
+
+        c_ptr = lib.ph_webelement_find_all(self.ptr, selector)
+        c_size = lib.ph_webcollection_size(c_ptr)
+
+        if c_size == 0:
+            raise ValueError("Element not found")
+
+        el_ptr = lib.ph_webcollection_get_webelement(c_ptr, 0)
+        lib.ph_webcollection_free(c_ptr)
+
+        return WebElement(el_ptr, self)
 
     @util.as_list
     def cssselect(self, selector):

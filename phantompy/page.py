@@ -53,6 +53,24 @@ class Frame(object):
         except ValueError:
             return None
 
+    def cssselect_first(self, selector):
+        selector = util.force_bytes(selector)
+
+        c_ptr = lib.ph_frame_find_all(self.ptr, selector)
+        c_size = lib.ph_webcollection_size(c_ptr)
+
+        if c_size == 0:
+            try:
+                raise ValueError("Element not found")
+            finally:
+                lib.ph_webcollection_free(c_ptr)
+
+        try:
+            el_ptr = lib.ph_webcollection_get_webelement(c_ptr, 0)
+            return webelements.WebElement(el_ptr, self)
+        finally:
+            lib.ph_webcollection_free(c_ptr)
+
     @util.as_list
     def cssselect(self, selector):
         selector = util.force_bytes(selector)
