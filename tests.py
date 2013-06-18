@@ -142,6 +142,15 @@ class WebElementTests(TestCase):
         elements = p.cssselect("foo")
         self.assertEqual(len(elements), 0)
 
+    def test_cssseelect_first(self):
+        p = ph.open(TEST_FILE)
+
+        element = p.cssselect_first("#footer")
+        self.assertTrue(element.has_attr("id"))
+
+        with self.assertRaises(ValueError):
+            element = p.cssselect_first("#footer2")
+
     def test_get_inner_html(self):
         p = ph.open(TEST_FILE)
 
@@ -176,6 +185,22 @@ class WebElementTests(TestCase):
         self.assertTrue(element.has_attrs())
         self.assertTrue(element.has_attr("id"))
         self.assertFalse(element.has_attr("class"))
+
+    def test_set_attr(self):
+        p = ph.open(TEST_FILE)
+        element = p.cssselect("#footer")[0]
+        element.set_attr('foo', 'bar')
+
+        self.assertTrue(element.has_attr("foo"))
+        self.assertIn("foo", element.get_attrs())
+
+    def test_set_attrs(self):
+        p = ph.open(TEST_FILE)
+        element = p.cssselect("#footer")[0]
+        element.set_attrs({"foo": "bar"})
+
+        self.assertTrue(element.has_attr("foo"))
+        self.assertIn("foo", element.get_attrs())
 
     def test_has_class(self):
         p = ph.open(TEST_FILE)
