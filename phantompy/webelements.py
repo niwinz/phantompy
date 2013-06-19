@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import unicode_literals
+
 import json
 
 from .api import library as lib
@@ -144,6 +146,20 @@ class WebElement(object):
         for name in util.force_text(attr_names).split():
             value = lib.ph_webelement_get_attr(self.ptr, util.force_bytes(name))
             yield name, util.force_text(value)
+
+    def get_attr(self, name, **kwargs):
+        if kwargs and "default" not in kwargs:
+            raise ValueError("Invalid arguments: {0}".format(
+                                    ",".join(kwargs.keys())))
+
+        attrs = util.force_text(lib.ph_webelement_get_attrnames(self.ptr)).split()
+        if name not in attrs:
+            if "default" in kwargs:
+                return kwargs["default"]
+            raise AttributeError("Attribute {0} does not exists".format(name))
+
+        value = lib.ph_webelement_get_attr(self.ptr, util.force_bytes(name))
+        return util.force_text(value)
 
     def set_attr(self, name, value):
         if not isinstance(value, (util.string_type, util.bytes_type)):
