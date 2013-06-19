@@ -317,6 +317,19 @@ class WebElementTests(TestCase):
         self.assertIn("data-id", attrs)
         self.assertEqual(attrs, {'data-id': '1', 'data-url': '/foo', 'id': 'div-with-attrs'})
 
+    def test_get_attr(self):
+        p = ph.open(TEST_FILE)
+        element = p.cssselect_first("#div-with-attrs")
+
+        self.assertEqual(element.get_attr("data-id"), "1")
+        self.assertEqual(element.get_attr("data-foo", default=None), None)
+
+        with self.assertRaises(AttributeError):
+            attr = element.get_attr("data-foo")
+
+        with self.assertRaises(ValueError):
+            attr = element.get_attr("data-id", foo="bar")
+
     def test_get_classes(self):
         p = ph.open(TEST_FILE)
         elements = p.cssselect(".section")
