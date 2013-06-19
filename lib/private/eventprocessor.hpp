@@ -13,8 +13,12 @@ public:
     EventProcessor(int interval, QObject *parent=0);
     ~EventProcessor();
 
+    void start();
+    void stop();
+
 private:
     QTimer *p_timer;
+    int m_interval;
 
 private slots:
     void handleTimeout();

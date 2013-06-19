@@ -1,6 +1,8 @@
 #include "phantompy.hpp"
 #include "qjson/serializer.h"
 #include "qjson/parser.h"
+#include "private/eventprocessor.hpp"
+#include "private/timeout.hpp"
 #include "private/cookiejar.hpp"
 #include "private/context.hpp"
 #include "private/page.hpp"
@@ -34,6 +36,21 @@ void* ph_context_init() {
 void ph_context_free() {
     ph::Context::clerInstance();
 }
+
+
+void ph_context_process_events(int timeout) {
+    QEventLoop ev_loop;
+
+    ph::EventProcessor ep(10);
+    ph::Timeout t(&ev_loop, timeout);
+
+    ep.start();
+    t.start();
+
+    ev_loop.exec();
+    ep.stop();
+}
+
 
 void ph_free_charptr(char *ptr) {
     delete [] ptr;

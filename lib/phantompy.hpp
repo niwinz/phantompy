@@ -6,6 +6,7 @@ extern "C" {
     void* ph_context_init();
     void ph_context_free();
     void ph_free_charptr(char *ptr);
+    void ph_context_process_events(int timeout);
 
     void ph_context_clear_memory_cache();
     void ph_context_set_object_cache_capacity(int i, int x, int z);

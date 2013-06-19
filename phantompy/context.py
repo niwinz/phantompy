@@ -89,6 +89,14 @@ class Context(object):
         """
         lib.ph_context_clear_cookies()
 
+    def process_events(self, timeout=200):
+        """
+        Method like a `time.sleep` but while waiths a timeout
+        process qt events.
+        """
+
+        lib.ph_context_process_events(timeout)
+
 
 class Config(object):
     """
@@ -161,6 +169,7 @@ class Config(object):
         Set webkit page number to maintain in cache.
         """
         lib.ph_context_set_max_pages_in_cache(num)
+
 
 
 _context = None

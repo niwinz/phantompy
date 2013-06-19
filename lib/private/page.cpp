@@ -86,8 +86,7 @@ QVariantMap Page::getResponseByUrl(const QString &url) {
 }
 
 void Page::replyReceived(const QVariantMap &reply) {
-    qDebug() << "RECEIVED:" << reply["url"].toString();
-
+    qDebug() << "background-request:" << reply["url"].toString();
     m_requestedUrls.insert(reply["url"].toString());
     m_responsesCache.insert(reply["url"].toString(), reply);
 }
