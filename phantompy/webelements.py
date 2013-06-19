@@ -324,7 +324,8 @@ class WebElement(object):
         c_size = lib.ph_webcollection_size(c_ptr)
 
         if c_size == 0:
-            raise ValueError("Element not found")
+            raise ValueError("Element({0}) not found".format(
+                                                    util.force_text(elector)))
 
         el_ptr = lib.ph_webcollection_get_webelement(c_ptr, 0)
         lib.ph_webcollection_free(c_ptr)
