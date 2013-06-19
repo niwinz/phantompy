@@ -126,14 +126,6 @@ class WebPageTests(TestCase):
         frame.evaluate('document.querySelector("a").click()', expect_load=True)
         self.assertTrue(frame.url.endswith("test_with_link_dst.html"))
 
-    def test_page_navigation_02(self):
-        frame = ph.open(TEST_WITH_LINK)
-
-        element = frame.cssselect_first("a")
-        #import pdb; pdb.set_trace()
-        element.evaluate("click()", expect_load=True, timeout=5000)
-        self.assertTrue(frame.url.endswith("test_with_link_dst.html"))
-
     def test_context_process_events(self):
         ctx = ph.context.context()
         ctx.process_events(300)
