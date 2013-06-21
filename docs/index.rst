@@ -8,14 +8,14 @@ phantompy
 
 Release v\ |version|.
 
-phantompy is a :ref:`BSD Licensed`, headless WebKit engine with powerful pythonic api.
+phantompy is a :ref:`BSD Licensed`, headless WebKit engine with a powerful pythonic api.
 
 Introduction
 ------------
 
-This package has three main components:
+This package has two main components:
 
-* C/C++ Library that exposes some portion of WebKit api from Qt5 (libphantompy).
+* C/C++ Library which exposes some portions of the WebKit API from Qt5 (libphantompy).
 * Python bindings for **libphantompy**
 
 
@@ -24,13 +24,13 @@ Features
 
 .. note::
 
-    One or more of listed features are not implemented. And other are only a proof
-    of concept and has limited api.
+    One or more of the listed features are not implemented. And others are only a proof
+    of concept and have a limited API.
 
-- Live dom access in pythonic way. (Proof of concept api implemented)
-- Totally configurable (currently only limited config options are exposed to python)
+- Live DOM access in a pythonic way. (Proof of concept API implemented)
+- Totally configurable (currently only limited config options are exposed to Python)
 - Access to a frames tree created by a page.
-- Access to a background requests of one page.
+- Access to background requests of one page.
 
 User guide
 ----------
