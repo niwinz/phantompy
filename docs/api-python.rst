@@ -2,15 +2,15 @@
 Python Api
 ==========
 
-This is technical documentation of the python bindins api to **libphantompy**.
+This is the technical documentation of the python bindins **libphantompy**'s
+API.
 
 Context & Config
 ----------------
 
-:py:class:`~phantompy.context.Context` class represents a context singleton pointer that contains a instance
-of qt application, access interface for some webkit engine configurations and some
-actions (clear cache memory as example).
-
+:py:class:`~phantompy.context.Context` class represents a context singleton
+pointer that contains an instance of a QT application, an interface for some
+WebKit engine configuration options and some actions (e.g. clear cache memory).
 
 .. automodule:: phantompy.context
     :members:
@@ -20,7 +20,7 @@ actions (clear cache memory as example).
 Web Element
 -----------
 
-Live DOM manipulation and traversing api.
+Live DOM manipulation and transversing api.
 
 .. automodule:: phantompy.webelements
     :members:
