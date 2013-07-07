@@ -57,6 +57,7 @@ void Page::setViewSize(int x, int y) {
 }
 
 void Page::loadFinished(bool ok) {
+    qDebug() << "Page::loadFinished(ok)";
     m_eventLoop.quit();
     m_error = ok;
 }
