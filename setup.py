@@ -55,9 +55,9 @@ setup(
     packages = [
         "phantompy",
     ],
-    cmdclass={
-        'build': build,
-    },
+    #cmdclass={
+    #    'build': build,
+    #},
     classifiers = [
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
