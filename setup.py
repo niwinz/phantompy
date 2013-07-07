@@ -43,7 +43,7 @@ class build(distutils.command.build.build):
 
 setup(
     name = 'phantompy',
-    version = "0.9",
+    version = "0.10",
     description = "Headless WebKit engine for python build on top of Qt5 and Webkit",
     long_description = "",
     keywords = 'webkit, headless, qt, engine',
