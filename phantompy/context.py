@@ -88,7 +88,7 @@ class Context(object):
         Clear all cookies.
         """
         lib.ph_context_clear_cookies()
-        
+
     def set_headers(self, headers):
         """
         Set a list of headers.

@@ -36,34 +36,34 @@ void Context::clearInstance() {
     }
 }
 
-void Context::setHTTPHeaders(QHash<QString, QString> &headers){
-	QHash<QString, QString>::iterator i;
-	for (i = headers.begin(); i != headers.end(); ++i){
-		m_headers[i.key()] = i.value();
-	}
+void Context::setHTTPHeaders(const QHash<QString, QString> &headers){
+    QHash<QString, QString>::const_iterator i;
+    for (i = headers.begin(); i != headers.end(); ++i){
+        m_headers[i.key()] = i.value();
+    }
 }
 
 void Context::setHTTPHeaders(const QVariantMap &headers){
-	QVariantMap::const_iterator i;
-	QHash<QString, QString> hashHeaders;
+    QVariantMap::const_iterator i;
+    QHash<QString, QString> hashHeaders;
     for(i=headers.begin(); i!=headers.end(); ++i) {
-		hashHeaders[i.key()] = i.value().toString();
+        hashHeaders[i.key()] = i.value().toString();
     }
     setHTTPHeaders(hashHeaders);
 }
 
 void Context::applyHTTPHeaders(QNetworkRequest &request){
-	QHash<QString, QString> headers = Context::instance()->getHTTPHeaders();
-    QHash<QString, QString>::iterator i;
+    QHash<QString, QString> headers = Context::instance()->getHTTPHeaders();
+    QHash<QString, QString>::const_iterator i;
     for (i = headers.begin(); i != headers.end(); ++i){
-		QByteArray key = QByteArray(i.key().toStdString().c_str(), i.key().length());
-		QByteArray value = QByteArray(i.value().toStdString().c_str(), i.value().length());
-		request.setRawHeader(key, value);
-	}
+        QByteArray key = QByteArray(i.key().toStdString().c_str(), i.key().length());
+        QByteArray value = QByteArray(i.value().toStdString().c_str(), i.value().length());
+        request.setRawHeader(key, value);
+    }
 }
 
 QHash<QString, QString> Context::getHTTPHeaders(){
-	return m_headers;
+    return m_headers;
 }
 
 void Context::setMaximumPagesInCache(int pages) {

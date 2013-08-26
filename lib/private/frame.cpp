@@ -72,8 +72,8 @@ void Frame::setUrl(const QString &url) {
 }
 
 void Frame::load(const QString &url) {
-	QNetworkRequest request = QNetworkRequest(url);
-	Context::instance()->applyHTTPHeaders(request);
+    QNetworkRequest request = QNetworkRequest(url);
+    Context::instance()->applyHTTPHeaders(request);
     p_frame->load(request);
 }
 

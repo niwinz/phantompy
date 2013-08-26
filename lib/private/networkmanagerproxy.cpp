@@ -16,8 +16,8 @@ QNetworkReply* SyncNetworkManagerProxy::get(const QUrl &url) {
 }
 
 QNetworkReply* SyncNetworkManagerProxy::get(QNetworkRequest &request) {
-	Context::instance()->applyHTTPHeaders(request);
-	
+    Context::instance()->applyHTTPHeaders(request);
+
     QNetworkReply *reply = p_manager->get(request);
 
     QMetaObject::Connection connection = connect(reply, &QNetworkReply::finished,
