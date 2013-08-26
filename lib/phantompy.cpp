@@ -34,7 +34,7 @@ void* ph_context_init() {
 }
 
 void ph_context_free() {
-    ph::Context::clerInstance();
+    ph::Context::clearInstance();
 }
 
 
@@ -97,6 +97,13 @@ void ph_context_set_cookies(const char *cookies) {
     QVariantList cookiesList = cookiesArray.toVariantList();
 
     ph::CookieJar::instance()->addCookiesFromMapList(cookiesList);
+}
+
+void ph_context_set_headers(const char *headers) {
+    QJsonObject headersObject = QJsonDocument::fromJson(QByteArray(headers)).object();
+    QVariantMap headersMap = headersObject.toVariantMap();
+
+    ph::Context::instance()->setHTTPHeaders(headersMap);
 }
 
 void ph_context_clear_cookies() {

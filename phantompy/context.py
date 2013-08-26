@@ -88,6 +88,12 @@ class Context(object):
         Clear all cookies.
         """
         lib.ph_context_clear_cookies()
+        
+    def set_headers(self, headers):
+        """
+        Set a list of headers.
+        """
+        lib.ph_context_set_headers(util.force_bytes(json.dumps(headers)))
 
     def process_events(self, timeout=200):
         """

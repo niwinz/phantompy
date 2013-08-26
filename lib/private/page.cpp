@@ -43,8 +43,10 @@ void Page::applySettings() {
 
 void Page::load(const QString &_url) {
     m_mainUrl = QUrl::fromUserInput(_url);
+	QNetworkRequest request = QNetworkRequest(m_mainUrl);
+	Context::instance()->applyHTTPHeaders(request);
 
-    m_page.mainFrame()->load(m_mainUrl);
+    m_page.mainFrame()->load(request);
     m_page.mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOff);
     m_page.mainFrame()->setScrollBarPolicy(Qt::Horizontal, Qt::ScrollBarAlwaysOff);
     m_page.setViewportSize(m_viewSize);
