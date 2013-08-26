@@ -52,6 +52,10 @@ try:
     _library.ph_context_set_cookies.argtypes = [c_char_p]
     _library.ph_context_set_cookies.restype = None
 
+    _library.ph_context_set_headers.argtypes = [c_char_p]
+    _library.ph_context_set_headers.restype = None
+
+
     # Page methods
     _library.ph_page_create.argtypes = []
     _library.ph_page_create.restype = c_void_p

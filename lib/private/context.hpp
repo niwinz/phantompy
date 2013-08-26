@@ -34,12 +34,16 @@ public:
     ~Context();
 
     static Context* instance();
-    static void clerInstance();
+    static void clearInstance();
 
     void setMaximumPagesInCache(int pages);
     void setObjectCacheCapacities(int cacheMinDeadCapacity, int cacheMaxDead, int totalCapacity);
     void clearMemoryCaches();
-
+    void setHTTPHeaders(QHash<QString, QString> &headers);
+    void setHTTPHeaders(const QVariantMap &headers);
+    void applyHTTPHeaders(QNetworkRequest &headers);
+	QHash<QString, QString> getHTTPHeaders();
+    
     void setConfig(const Settings &key, const QVariant &value);
     QVariant getConfig(const Settings &key);
 
@@ -65,6 +69,7 @@ private:
 
     QTimer m_timer;
     QHash<Settings, QVariant> m_settings;
+    QHash<QString, QString> m_headers;
 
     void setDefaultSettings();
 };

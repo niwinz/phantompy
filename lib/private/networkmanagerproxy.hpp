@@ -15,7 +15,7 @@ public:
 
     void setNetworkAccessManager(QNetworkAccessManager *manager);
     QNetworkReply* get(const QUrl &url);
-    QNetworkReply* get(const QNetworkRequest &request);
+    QNetworkReply* get(QNetworkRequest &request);
 
 private:
     QEventLoop m_eventLoop;
