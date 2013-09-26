@@ -57,6 +57,10 @@ extern "C" {
     const char* ph_image_get_format(void* image);
     void ph_image_get_bytes(void *image, void *buffer, int64_t size);
 
+    //Frame PDF methods
+    void ph_frame_render_pdf(void *frame, const char *fileName);
+    void ph_frame_set_paper_size(void *frame, const char *paper_size);
+
     // Web Element and Web Element Collection methods
     void* ph_frame_find_first(void *frame, const char *selector); // TODO: deprectated
     void* ph_frame_find_all(void *frame, const char *selector);
