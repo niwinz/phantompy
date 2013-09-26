@@ -45,6 +45,53 @@ class Frame(object):
         image_ptr = lib.ph_frame_capture_image(self.ptr, _format, quality)
         return image.Image(image_ptr, format, quality, self)
 
+    #Set paper size for PDF output
+    def set_paper_size(self, paper_size_dict):
+        arguments = {
+            'width':            { },
+            'height' :          { },
+            'margin':           { },
+            'format':           {'values': ['A0', 'A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8',
+                                             'A9', 'B0', 'B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7',
+                                             'B8', 'B9', 'B10', 'C5E', 'Comm10E', 'DLE', 'Executive',
+                                             'Folio', 'Ledger', 'Legal', 'Letter', 'Tabloid']  },
+            'orientation':      { 'values':['landscape', 'potrait'] },
+        }
+
+        result = {}
+        paper_format = paper_size_dict.get('format')
+        paper_orientation = paper_size_dict.get('orientation')
+
+        if 'height' in paper_size_dict and 'width' in paper_size_dict and 'margin' in paper_size_dict:
+            result['height'] = paper_size_dict['height']
+            result['width'] = paper_size_dict['width']
+            result['margin'] = paper_size_dict['margin']
+
+        if paper_format:
+            if paper_format.lower() in (value.lower() for value in arguments['format']['values']):
+                result['format'] = paper_size_dict['format']
+            else:
+                raise ValueError('Valid values for the argument "%s" are %s' % ('format', arguments['format']['values']))
+
+
+        if paper_orientation:
+            if paper_orientation.lower() in (value.lower() for value in arguments['orientation']['values']):
+                result['orientation'] = paper_size_dict['orientation']
+            else:
+                raise ValueError('Valid values for the argument "%s" are %s' % ('orientation', arguments['orientation']['values']))
+
+        if not result:
+            raise ValueError('Either format or orientation or (height, width and height) are expected')
+
+        lib.ph_frame_set_paper_size(self.ptr, util.force_bytes(json.dumps(paper_size_dict)))
+
+        return None
+
+    #Output to PDF
+    def to_pdf(self, fileName):
+        lib.ph_frame_render_pdf(self.ptr, fileName)
+        return None
+
     def evaluate(self, js, expect_load=False, timeout=6000):
         js = util.force_bytes(js)
         result = lib.ph_frame_evaluate_javascript(self.ptr, js, expect_load, timeout)

@@ -318,6 +318,20 @@ void ph_image_free(void *image) {
     img->deleteLater();
 }
 
+/****** PDF ******/
+
+void ph_frame_render_pdf(void *frame, const char *fileName) {
+    ph::Frame *f = (ph::Frame*)frame;
+    f->renderPdf(fileName);
+}
+
+void ph_frame_set_paper_size(void *frame, const char *paper_size) {
+    QJsonObject paperSizeObject = QJsonDocument::fromJson(QByteArray(paper_size)).object();
+    QVariantMap paperSizeMap = paperSizeObject.toVariantMap();
+    ph::Frame *f = (ph::Frame*)frame;
+    f->setPaperSize(paperSizeMap);
+}
+
 /****** Web Elements ******/
 
 void ph_webelement_free(void *element) {

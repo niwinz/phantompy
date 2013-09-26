@@ -14,7 +14,12 @@ public:
     Frame(QWebFrame *frame, QObject *parent=0);
     ~Frame();
 
+    //PDF output options
+    void setPaperSize(const QVariantMap &size);
+    QVariantMap paperSize() const;
+
     QByteArray captureImage(const char *format, int quality);
+    bool renderPdf(const QString &filename);
     QString toHtml();
     QVariant evaluateJavaScript(const QString &data, bool expectLoad, int timeout);
 
@@ -27,6 +32,7 @@ public:
 
 private:
     QWebFrame *p_frame;
+    QVariantMap m_paperSize; // For PDF output
     QEventLoop m_loop;
 
 private slots:

@@ -131,6 +131,13 @@ try:
     _library.ph_image_get_bytes.argtypes = [c_void_p, c_void_p, c_longlong]
     _library.ph_image_get_bytes.restype = None
 
+    # PDF methods
+    _library.ph_frame_render_pdf.argtypes = [c_void_p, c_char_p]
+    _library.ph_frame_render_pdf.restype = None
+
+    _library.ph_frame_set_paper_size.argtypes = [c_void_p, c_char_p]
+    _library.ph_frame_set_paper_size.restype = None
+
     # Web Element Collection methods
     _library.ph_webcollection_size.argtypes = [c_void_p]
     _library.ph_webcollection_size.restype = c_int
