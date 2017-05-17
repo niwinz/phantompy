@@ -1,0 +1,11 @@
+[Exception] : ArgumentNullException: Argument cannot be null.
+System.Linq.Check.FirstAndSecond (System.Object first, System.Object second)
+System.Linq.Enumerable.Concat[KeyValuePair`2] (IEnumerable`1 first, IEnumerable`1 second)
++..ctor (. ,  , . , . , System.Collections.Generic.Dictionary`2 , System.String , System.String )
+. (Result`2 )
+++. (Result`1 )
++`1[System.Collections.Generic.Dictionary`2[System.String,]]. (Result`2 )
++`1[System.Collections.Generic.Dictionary`2[System.String,]]. (Result`2 )
++`1[System.Collections.Generic.Dictionary`2[System.String,]]. (System.String , System.Collections.Generic.Dictionary`2 , System.String )
++.MoveNext ()
+UnityEngine.SetupCoroutine.InvokeMoveNext (IEnumerator enumerator, IntPtr returnValueAddress)
